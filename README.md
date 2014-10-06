@@ -46,30 +46,28 @@ If you use the ENV to layout your ADefs don't bother rigging just for positional
 ensure that ALL representations will show up in the correct positions.
 
 ## Notes on various settings:
-#USE_BULLDOG_UI:
-    Set this to True if you have downloaded and installed the Bulldog UI otherwise set this to False to avoid the userSetup.py
-    from failing looking for plugins used by the UI.
+####USE_BULLDOG_UI:
+Set this to True if you have downloaded and installed the Bulldog UI otherwise set this to False to avoid the userSetup.py
+from failing looking for plugins used by the UI.
 
-##USE_BONUSTOOLS:
+####USE_BONUSTOOLS:
+Is a WIP at this time, unfortunately getting the 2014 / 2015 bonus tools to sit outside their
+default locations is something I don't have the energy to work around at this time. install them clean and use em
+from their defaults for now on each operators machine. Consider this constant a place holder for now.
 
-    Is a WIP at this time, unfortunately getting the 2014 / 2015 bonus tools to sit outside their
-    default locations is something I don't have the energy to work around at this time. install them clean and use em
-    from their defaults for now on each operators machine. Consider this constant a place holder for now.
-
-###FORCE_USERSETUP_REINSTALL:
-
-    This is used to force a copy of the userSetup.py into each users scripts folder. If you're updating and testing leave this set to
-    True else you can stop copying this file by turing it to False and use this boolean as an `updater'
+####FORCE_USERSETUP_REINSTALL:
+This is used to force a copy of the userSetup.py into each users scripts folder. If you're updating and testing leave this set to
+True else you can stop copying this file by turing it to False and use this boolean as an `updater'
 
 ####DEBUGGING:
-    Used by the logger stuff to turn on the loggers verbose attr. If you want to turn off the reporting to the script editor set this
-    to False and this will stop the logging from outputting.
+Used by the logger stuff to turn on the loggers verbose attr. If you want to turn off the reporting to the script editor set this
+to False and this will stop the logging from outputting.
 
-SHOTGUN_CONFIG_NAME:
-    Make sure this matches the name of the project you are working on. Or the config the project is using...
+####SHOTGUN_CONFIG_NAME:
+Make sure this matches the name of the project you are working on. Or the config the project is using...
 
-SHOTGUN_URL:
-    This is used by the python-api shotgun api to instantiate a shotgun server it's the url of your website hosting the shotgun projects
+####SHOTGUN_URL:
+This is used by the python-api shotgun api to instantiate a shotgun server it's the url of your website hosting the shotgun projects
 
 SHOTGUN_TOOLKIT_NAME:
     This is the default name of the tool kit script you should already have setup on shotgun
