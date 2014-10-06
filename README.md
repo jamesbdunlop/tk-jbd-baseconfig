@@ -5,13 +5,21 @@ The following explains some of the constants and how they work in the config/con
 This config is designed to work off any custom naming you choose to use for the following base setup.
 
 **ENV**     = Environment
+
 **LND**     = Landscape
+
 **BLD**     = Building
+
 **CHAR**    = Characters
+
 **VEH**     = Vehicles
+
 **PROP**    = Prop
+
 **CPROP**   = Character Prop
+
 **LIB**     = Library Asset
+
 **SURFVAR** = Surface Variables eg paint on a roof top color changes etc
 
 
