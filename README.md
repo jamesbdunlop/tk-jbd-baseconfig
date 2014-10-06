@@ -4,15 +4,15 @@ genericconfig
 The following explains some of the constants and how they work in the config/const/configCONST.py
 This config is designed to work off any custom naming you choose to use for the following base setup.
 
-ENV     = Environment
+#####ENV     = Environment
 
-LND     = Landscape
+#####LND     = Landscape
 
-BLD     = Building
+#####BLD     = Building
 
-CHAR    = Characters
+#####CHAR    = Characters
 
-VEH     = Vehicles
+#####VEH     = Vehicles
 
 PROP    = Prop
 
