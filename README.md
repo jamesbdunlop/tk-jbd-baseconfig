@@ -3,7 +3,7 @@ genericconfig
 ##NOTES:
 The following explains some of the constants and how they work in the config/const/configCONST.py
 This config is designed to work off any custom naming you choose to use for the following base setup.
-
+```
 **ENV**     = Environment
 
 **LND**     = Landscape
@@ -21,7 +21,7 @@ This config is designed to work off any custom naming you choose to use for the 
 **LIB**     = Library Asset
 
 **SURFVAR** = Surface Variables eg paint on a roof top color changes etc
-
+```
 
 ##Scene Assembly Notes:
 Environments are made up of of landscapes(LND) and buildings(BLD) and can be used as the layout step.
@@ -37,11 +37,11 @@ It is also important to note that if you have published a building assembly defi
 publish this again but as a RIG not a MODEL you will have to manually update the building in the environment file to the RIG Assembly
 Definition path for the scene breakdown tool to start working again.
 
-Adding Constants from this file to to tk-envReporter:
+**Adding Constants from this file to to tk-envReporter:**
 If you add constants to this and by all means do, note you may want to add these into the tk-envReporter application if you want a quick way
 to print out the current settings in maya. You'll have to do this manually.
 
-Layout:
+**Layout:**
 If you use the ENV to layout your ADefs don't bother rigging just for positional changes, you can use the base transform of the ADef and this will
 ensure that ALL representations will show up in the correct positions.
 
