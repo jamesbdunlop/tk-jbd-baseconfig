@@ -56,12 +56,12 @@ ensure that ALL representations will show up in the correct positions.
     default locations is something I don't have the energy to work around at this time. install them clean and use em
     from their defaults for now on each operators machine. Consider this constant a place holder for now.
 
-##FORCE_USERSETUP_REINSTALL:
+###FORCE_USERSETUP_REINSTALL:
 
     This is used to force a copy of the userSetup.py into each users scripts folder. If you're updating and testing leave this set to
     True else you can stop copying this file by turing it to False and use this boolean as an `updater'
 
-DEBUGGING:
+####DEBUGGING:
     Used by the logger stuff to turn on the loggers verbose attr. If you want to turn off the reporting to the script editor set this
     to False and this will stop the logging from outputting.
 
