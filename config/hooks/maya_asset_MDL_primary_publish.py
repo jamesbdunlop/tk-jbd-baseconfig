@@ -171,7 +171,8 @@ class PrimaryPublishHook(Hook):
 
         ## Now put it back to Ascii for 2ndry publishes to work properly off the work_template path
         progress_cb(85.0, "Reverting to ma for secondary publish and saving working file again.")
-        cmds.file(rename = '%s.v%s%s.ma' % (publish_name, padding, fields['version']), save=True, force=True, type = 'mayaAscii')
+        cmds.file(rename = '%s.v%s%s.ma' % (publish_name, padding, fields['version']))
+        cmds.file(save=True, force=True, type = 'mayaAscii')
         progress_cb(100)
 
         return publish_path

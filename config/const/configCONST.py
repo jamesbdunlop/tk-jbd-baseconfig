@@ -146,7 +146,7 @@ SHOTGUN_TOOLKIT_API_KEY         = '724eea86a7f9fe4816278f2188382eacf42834a2b5cb8
 ## Save the maya scene before you do a primary publish?
 SAVEWRK_PREPRIMARY_PUBLISH      = True
 ## Force a check to make sure the prefixes are in the root nodes hrc name or not
-INSIST_PREFIX_IN_ROOT           = True
+INSIST_PREFIX_IN_ROOT           = False
 ## Force the transform check if the buildings are to be modelled in situ
 FORCE_TRANSFORM_CHECK           = False
 

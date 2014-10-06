@@ -68,7 +68,7 @@ class ScanSceneHook(Hook):
         srv = tank.tank_from_path(configCONST.SHOTGUN_CONFIG_PATH)
         context = srv.context_from_path(path=scene_name)
         if context.step['name'] != configCONST.MODEL_SHORTNAME:
-            raise TankError("Please Save your file under the correct RIG context before Publishing!")
+            raise TankError("Please Save your file under the correct MDL context before Publishing!")
 
         name        = os.path.basename(scene_path)
         # create the primary item - this will match the primary output 'scene_item_type':            
