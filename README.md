@@ -46,16 +46,19 @@ If you use the ENV to layout your ADefs don't bother rigging just for positional
 ensure that ALL representations will show up in the correct positions.
 
 ## Notes on various settings:
-USE_BULLDOG_UI:
+##USE_BULLDOG_UI:
+
     Set this to True if you have downloaded and installed the Bulldog UI otherwise set this to False to avoid the userSetup.py
     from failing looking for plugins used by the UI.
 
-USE_BONUSTOOLS:
+##USE_BONUSTOOLS:
+
     Is a WIP at this time, unfortunately getting the 2014 / 2015 bonus tools to sit outside their
     default locations is something I don't have the energy to work around at this time. install them clean and use em
     from their defaults for now on each operators machine. Consider this constant a place holder for now.
 
-FORCE_USERSETUP_REINSTALL:
+##FORCE_USERSETUP_REINSTALL:
+
     This is used to force a copy of the userSetup.py into each users scripts folder. If you're updating and testing leave this set to
     True else you can stop copying this file by turing it to False and use this boolean as an `updater'
 
