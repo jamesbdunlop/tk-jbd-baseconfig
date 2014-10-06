@@ -1,0 +1,2 @@
+primary: {linux_path: /projects, mac_path: /volumes/projects, windows_path: 'I:\'}
+secondary: {linux_path: /renders, mac_path: /volumes/renders, windows_path: 'K:\'}

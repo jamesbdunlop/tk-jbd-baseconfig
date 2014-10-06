@@ -5,6 +5,9 @@ __pycache__/
 # C extensions
 *.so
 
+## PyCharm and Shotgun Stuff
+*.idea
+
 # Distribution / packaging
 .Python
 env/
@@ -52,3 +55,20 @@ docs/_build/
 
 # PyBuilder
 target/
+
+install/apps/app_store
+install/apps
+install
+install/engines
+install/core.backup
+install/core
+install/frameworks
+cache
+cache/shotgun_windows_asset.txt
+cache/shotgun_windows_task.txt
+cache/shotgun_windows_project.txt
+cache/shotgun_windows_shot.txt
+cache/shotgun_windows_sequence.txt
+config/env/!backup
+tank.bat
+tank

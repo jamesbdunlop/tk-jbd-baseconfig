@@ -1,0 +1,21 @@
+-------------------------------------------------------------------------
+James' generic config notes
+-------------------------------------------------------------------------
+There are few areas to make sure the config has the right paths listed
+in it.
+If you have setup a config using the tank setup_project and you want to
+just copy and paste this config over the top be sure to edit the following
+files so they have the correct paths in them
+Note this config is by default a multi-root config with a primary and
+secondary config. The primary being for assets and shots etc and the
+secondary for renders / compositing outputs.
+-------------------------------------------------------------------------
+Files to change paths in this config if you copy and paste...
+-------------------------------------------------------------------------
+/config/hooks/maya_before_app_launch.py
+/config/CONST/configCONST.py
+/config/core/install_location.yml
+/config/core/pipeline_configuration.yml
+/config/core/roots.yml
+/defaultMayaEnv/[mayaversion]/userSetup.py
+
