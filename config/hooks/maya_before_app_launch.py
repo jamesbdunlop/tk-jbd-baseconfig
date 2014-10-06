@@ -38,9 +38,10 @@ CONFIG_NAME = 'genericconfig'
 CONFIG_ROOT = '%s/%s/config/const' % (SOFTWARE_ROOT, CONFIG_NAME)
 if CONFIG_ROOT not in sys.path:
     sys.path.append(CONFIG_ROOT)
-## Now import the base configs configCONSTant file
-import configCONST as configCONST
 
+## Now import the base configs configCONST file
+import configCONST as configCONST
+print 'configCONST imported successfully...'
 sys.path.append(configCONST.TANKCORE_PYTHON_PATH)
 import tank
 

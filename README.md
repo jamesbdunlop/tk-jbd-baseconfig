@@ -1,5 +1,10 @@
 genericconfig
 =============
+If you copy this config the first three places to change the base config name vars are
+config/const/configCONST.py
+mayaEnv/20xx-x64/userSetup.py
+config/hooks/maya_before_app_launch.py
+
 ##NOTES:
 The following explains some of the constants and how they work in the config/const/configCONST.py
 This config is designed to work off any custom naming you choose to use for the following base setup.
