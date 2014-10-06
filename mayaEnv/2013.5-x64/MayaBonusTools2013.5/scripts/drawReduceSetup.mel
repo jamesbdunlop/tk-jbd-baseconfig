@@ -1,0 +1,62 @@
+// Copyright (C) 1997-2011 Autodesk, Inc., and/or its licensors.
+// All rights reserved.
+//
+// The coded instructions, statements, computer programs, and/or related
+// material (collectively the "Data") in these files contain unpublished
+// information proprietary to Autodesk, Inc. ("Autodesk") and/or its licensors,
+// which is protected by U.S. and Canadian federal copyright law and by
+// international treaties.
+//
+// The Data is provided for use exclusively by You. You have the right to use,
+// modify, and incorporate this Data into other products for purposes authorized 
+// by the Autodesk software license agreement, without fee.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. AUTODESK
+// DOES NOT MAKE AND HEREBY DISCLAIMS ANY EXPRESS OR IMPLIED WARRANTIES
+// INCLUDING, BUT NOT LIMITED TO, THE WARRANTIES OF NON-INFRINGEMENT,
+// MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, OR ARISING FROM A COURSE 
+// OF DEALING, USAGE, OR TRADE PRACTICE. IN NO EVENT WILL AUTODESK AND/OR ITS
+// LICENSORS BE LIABLE FOR ANY LOST REVENUES, DATA, OR PROFITS, OR SPECIAL,
+// DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES, EVEN IF AUTODESK AND/OR ITS
+// LICENSORS HAS BEEN ADVISED OF THE POSSIBILITY OR PROBABILITY OF SUCH DAMAGES.
+
+// SCRIPT NAME: drawReduceSetup.mel v1.4
+// TESTED ON: Maya 4.0
+// DESCRIPTION: Creates the shelf button for the "Draw Reduce Tool" plugin.
+//              Please see the file "readme.txt" or "drawReduceTool.cpp"
+//              for full details.
+
+
+global proc drawReduceSetup()
+{
+   if ( !`pluginInfo -q -l drawReduceTool` ) { 
+      if ( catch( `loadPlugin "drawReduceTool"` ) ) { 
+		  error "The plugin was not found. Did you put drawReduceTool in your plugin directory?";
+	  }
+   } else { 
+      pluginInfo -edit -autoload true "drawReduceTool"; 
+   } 
+
+   // CREATE THE OPTION VARIABLES IF FIRST TIME, AND CREATE SHELF BUTTON ON CURRENT ACTIVE SHELF:
+   global string $gShelfTopLevel;
+   if (`tabLayout -exists $gShelfTopLevel`)
+   {
+      if (!`optionVar -ex QT_drawReduceMinSampleSize`) optionVar -iv QT_drawReduceMinSampleSize 25;
+      if (!`optionVar -ex QT_drawReduceReductionType`) optionVar -iv QT_drawReduceReductionType 1;
+      if (!`optionVar -ex QT_drawReduceMergeVerticesAt`) optionVar -iv QT_drawReduceMergeVerticesAt 1;
+      if (!`optionVar -ex QT_drawReduceEdgeSnappingWhen`) optionVar -iv QT_drawReduceEdgeSnappingWhen 1;
+      if (!`optionVar -ex QT_drawReduceEdgeSnappingType`) optionVar -iv QT_drawReduceEdgeSnappingType 1;
+      if (!`optionVar -ex QT_drawReduceEdgeSnappingOffset`) optionVar -fv QT_drawReduceEdgeSnappingOffset 0.5;
+      if (!`optionVar -ex QT_drawReduceEdgeSnappingIntervals`) optionVar -iv QT_drawReduceEdgeSnappingIntervals 2;
+      if (!`optionVar -ex QT_drawReduceAutoBackfaceCulling`) optionVar -iv QT_drawReduceAutoBackfaceCulling 1;
+
+      shelfButton
+         -parent ($gShelfTopLevel + "|" + `tabLayout -q -st $gShelfTopLevel`)
+         -command "drawReduceTool"
+         -doubleClickCommand "toolPropertyWindow"
+         -image1 "drawReduceIcon.xpm"
+         -annotation "Draw Reduce Tool"
+      QT_drawReduceShelfButton;
+   }
+   else
+      error "You need a shelf for Draw Reduce Tool setup!";
+}

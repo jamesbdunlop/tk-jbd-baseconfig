@@ -30,7 +30,7 @@ elif sys.platform == 'darwin':
 else:
     SOFTWARE_ROOT = '/development'
 
-CONFIG_NAME = 'default'
+CONFIG_NAME = 'genericconfig'
 ##################################################################
 ## FINISH EDITING HERE
 ##################################################################

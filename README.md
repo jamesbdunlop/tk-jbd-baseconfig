@@ -3,7 +3,6 @@ genericconfig
 ##NOTES:
 The following explains some of the constants and how they work in the config/const/configCONST.py
 This config is designed to work off any custom naming you choose to use for the following base setup.
-```
 **ENV**     = Environment
 
 **LND**     = Landscape
@@ -21,7 +20,6 @@ This config is designed to work off any custom naming you choose to use for the 
 **LIB**     = Library Asset
 
 **SURFVAR** = Surface Variables eg paint on a roof top color changes etc
-```
 
 ##Scene Assembly Notes:
 Environments are made up of of landscapes(LND) and buildings(BLD) and can be used as the layout step.

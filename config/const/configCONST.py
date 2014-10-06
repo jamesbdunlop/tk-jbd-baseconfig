@@ -137,7 +137,7 @@ MAYA_VERSION                    = '2015-x64'
 BULLDOG_MAYA_VERSION            = '2015'
 LOGFILE_NAME                    = 'tankLog'
 ## SHOT GUN BASE CONSTANTS
-SHOTGUN_CONFIG_NAME             = 'generic'
+SHOTGUN_CONFIG_NAME             = 'genericconfig'
 SHOTGUN_URL                     = 'https://framespersecond.shotgunstudio.com'                           #[INSERT YOUR URL HERE eg https://mystudio.shotgunstudio.com AS A STRING]
 SHOTGUN_TOOLKIT_NAME            = 'Toolkit'
 SHOTGUN_TOOLKIT_API_KEY         = '724eea86a7f9fe4816278f2188382eacf42834a2b5cb85f814f125e96078a3b3'    #[INSERT YOUR SHOTGUN API KEY HERE AS A STRING]

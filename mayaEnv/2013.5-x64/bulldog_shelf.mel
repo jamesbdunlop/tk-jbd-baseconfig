@@ -1,0 +1,40 @@
+global proc bulldog_shelf() {
+    global string $gBuffStr;
+    global string $gBuffStr0;
+    global string $gBuffStr1;
+    shelfButton
+        -enableCommandRepeat 1
+        -enable 1
+        -width 35
+        -height 35
+        -manage 1
+        -visible 1
+        -preventOverride 0
+        -annotation "bulldog" 
+        -enableBackground 0
+        -align "center" 
+        -label "User Script" 
+        -labelOffset 0
+        -font "plainLabelFont" 
+        -overlayLabelColor 0.8 0.8 0.8 
+        -overlayLabelBackColor 0 0 0 0.2 
+        -image "T:/software/bulldog/BDicons/bdShelfIcon.png" 
+        -image1 "T:/software/bulldog/BDicons/bdShelfIcon.png" 
+        -style "iconOnly" 
+        -marginWidth 1
+        -marginHeight 1
+        -command "import sys\nsys.path.append(\"T:/software/bulldog\")\nfrom BDmaya.main_ui import BD_DockWinUI as BD_DockWinUI\n\'''NOTE VALID VIEWTYPES ARE anim mdl light fx rig'''\nBD_DockWinUI.showWin(parentToMaya = True, dockedScriptEditor = False, viewType = 'default')" 
+        -sourceType "python" 
+        -commandRepeatable 1
+        -mi "MDL" ( "import sys\nsys.path.append(\"T:/software/bulldog\")\nfrom BDmaya.main_ui import BD_DockWinUI as BD_DockWinUI\n\'''NOTE VALID VIEWTYPES ARE anim mdl light fx rig'''\nBD_DockWinUI.showWin(parentToMaya = True, dockedScriptEditor = False, viewType = 'mdl')" )
+        -mip 0
+        -mi "ANIM" ( "import sys\nsys.path.append(\"T:/software/bulldog\")\nfrom BDmaya.main_ui import BD_DockWinUI as BD_DockWinUI\n\'''NOTE VALID VIEWTYPES ARE anim mdl light fx rig'''\nBD_DockWinUI.showWin(parentToMaya = True, dockedScriptEditor = False, viewType = 'anim')" )
+        -mip 1
+        -mi "LGHT" ( "import sys\nsys.path.append(\"T:/software/bulldog\")\nfrom BDmaya.main_ui import BD_DockWinUI as BD_DockWinUI\n\'''NOTE VALID VIEWTYPES ARE anim mdl light fx rig'''\nBD_DockWinUI.showWin(parentToMaya = True, dockedScriptEditor = False, viewType = 'light')" )
+        -mip 2
+        -mi "FX" ( "import sys\nsys.path.append(\"T:/software/bulldog\")\nfrom BDmaya.main_ui import BD_DockWinUI as BD_DockWinUI\n\'''NOTE VALID VIEWTYPES ARE anim mdl light fx rig'''\nBD_DockWinUI.showWin(parentToMaya = True, dockedScriptEditor = False, viewType = 'fx')" )
+        -mip 3
+        -mi "RIG" ( "import sys\nsys.path.append(\"T:/software/bulldog\")\nfrom BDmaya.main_ui import BD_DockWinUI as BD_DockWinUI\n\'''NOTE VALID VIEWTYPES ARE anim mdl light fx rig'''\nBD_DockWinUI.showWin(parentToMaya = True, dockedScriptEditor = False, viewType = 'rig')" )
+        -mip 4
+    ;
+} 
