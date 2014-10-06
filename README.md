@@ -46,8 +46,7 @@ If you use the ENV to layout your ADefs don't bother rigging just for positional
 ensure that ALL representations will show up in the correct positions.
 
 ## Notes on various settings:
-##USE_BULLDOG_UI:
-
+'''USE_BULLDOG_UI:'''
     Set this to True if you have downloaded and installed the Bulldog UI otherwise set this to False to avoid the userSetup.py
     from failing looking for plugins used by the UI.
 
