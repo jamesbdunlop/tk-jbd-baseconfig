@@ -201,6 +201,8 @@ NURBSCRV_SUFFIX                 = 'crv'
 IMPORT_SUFFIX                   = 'importDELME'
 SHOTCAM_SUFFIX                  = 'shotCam'
 
+LIGHTINGCLEANUP                 = ['parts_hrc', 'rig_hrc', '']
+
 ## Set platform dependant config constants
 if sys.platform == 'win32':
     ## OS specific

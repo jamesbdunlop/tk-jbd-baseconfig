@@ -40,8 +40,11 @@ if CONFIG_ROOT not in sys.path:
     sys.path.append(CONFIG_ROOT)
 
 ## Now import the base configs configCONST file
-import configCONST as configCONST
-print 'configCONST imported successfully...'
+try:
+    import configCONST as configCONST
+    print 'configCONST imported successfully...'
+except ImportError:
+    print 'configCONST NOT FOUND! Please make sure the CONFIG_NAME and the CONFIG_ROOT constants in the maya_before_app_launch.py are set correctly!'
 sys.path.append(configCONST.TANKCORE_PYTHON_PATH)
 import tank
 
