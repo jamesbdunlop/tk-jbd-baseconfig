@@ -82,7 +82,7 @@ keys:
     project:
         type: str
 
-## BUBBLE BATH SPECIALS
+## SPECIALS
     cam_name:
         type: str  
     grp_name:
