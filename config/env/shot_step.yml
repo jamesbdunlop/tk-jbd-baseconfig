@@ -25,8 +25,8 @@ engines:
         allowAssetTurnTableBuild:   false
         movie_width:                1280
         movie_height:               720
-        movie_path_template:        maya_asset_playblast
-        movie_workpath_template:    maya_assetwork_playblast
+        movie_path_template:        maya_shot_playblast
+        movie_workpath_template:    maya_shotwork_playblast
         new_version_status:         rev
         sg_in_frame_field:          sg_cut_in
         sg_out_frame_field:         sg_cut_out
@@ -42,13 +42,13 @@ engines:
         gateImagePath:              'I:/genericconfig/templates/ImageGate_1920_1080.png'
         suffix:                     shotCam
         ################################################################################################################################################################
-      tk-Fetch-Animation-Related-Assets:
+      tk-Fetch-ShotBased-Related-Assets:
         display_name:               Animation Tools.../Get All Pub Shot Assets
         location:                   {"type": "manual", "name": "tk-jbd-anim-fetchshotassets", "version": "v0.0.1"}
         camera_publish_template:    maya_shot_cam
         sg_AssetTemplate:           maya_asset_publish
         ################################################################################################################################################################
-      tk-Fetch-Animation-Cache:
+      tk-Lighting-fetch-published-animation-caches:
         display_name:               Lighting Tools.../Fetch Animation Caches...
         location:                   {"type": "manual", "name": "tk-jbd-lighting-fetchcaches", "version": "v0.0.1"}
         shotStep:                   Animation
@@ -57,11 +57,12 @@ engines:
         shot_gpu_publish_template:  maya_shot_gpu_versionFolder
         static_alembic_publish_template: maya_shot_static_alembic_versionFolder
         ################################################################################################################################################################
-      tk-Fetch-Surfacing-Related-Publishes:
+      tk-Lighting-rebuild-surfacing-from-XML-publishes:
         display_name:               Lighting Tools.../Get All Pub Shaders
         location:                   {"type": "manual", "name": "tk-jbd-lighting-rebuildSurfacing", "version": "v0.0.1"}
         maya_SHD_XML_template:      maya_asset_SHD_XML
         maya_textures_template:     maya_asset_textures
+        maya_asset_presetRoot:      asset_root
 
 ################################################################################################################################################################
 ## MAYA CORE APPLICATIONS

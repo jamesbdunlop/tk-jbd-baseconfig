@@ -109,7 +109,8 @@ class BeforeAppLaunch(tank.Hook):
         os.environ["MAYA_APP_DIR"] = configCONST.MAYA_USER_APP_DIR
 
         ##############################################################################
-        ## SYSTEM PATHS
+        ## ADDITIONAL SYSTEM PATHS
+        ## NOTE A BUNCH OF THESE GET USED FROM THE configCONST in the userSetup.py
         ##############################################################################
         sys_paths = []
         for eachSysPath in sys_paths:
