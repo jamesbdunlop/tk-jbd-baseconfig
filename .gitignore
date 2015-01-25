@@ -5,8 +5,6 @@ __pycache__/
 # C extensions
 *.so
 
-## PyCharm and Shotgun Stuff
-*.idea
 
 # Distribution / packaging
 .Python
@@ -55,6 +53,13 @@ docs/_build/
 # PyBuilder
 target/
 
+
+
+##################################################
+## PyCharm and Shotgun Stuff
+*Thumbs.db
+*.idea
+*.git
 install/apps/app_store
 install/apps
 install/apps/manual
