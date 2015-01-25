@@ -10,13 +10,12 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-env/
+
 build/
 develop-eggs/
 dist/
 downloads/
 eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -58,6 +57,7 @@ target/
 
 install/apps/app_store
 install/apps
+install/apps/manual
 install
 install/engines
 install/core.backup
