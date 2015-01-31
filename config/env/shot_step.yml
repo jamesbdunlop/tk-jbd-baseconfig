@@ -69,8 +69,15 @@ engines:
 ################################################################################################################################################################
       tk-multi-about:
         location: {name: tk-multi-about, type: app_store, version: v0.1.20}
+      tk-maya-breakdown:
+        location:                   {name: tk-maya-breakdown, type: app_store, version: v0.3.0}
+        hook_multi_update:          maya_asset_SCBRKDWN_breakdown_update
+        hook_scan_scene:            maya_asset_SCBRKDWN_scan_scene
 
-        ################################################################################################################################################################
+
+######################################################################################################1##########################################################
+## MAYA LOADERS
+################################################################################################################################################################
       tk-multi-loader-PUBLISH_LOADER:
         action_mappings:
           Maya Scene:               [open, reference, import, audio, assemblyReference, texture_node, importENV, loadSurfVar, coreArchive]

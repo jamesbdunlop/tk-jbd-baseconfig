@@ -77,3 +77,4 @@ cache/shotgun_windows_sequence.txt
 config/env/!backup
 tank.bat
 tank
+!backup
