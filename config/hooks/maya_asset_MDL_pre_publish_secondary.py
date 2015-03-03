@@ -11,7 +11,7 @@
 import maya.cmds as cmds
 from tank import Hook
 import configCONST as configCONST
-
+import os
 
 class PrePublishHook(Hook):
     """
@@ -98,6 +98,8 @@ class PrePublishHook(Hook):
                 errors.extend(self._validate_item_for_publish(item))
             elif output["name"] == "uvxml":
                 errors.extend(self._validate_item_for_publish(item))
+            elif output["name"] == "GoZ_ma":
+                errors.extend(self._validate_goZ_item_for_publish(item))
             else:
                 # don't know how to publish this output types!
                 errors.append("We're good but we just don't know how to publish this item! \nWhat the heck is %s anyway?" % output["name"])     
@@ -128,4 +130,13 @@ class PrePublishHook(Hook):
             errors.append("%s does not end in correct _hrc suffix!" % item["name"])
 
         # finally return any errors
+        return errors
+
+    def _validate_goZ_item_for_publish(self, item):
+        goZFolder           = configCONST.GOZ_PUBLIC_CACHEPATH
+        getFolderContents   = os.listdir(goZFolder)
+        errors              = []
+        ## make sure the cache file exists in the default goZ folder !
+        if '%s.ma' % item["name"] not in getFolderContents:
+            errors.append('Can not find a goZ ma cache file in %s' % goZFolder)
         return errors

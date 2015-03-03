@@ -142,6 +142,7 @@ SHOTGUN_URL                     = 'https://framespersecond.shotgunstudio.com'   
 SHOTGUN_TOOLKIT_NAME            = 'Toolkit'
 SHOTGUN_TOOLKIT_API_KEY         = '724eea86a7f9fe4816278f2188382eacf42834a2b5cb85f814f125e96078a3b3'    #[INSERT YOUR SHOTGUN API KEY HERE AS A STRING]
 
+GOZ_PUBLIC_CACHEPATH            = 'C:\Users\Public\Pixologic\GoZProjects\Default'
 ## DEFAULT STUFF FOR THE CONFIG
 ## Save the maya scene before you do a primary publish?
 SAVEWRK_PREPRIMARY_PUBLISH      = True

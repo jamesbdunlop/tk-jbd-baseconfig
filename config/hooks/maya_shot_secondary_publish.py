@@ -400,12 +400,12 @@ class PublishHook(Hook):
         outfile.write('copy %s %s\n' % (tempFilePath, publish_path))
         outfile.close()
 
-        if 1:#try:
+        try:
             self.parent.log_debug("Executing command: %s" % abc_export_cmd)
             secpubmsg.publishmessage('Exporting %s to alembic cache now to %s' % (group_name, publish_path), True)
 
             cmds.AbcExport(verbose = False, j = abc_export_cmd)
-        else:#except Exception, e:
+        except Exception, e:
             raise TankError("Failed to export Alembic Cache!!")
 
         ## Finally, register this publish with Shotgun

@@ -131,7 +131,10 @@ paths:
     maya_asset_ADEF_assembly:
         definition: '@asset_root/publish/assemblyDef/{name}_ADef.v{version}.ma'
         root_name: primary
-    
+    maya_asset_GOZ:
+        definition: '@asset_root/publish/mayaGoZ/v{version}/'
+        root_name: primary
+
     ## SHADING Paths
     maya_asset_SHD_XML:                    
         definition:  '@asset_root/publish/shd_xml/{name}_shd.v{version}.xml'

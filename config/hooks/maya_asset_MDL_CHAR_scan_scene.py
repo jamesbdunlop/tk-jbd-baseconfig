@@ -108,6 +108,11 @@ class ScanSceneHook(Hook):
         #          if cleanup.BLDTransformCheck(grp): ## Check for BLD step only to make sure the transforms are not frozen on the BLD grps
         #              items.append({"type":"mesh_group", "name":grp})
         #              cleanup.assetCheckAndTag(type = 'BLD', customTag = 'staticBLD')
+        if asset_lib.goZScanScene():
+            for eachGoZ in cmds.ls(type = 'transform'):
+                if cmds.objExists('%s.GoZBrushID' % eachGoZ):
+                    #print 'FOUND %s' % eachGoZ
+                    items.append({"type": "goZ_group", "name": cmds.getAttr('%s.GoZBrushID' % eachGoZ)})
 
         #############################
         ## HARD FAILS
@@ -134,6 +139,4 @@ class ScanSceneHook(Hook):
         #  cleanup.cleanUp(items = items, checkShapes = False, history = False, pivots = False, freezeXFRM = False, smoothLvl = True, tagSmoothed = True, checkVerts = False, 
         #                  renderflags = True, deleteIntermediate = False, turnOffOpposite = True, instanceCheck = False, shaders = True)
         ############################################################################################   
-        ## NOW MOVE ON TO PUBLISHING Pop out the last item in the list as we are not dealing with secondaries for this step
-        items.pop()
         return items
