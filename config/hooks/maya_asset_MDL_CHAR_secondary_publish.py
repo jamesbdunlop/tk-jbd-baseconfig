@@ -95,16 +95,16 @@ class PublishHook(Hook):
 
             if output["name"] == "GoZ_ma":
                 try:
-                    secpubmsg.publishmessage('GOZ EXPORT', True)
+                    secpubmsg.publishmessage('GOZ EXPORT -ma %s' % item["name"], True)
                     self._publish_goZMaya_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
-                    secpubmsg.publishmessage('GOZ EXPORT', False)
+                    secpubmsg.publishmessage('GOZ EXPORT -ma %s' % item["name"], False)
                 except Exception, e:
                     errors.append("Publish failed - %s" % e)
             elif output["name"] == "GoZ_ztn":
                 try:
-                    secpubmsg.publishmessage('GOZ EXPORT', True)
+                    secpubmsg.publishmessage('GOZ EXPORT -ztn %s' % item["name"], True)
                     self._publish_goZZTL_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
-                    secpubmsg.publishmessage('GOZ EXPORT', False)
+                    secpubmsg.publishmessage('GOZ EXPORT -ztn %s' % item["name"], False)
                 except Exception, e:
                     errors.append("Publish failed - %s" % e)
             else:
