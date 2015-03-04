@@ -278,8 +278,8 @@ engines:
         hook_primary_pre_publish:   maya_asset_MDL_pre_publish_primary
         hook_primary_publish:       maya_asset_MDL_primary_publish
         hook_scan_scene:            maya_asset_MDL_CHAR_scan_scene
-        hook_secondary_pre_publish: default
-        hook_secondary_publish:     default
+        hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
+        hook_secondary_publish:     maya_asset_MDL_CHAR_secondary_publish
         hook_thumbnail:             default
         primary_description:        Publish and version up the current Maya scene
         primary_display_name:       Publish Character Asset
@@ -287,7 +287,27 @@ engines:
         primary_publish_template:   maya_asset_publish
         primary_scene_item_type:    work_file
         primary_tank_type:          Maya Scene
-        secondary_outputs:          []
+        secondary_outputs:
+        - { description:            maya goZ cache files,
+            display_group:          goZ,
+            display_name:           mayaGoZ,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ma,
+            publish_template:       maya_asset_GOZ_ma,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush goZ ztn cache files,
+            display_group:          goZ,
+            display_name:           ztnGoZ,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ztn,
+            publish_template:       maya_asset_GOZ_ztn,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
         template_work:              maya_asset_work
 ################################################################################################################################################################
 ##### MDL PROP PUBLISHING

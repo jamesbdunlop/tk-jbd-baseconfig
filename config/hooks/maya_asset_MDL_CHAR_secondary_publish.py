@@ -100,6 +100,13 @@ class PublishHook(Hook):
                     secpubmsg.publishmessage('GOZ EXPORT', False)
                 except Exception, e:
                     errors.append("Publish failed - %s" % e)
+            elif output["name"] == "GoZ_ztn":
+                try:
+                    secpubmsg.publishmessage('GOZ EXPORT', True)
+                    self._publish_goZZTL_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
+                    secpubmsg.publishmessage('GOZ EXPORT', False)
+                except Exception, e:
+                    errors.append("Publish failed - %s" % e)
             else:
                 # don't know how to publish this output types!
                 errors.append("Don't know how to publish this item! Check your asset_step.yml??")
@@ -146,6 +153,41 @@ class PublishHook(Hook):
             shutil.copyfile(fileSrcPath, fileDestPath)
         except Exception, e:
             raise TankError("Failed to export GoZ ma file %s" % goZName)
+
+    def _publish_goZZTL_for_item(self, item, output, work_template, sg_task, comment, thumbnail_path, progress_cb):
+        """
+        """
+        tank_type = output["tank_type"]
+        publish_template = output["publish_template"]
+
+        # get the current scene path and extract fields from it
+        # using the work template:
+        scene_path = os.path.abspath(cmds.file(query=True, sn= True))
+        fields = work_template.get_fields(scene_path)
+        publish_version = fields["version"]
+
+        # update fields with the group name:
+        goZName = item["name"].strip("|")
+        fields["grp_name"] = goZName
+
+        ## create the publish path by applying the fields
+        ## with the publish template:
+        publish_path        = publish_template.apply_fields(fields)
+
+        ## The default path for Zbrush caches...
+        goZPath = configCONST.GOZ_PUBLIC_CACHEPATH
+
+        ## If the publish dir doesn't exist make one now.
+        if not os.path.isdir(publish_path):
+            os.mkdir(publish_path)
+
+        try:
+            fileSrcPath = os.path.join(goZPath, '%s.ztn' % goZName)
+            fileDestPath = os.path.join(publish_path, '%s.ztn' % goZName)
+            ## Now copy the file from the cache to the publish
+            shutil.copyfile(fileSrcPath, fileDestPath)
+        except Exception, e:
+            raise TankError("Failed to export GoZ ztn file %s" % goZName)
 
     def _register_publish(self, path, name, sg_task, publish_version, tank_type, comment, thumbnail_path, dependency_paths=None):
         """

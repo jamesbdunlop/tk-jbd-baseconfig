@@ -99,7 +99,9 @@ class PrePublishHook(Hook):
             elif output["name"] == "uvxml":
                 errors.extend(self._validate_item_for_publish(item))
             elif output["name"] == "GoZ_ma":
-                errors.extend(self._validate_goZ_item_for_publish(item))
+                errors.extend(self._validate_goZ_ma_item_for_publish(item))
+            elif output["name"] == "GoZ_ztn":
+                errors.extend(self._validate_goZ_ztl_item_for_publish(item))
             else:
                 # don't know how to publish this output types!
                 errors.append("We're good but we just don't know how to publish this item! \nWhat the heck is %s anyway?" % output["name"])     
@@ -112,8 +114,7 @@ class PrePublishHook(Hook):
             progress_cb(100)
             
         return results
-    
-            
+
     def _validate_item_for_publish(self, item):
         """
         Validate that the item is valid to be exported 
@@ -132,11 +133,20 @@ class PrePublishHook(Hook):
         # finally return any errors
         return errors
 
-    def _validate_goZ_item_for_publish(self, item):
+    def _validate_goZ_ma_item_for_publish(self, item):
         goZFolder           = configCONST.GOZ_PUBLIC_CACHEPATH
         getFolderContents   = os.listdir(goZFolder)
         errors              = []
         ## make sure the cache file exists in the default goZ folder !
         if '%s.ma' % item["name"] not in getFolderContents:
             errors.append('Can not find a goZ ma cache file in %s' % goZFolder)
+        return errors
+
+    def _validate_goZ_ztl_item_for_publish(self, item):
+        goZFolder           = configCONST.GOZ_PUBLIC_CACHEPATH
+        getFolderContents   = os.listdir(goZFolder)
+        errors              = []
+        ## make sure the cache file exists in the default goZ folder !
+        if '%s.ztn' % item["name"] not in getFolderContents:
+            errors.append('Can not find a goZ ztn cache file in %s' % goZFolder)
         return errors
