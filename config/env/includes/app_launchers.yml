@@ -8,7 +8,7 @@ launch_3dsmax:
   icon: '{target_engine}/icon_256.png'
   linux_args: ''
   linux_path: ''
-  location: {name: tk-multi-launchapp, type: app_store, version: v0.4.0}
+  location: {name: tk-multi-launchapp, type: app_store, version: v0.6.2}
   mac_args: ''
   mac_path: ''
   menu_name: Launch 3DSMax
@@ -24,7 +24,7 @@ launch_hiero:
   icon: '{target_engine}/icon_256.png'
   linux_args: ''
   linux_path: '@hiero_linux'
-  location: {name: tk-multi-launchapp, type: app_store, version: v0.4.0}
+  location: {name: tk-multi-launchapp, type: app_store, version: v0.6.2}
   mac_args: ''
   mac_path: '@hiero_mac'
   menu_name: Launch Hiero
@@ -40,7 +40,7 @@ launch_houdini:
   icon: '{target_engine}/icon_256.png'
   linux_args: ''
   linux_path: '@houdini_linux'
-  location: {name: tk-multi-launchapp, type: app_store, version: v0.4.0}
+  location: {name: tk-multi-launchapp, type: app_store, version: v0.6.2}
   mac_args: ''
   mac_path: ''
   menu_name: Launch Houdini
@@ -56,7 +56,7 @@ launch_maya:
   icon: '{target_engine}/icon_256.png'
   linux_args: ''
   linux_path: '@maya_linux'
-  location: {name: tk-multi-launchapp, type: app_store, version: v0.4.0}
+  location: {name: tk-multi-launchapp, type: app_store, version: v0.6.2}
   mac_args: ''
   mac_path: '@maya_mac'
   menu_name: Launch Maya
@@ -72,7 +72,7 @@ launch_motionbuilder:
   icon: '{target_engine}/icon_256.png'
   linux_args: ''
   linux_path: ''
-  location: {name: tk-multi-launchapp, type: app_store, version: v0.4.0}
+  location: {name: tk-multi-launchapp, type: app_store, version: v0.6.2}
   mac_args: ''
   mac_path: ''
   menu_name: Launch MotionBuilder
@@ -88,7 +88,7 @@ launch_nuke:
   icon: '{target_engine}/icon_256.png'
   linux_args: ''
   linux_path: '@nuke_linux'
-  location: {name: tk-multi-launchapp, type: app_store, version: v0.4.0}
+  location: {name: tk-multi-launchapp, type: app_store, version: v0.6.2}
   mac_args: ''
   mac_path: '@nuke_mac'
   menu_name: Launch Nuke
@@ -104,7 +104,7 @@ launch_photoshop:
   icon: '{target_engine}/icon_256.png'
   linux_args: ''
   linux_path: ''
-  location: {name: tk-multi-launchapp, type: app_store, version: v0.4.0}
+  location: {name: tk-multi-launchapp, type: app_store, version: v0.6.2}
   mac_args: ''
   mac_path: '@photoshop_mac'
   menu_name: Launch Photoshop
@@ -114,7 +114,7 @@ launch_photoshop:
 launch_screeningroom:
   enable_rv_mode: true
   enable_web_mode: true
-  location: {name: tk-multi-screeningroom, type: app_store, version: v0.1.9}
+  location: {name: tk-multi-screeningroom, type: app_store, version: v0.1.10}
   rv_path_linux: '@rv_linux'
   rv_path_mac: '@rv_mac'
   rv_path_windows: '@rv_win'
@@ -134,7 +134,7 @@ launch_softimage:
   icon: '{target_engine}/icon_256.png'
   linux_args: ''
   linux_path: '@softimage_linux'
-  location: {name: tk-multi-launchapp, type: app_store, version: v0.4.0}
+  location: {name: tk-multi-launchapp, type: app_store, version: v0.6.2}
   mac_args: ''
   mac_path: ''
   menu_name: Launch Softimage

@@ -182,12 +182,26 @@ class PublishHook(Hook):
             os.mkdir(publish_path)
 
         try:
+            ## Do the ztn files first
             fileSrcPath = os.path.join(goZPath, '%s.ztn' % goZName)
             fileDestPath = os.path.join(publish_path, '%s.ztn' % goZName)
             ## Now copy the file from the cache to the publish
             shutil.copyfile(fileSrcPath, fileDestPath)
         except Exception, e:
             raise TankError("Failed to export GoZ ztn file %s" % goZName)
+
+        try:
+            ## Now do the ZTL files
+            fileSrcPath = os.path.join(goZPath, '%s.ZTL' % goZName)
+            if os.path.isfile(fileSrcPath):
+                fileDestPath = os.path.join(publish_path, '%s.ZTL' % goZName)
+                ## Now copy the file from the cache to the publish
+                shutil.copyfile(fileSrcPath, fileDestPath)
+            else:
+                cmds.warning('No ZTL for %s' % goZName)
+        except Exception, e:
+            raise TankError("Failed to export GoZ ztl file %s" % goZName)
+
 
     def _register_publish(self, path, name, sg_task, publish_version, tank_type, comment, thumbnail_path, dependency_paths=None):
         """

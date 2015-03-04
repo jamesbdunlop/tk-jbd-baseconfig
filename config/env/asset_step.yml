@@ -39,7 +39,7 @@ engines:
 ## MAYA CORE APPLICATIONS
 ################################################################################################################################################################
       tk-maya-breakdown:
-        location:                   {name: tk-maya-breakdown, type: app_store, version: v0.3.0}
+        location:                   {name: tk-maya-breakdown, type: app_store, version: v0.3.1}
         hook_multi_update:          maya_asset_SCBRKDWN_breakdown_update
         hook_scan_scene:            maya_asset_SCBRKDWN_scan_scene
         ################################################################################################################################################################
@@ -124,7 +124,7 @@ engines:
           hierarchy:                [entity, content]
 
         filter_publishes_hook:      '{self}/filter_publishes.py'
-        location:                   {name: tk-multi-loader2, type: app_store, version: v1.3.1}
+        location:                   {name: tk-multi-loader2, type: app_store, version: v1.4.2}
         menu_name:                  Publish Loaders...
         publish_filters:            []
         title_name:                 Assets
@@ -137,7 +137,7 @@ engines:
 ################################################################################################################################################################
       tk-multi-publish-MDL-STATIC-BLD:
         allow_taskless_publishes:   false
-        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.8}
         display_name:               MDL/0. BUILDING|ADEF
         expand_single_items:        false
         hook_copy_file:             default
@@ -203,7 +203,7 @@ engines:
 ################################################################################################################################################################
       tk-multi-publish-LND:
         display_name:               MDL/1. LANDSCAPE|ADEF
-        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.8}
         allow_taskless_publishes:   false
         expand_single_items:        false
         hook_copy_file:             default
@@ -270,7 +270,7 @@ engines:
 ################################################################################################################################################################
       tk-multi-publish-MDL-CHAR:
         display_name:               MDL/2. CHARACTER
-        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.8}
         allow_taskless_publishes:   false
         expand_single_items:        false
         hook_copy_file:             default
@@ -314,7 +314,7 @@ engines:
 ################################################################################################################################################################
       tk-multi-publish-PROP:
         display_name:               MDL/3. PROP
-        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.8}
         allow_taskless_publishes:   false
         expand_single_items:        false
         hook_copy_file:             default
@@ -348,7 +348,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish:     default
         hook_thumbnail:             default
-        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.8}
         primary_description:        Publish and version up the current Maya scene
         primary_display_name:       Publish Environment Asset
         primary_icon:               icons/publish_maya_main.png
@@ -362,7 +362,7 @@ engines:
 ################################################################################################################################################################
       tk-multi-publish-GENERIC:
         display_name:               MDL/5. LIB
-        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.8}
         allow_taskless_publishes:   false
         expand_single_items:        false
         hook_copy_file:             default
@@ -387,7 +387,7 @@ engines:
 ################################################################################################################################################################
       tk-multi-publish-SRF:
         display_name:               SRF/SRF Publish
-        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.8}
         allow_taskless_publishes:   false
         expand_single_items:        false
         hook_copy_file:             default
@@ -457,7 +457,7 @@ engines:
       tk-multi-publish-LIB-RIG:
         display_name:               RIG/LIB
         allow_taskless_publishes:   false
-        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.8}
         expand_single_items:        false
         hook_copy_file:             default
         hook_post_publish:          maya_asset_RIG_post_publish
@@ -480,7 +480,7 @@ engines:
       tk-multi-publish-RIG-CHAR:
         display_name:               RIG/CHAR
         allow_taskless_publishes:   false
-        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.8}
         expand_single_items:        false
         hook_copy_file:             default
         hook_post_publish:          maya_asset_RIG_post_publish
@@ -503,7 +503,7 @@ engines:
       tk-multi-publish-RIG_PROP:
         display_name:               RIG/PROP
         allow_taskless_publishes:   false
-        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.8}
         expand_single_items:        false
         hook_copy_file:             default
         hook_post_publish:          maya_asset_RIG_post_publish
@@ -535,7 +535,7 @@ engines:
         hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
         hook_secondary_publish:     maya_asset_MDL_ASSEMBLYDEF_secondary_publish
         hook_thumbnail:             default
-        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.8}
         primary_description:        Publish and version up the current Maya scene
         primary_display_name:       Publish RIG Building Asset
         primary_icon:               icons/publish_maya_main.png
@@ -592,7 +592,7 @@ engines:
       tk-multi-publish-RIG-STATIC-BLD:
         display_name:                   RIG/BLD STATIC
         allow_taskless_publishes:       false
-        location:                       {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location:                       {name: tk-multi-publish, type: app_store, version: v0.6.8}
         expand_single_items:            false
         hook_copy_file:                 default
         hook_post_publish:              maya_asset_RIG_post_publish
@@ -660,12 +660,12 @@ engines:
         hook_copy_file:                     default
         hook_scene_operation:               default
         hook_thumbnail:                     default
-        location:                           {name: tk-multi-snapshot, type: app_store, version: v0.4.0}
+        location:                           {name: tk-multi-snapshot, type: app_store, version: v0.4.1}
         template_snapshot:                  maya_asset_snapshot
         template_work:                      maya_asset_work
 ################################################################################################################################################################
       tk-multi-workfiles:
-        location:                           {name: tk-multi-workfiles, type: app_store, version: v0.6.2}
+        location:                           {name: tk-multi-workfiles, type: app_store, version: v0.6.13}
         allow_task_creation:                true
         file_extensions:                    []
         hook_copy_file:                     default
@@ -688,7 +688,7 @@ engines:
 
     compatibility_dialog_min_version: 2015
     debug_logging: false
-    location: {name: tk-maya, type: app_store, version: v0.4.3}
+    location: {name: tk-maya, type: app_store, version: v0.4.5}
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
     - {app_instance: tk-multi-snapshot, name: Snapshot...}
@@ -728,7 +728,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.8}
         primary_description: Publishes and versions up the current Nuke script.
         primary_display_name: Nuke Publish
         primary_icon: icons/publish_nuke_main.png
@@ -747,7 +747,7 @@ engines:
           selected: true, tank_type: Quicktime}
         template_work: nuke_asset_work
       tk-multi-reviewsubmission:
-        location: {name: tk-multi-reviewsubmission, type: app_store, version: v0.1.9}
+        location: {name: tk-multi-reviewsubmission, type: app_store, version: v0.1.10}
         movie_height: 540
         movie_path_template: nuke_asset_render_movie
         movie_width: 1024
@@ -761,7 +761,7 @@ engines:
         hook_copy_file: default
         hook_scene_operation: default
         hook_thumbnail: default
-        location: {name: tk-multi-snapshot, type: app_store, version: v0.4.0}
+        location: {name: tk-multi-snapshot, type: app_store, version: v0.4.1}
         template_snapshot: nuke_asset_snapshot
         template_work: nuke_asset_work
       tk-multi-workfiles:
@@ -773,7 +773,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         launch_change_work_area_at_startup: false
-        location: {name: tk-multi-workfiles, type: app_store, version: v0.6.2}
+        location: {name: tk-multi-workfiles, type: app_store, version: v0.6.13}
         saveas_default_name: scene
         saveas_prefer_version_up: false
         sg_entity_type_extra_display_fields: {}
@@ -797,7 +797,7 @@ engines:
         sg_version_name_template: nuke_quick_asset_version_name
         width: 1024
       tk-nuke-writenode:
-        location: {name: tk-nuke-writenode, type: app_store, version: v1.0.12}
+        location: {name: tk-nuke-writenode, type: app_store, version: v1.0.13}
         template_script_work: nuke_asset_work
         write_nodes:
         - file_type: exr
@@ -812,7 +812,7 @@ engines:
     compatibility_dialog_min_version: 8
     debug_logging: false
     favourite_directories: []
-    location: {name: tk-nuke, type: app_store, version: v0.2.23}
+    location: {name: tk-nuke, type: app_store, version: v0.2.24}
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
     - {app_instance: tk-multi-snapshot, name: Snapshot...}
@@ -838,7 +838,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.3}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.8}
         primary_description: Publish and version up the current Photoshop scene
         primary_display_name: Photoshop Publish
         primary_icon: icons/publish_photoshop_main.png
@@ -852,7 +852,7 @@ engines:
         hook_copy_file: default
         hook_scene_operation: default
         hook_thumbnail: default
-        location: {name: tk-multi-snapshot, type: app_store, version: v0.4.0}
+        location: {name: tk-multi-snapshot, type: app_store, version: v0.4.1}
         template_snapshot: photoshop_asset_snapshot
         template_work: photoshop_asset_work
       tk-multi-workfiles:
@@ -864,7 +864,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         launch_change_work_area_at_startup: false
-        location: {name: tk-multi-workfiles, type: app_store, version: v0.6.2}
+        location: {name: tk-multi-workfiles, type: app_store, version: v0.6.13}
         saveas_default_name: scene
         saveas_prefer_version_up: false
         sg_entity_type_extra_display_fields: {}
@@ -876,7 +876,7 @@ engines:
         template_work: photoshop_asset_work
         template_work_area: asset_work_area_photoshop
     debug_logging: false
-    location: {name: tk-photoshop, type: app_store, version: v0.2.0}
+    location: {name: tk-photoshop, type: app_store, version: v0.3.0}
 ################################################################################################################################################################
 ### SHELL
 ################################################################################################################################################################
@@ -892,14 +892,14 @@ engines:
       tk-shotgun-launchnuke: '@launch_nuke'
       tk-shotgun-launchphotoshop: '@launch_photoshop'
     debug_logging: false
-    location: {name: tk-shell, type: app_store, version: v0.4.0}
+    location: {name: tk-shell, type: app_store, version: v0.4.1}
 frameworks:
   tk-framework-qtwidgets_v1.x.x:
     location: {name: tk-framework-qtwidgets, type: app_store, version: v1.0.1}
   tk-framework-shotgunutils_v1.x.x:
     location: {name: tk-framework-shotgunutils, type: app_store, version: v1.0.10}
   tk-framework-shotgunutils_v2.x.x:
-    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.0.5}
+    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.0.6}
   tk-framework-softimageqt_v1.0.1:
     location: {name: tk-framework-softimageqt, type: app_store, version: v1.0.1}
   tk-framework-widget_v0.1.1:
@@ -935,3 +935,4 @@ frameworks:
   tk-framework-widget_v0.2.x:
     location: {name: tk-framework-widget, type: app_store, version: v0.2.2}
 include: ./includes/app_launchers.yml
+
