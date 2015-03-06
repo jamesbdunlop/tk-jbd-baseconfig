@@ -137,6 +137,9 @@ paths:
     maya_asset_GOZ_ztn:
         definition: '@asset_root/publish/zbrushGoZ/v{version}/'
         root_name: primary
+    maya_asset_zbrush:
+        definition: '@asset_root/publish/ZBrushZTL/v{version}/'
+        root_name: primary
 
     ## SHADING Paths
     maya_asset_SHD_XML:                    

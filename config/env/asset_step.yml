@@ -197,6 +197,37 @@ engines:
             scene_item_type:        mesh_group,
             selected:               true,
             tank_type:              Maya Scene}
+
+        - { description:            maya goZ cache files,
+            display_group:          goZ,
+            display_name:           mayaGoZ ma Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ma,
+            publish_template:       maya_asset_GOZ_ma,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush goZ ztn|ztl cache files,
+            display_group:          goZ,
+            display_name:           zbrushGoZ ztn|ztl Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ztn,
+            publish_template:       maya_asset_GOZ_ztn,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush main file,
+            display_group:          Zbrush Files,
+            display_name:           Zbrush Files from /work/zbrush,
+            icon:                   icons/goZ.png,
+            name:                   zbrush_ztl,
+            publish_template:       maya_asset_zbrush,
+            required:               false,
+            scene_item_type:        zbrush_group,
+            selected:               false,
+            tank_type:              Maya Scene}
         template_work: maya_asset_work
 ################################################################################################################################################################
 ##### MDL LND PUBLISHING
@@ -264,6 +295,36 @@ engines:
             scene_item_type:        mesh_group,
             selected:               true,
             tank_type:              Maya Scene}
+        - { description:            maya goZ cache files,
+            display_group:          goZ,
+            display_name:           mayaGoZ ma Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ma,
+            publish_template:       maya_asset_GOZ_ma,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush goZ ztn|ztl cache files,
+            display_group:          goZ,
+            display_name:           zbrushGoZ ztn|ztl Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ztn,
+            publish_template:       maya_asset_GOZ_ztn,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush main file,
+            display_group:          Zbrush Files,
+            display_name:           Zbrush Files from /work/zbrush,
+            icon:                   icons/goZ.png,
+            name:                   zbrush_ztl,
+            publish_template:       maya_asset_zbrush,
+            required:               false,
+            scene_item_type:        zbrush_group,
+            selected:               false,
+            tank_type:              Maya Scene}
         template_work: maya_asset_work
 ################################################################################################################################################################
 ##### MDL CHARACTER PUBLISHING
@@ -290,7 +351,7 @@ engines:
         secondary_outputs:
         - { description:            maya goZ cache files,
             display_group:          goZ,
-            display_name:           mayaGoZ,
+            display_name:           mayaGoZ ma Files,
             icon:                   icons/goZ.png,
             name:                   GoZ_ma,
             publish_template:       maya_asset_GOZ_ma,
@@ -298,15 +359,25 @@ engines:
             scene_item_type:        goZ_group,
             selected:               true,
             tank_type:              Maya Scene}
-        - { description:            zbrush goZ ztn cache files,
+        - { description:            zbrush goZ ztn|ztl cache files,
             display_group:          goZ,
-            display_name:           ztnGoZ,
+            display_name:           zbrushGoZ ztn|ztl Files,
             icon:                   icons/goZ.png,
             name:                   GoZ_ztn,
             publish_template:       maya_asset_GOZ_ztn,
             required:               false,
             scene_item_type:        goZ_group,
             selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush main file,
+            display_group:          Zbrush Files,
+            display_name:           Zbrush Files from /work/zbrush,
+            icon:                   icons/goZ.png,
+            name:                   zbrush_ztl,
+            publish_template:       maya_asset_zbrush,
+            required:               false,
+            scene_item_type:        zbrush_group,
+            selected:               false,
             tank_type:              Maya Scene}
         template_work:              maya_asset_work
 ################################################################################################################################################################
@@ -331,7 +402,37 @@ engines:
         primary_publish_template:   maya_asset_publish
         primary_scene_item_type:    work_file
         primary_tank_type:          Maya Scene
-        secondary_outputs:          []
+        secondary_outputs:
+        - { description:            maya goZ cache files,
+            display_group:          goZ,
+            display_name:           mayaGoZ ma Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ma,
+            publish_template:       maya_asset_GOZ_ma,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush goZ ztn|ztl cache files,
+            display_group:          goZ,
+            display_name:           zbrushGoZ ztn|ztl Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ztn,
+            publish_template:       maya_asset_GOZ_ztn,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush main file,
+            display_group:          Zbrush Files,
+            display_name:           Zbrush Files from /work/zbrush,
+            icon:                   icons/goZ.png,
+            name:                   zbrush_ztl,
+            publish_template:       maya_asset_zbrush,
+            required:               false,
+            scene_item_type:        zbrush_group,
+            selected:               false,
+            tank_type:              Maya Scene}
         template_work:              maya_asset_work
 ################################################################################################################################################################
 ##### MDL ENV PUBLISHING
@@ -379,7 +480,37 @@ engines:
         primary_publish_template:   maya_asset_publish
         primary_scene_item_type:    work_file
         primary_tank_type:          Maya Scene
-        secondary_outputs:          []
+        secondary_outputs:
+        - { description:            maya goZ cache files,
+            display_group:          goZ,
+            display_name:           mayaGoZ ma Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ma,
+            publish_template:       maya_asset_GOZ_ma,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush goZ ztn|ztl cache files,
+            display_group:          goZ,
+            display_name:           zbrushGoZ ztn|ztl Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ztn,
+            publish_template:       maya_asset_GOZ_ztn,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush main file,
+            display_group:          Zbrush Files,
+            display_name:           Zbrush Files from /work/zbrush,
+            icon:                   icons/goZ.png,
+            name:                   zbrush_ztl,
+            publish_template:       maya_asset_zbrush,
+            required:               false,
+            scene_item_type:        zbrush_group,
+            selected:               false,
+            tank_type:              Maya Scene}
         template_work:              maya_asset_work
 ################################################################################################################################################################
 ## MAYA PUBLISHING
@@ -685,7 +816,7 @@ engines:
         template_publish_area:              asset_publish_area_maya
         template_work:                      maya_asset_work
         template_work_area:                 asset_work_area_maya
-
+        version_compare_ignore_fields:      []
     compatibility_dialog_min_version: 2015
     debug_logging: false
     location: {name: tk-maya, type: app_store, version: v0.4.5}

@@ -102,6 +102,10 @@ class PrePublishHook(Hook):
                 errors.extend(self._validate_goZ_ma_item_for_publish(item))
             elif output["name"] == "GoZ_ztn":
                 errors.extend(self._validate_goZ_ztl_item_for_publish(item))
+            elif output["name"] == "zbrush_ztl":
+                ## passing here cause we just want to scan the zbrush folder int he model context
+                ## for outputs for the operator to select so  nothing to fail on here.
+                pass
             else:
                 # don't know how to publish this output types!
                 errors.append("We're good but we just don't know how to publish this item! \nWhat the heck is %s anyway?" % output["name"])     
