@@ -123,8 +123,8 @@ class ScanSceneHook(Hook):
         #                  renderflags = True, deleteIntermediate = True, turnOffOpposite = True, instanceCheck = True, shaders = True)
         ## UNCOMMENT FOR RIG STEP
         ## PERFORM RIG CLEANUP
-        asset_lib.cleanUp(items = items, checkShapes = False, history = False, pivots = False, freezeXFRM = False, smoothLvl = True, tagSmoothed = True, checkVerts = False, 
-                        renderflags = True, deleteIntermediate = False, turnOffOpposite = True, instanceCheck = False, shaders = True)
+        asset_lib.cleanUp(items = items, checkShapes = False, history = False, pivots = False, freezeXFRM = False, smoothLvl = True, tagSmoothed = True, checkVerts = False,
+                        renderflags = True, deleteIntermediate = False, turnOffOpposite = True, instanceCheck = False, shaders = False)
         ############################################################################################   
         ## NOW MOVE ON TO PUBLISHING Pop out the last item in the list as we are not dealing with secondaries for this step
         items.pop()

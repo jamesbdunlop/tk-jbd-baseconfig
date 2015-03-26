@@ -70,10 +70,9 @@ engines:
       tk-multi-about:
         location: {name: tk-multi-about, type: app_store, version: v0.1.20}
       tk-maya-breakdown:
-        location:                   name: tk-maya-breakdown, type: app_store, version: v0.3.1}
+        location:                   {name: tk-maya-breakdown, type: app_store, version: v0.3.1}
         hook_multi_update:          maya_asset_SCBRKDWN_breakdown_update
         hook_scan_scene:            maya_asset_SCBRKDWN_scan_scene
-
 
 ######################################################################################################1##########################################################
 ## MAYA LOADERS
@@ -421,6 +420,7 @@ engines:
         template_publish_area:              shot_publish_area_maya
         template_work:                      maya_shot_work
         template_work_area:                 shot_work_area_maya
+        version_compare_ignore_fields:      []
     compatibility_dialog_min_version:       2015
     debug_logging:                          false
     location: {name: tk-maya, type: app_store, version: v0.4.5}
