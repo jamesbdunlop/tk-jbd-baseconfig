@@ -178,6 +178,7 @@ class PublishHook(Hook):
         tank_type           = output["tank_type"]
         publish_template    = output["publish_template"]
         assetName           = item["name"].split('|')[-1]
+        log(None, method = '_publish_xml_for_item', message = 'assetName: %s' % assetName, printToLog = False, verbose = configCONST.DEBUGGING)
         # get the current scene path and extract fields from it
         # using the work template:
         scene_path          = os.path.abspath(cmds.file(query=True, sn= True))
@@ -202,29 +203,35 @@ class PublishHook(Hook):
             start = time.time()
             secpubmsg.publishmessage('UV XML', True)
             getGeohrc = [eachChild for eachChild in cmds.listRelatives(assetName, children = True) if eachChild == '%s_%s' % (configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX)]
-            geoList = [eachChild for eachChild in cmds.listRelatives(getGeohrc, children = True, ad = True) if 'Shape' not in eachChild and cmds.listRelatives(eachChild, shapes = True)]
+            try:
+                geoList = [eachChild for eachChild in cmds.listRelatives(getGeohrc, children = True, ad = True) if 'Shape' not in eachChild and cmds.listRelatives(eachChild, shapes = True)]
+            except:
+                geoList = []
+
             allGeoUVData = []
             log(None, method = '_publish_xml_for_item', message = 'Fetching UV information for xml now...', printToLog = False, verbose = configCONST.DEBUGGING)
+            if geoList:
+                for eachGeo in geoList:
+                    #log(None, method = '_publish_xml_for_item', message = 'Processing uvs for %s...' % eachGeo, printToLog = False, verbose = configCONST.DEBUGGING)
+                    uvData = getUvs.getUVs(eachGeo)
+                    if uvData:
+                        allGeoUVData.extend([uvData])
 
-            for eachGeo in geoList:
-                #log(None, method = '_publish_xml_for_item', message = 'Processing uvs for %s...' % eachGeo, printToLog = False, verbose = configCONST.DEBUGGING)
-                uvData = getUvs.getUVs(eachGeo)
-                if uvData:
-                    allGeoUVData.extend([uvData])
-
-            log(None, method = '_publish_xml_for_item', message = 'Writing UV xml information to disk now...', printToLog = False, verbose = configCONST.DEBUGGING)
-            uvwrite.writeUVData(assetName, allGeoUVData, publish_path)
-            print 'TIME: %s' % (time.time()-start)         
-            secpubmsg.publishmessage('UV XML', False)
-            ## Now register with shotgun
-            self._register_publish(publish_path, 
-                                  group_name, 
-                                  sg_task, 
-                                  publish_version, 
-                                  tank_type,
-                                  comment,
-                                  thumbnail_path, 
-                                  [primary_publish_path])
+                log(None, method = '_publish_xml_for_item', message = 'Writing UV xml information to disk now...', printToLog = False, verbose = configCONST.DEBUGGING)
+                uvwrite.writeUVData(assetName, allGeoUVData, publish_path)
+                print 'TIME: %s' % (time.time()-start)
+                secpubmsg.publishmessage('UV XML', False)
+                ## Now register with shotgun
+                self._register_publish(publish_path,
+                                      group_name,
+                                      sg_task,
+                                      publish_version,
+                                      tank_type,
+                                      comment,
+                                      thumbnail_path,
+                                      [primary_publish_path])
+            else:
+                secpubmsg.publishmessage('UV XML FAILED no geoList found! Is your heirachy setup correctly? And your grps are named correctly???', False)
         except Exception, e:
             raise TankError("Failed to export uv_xml")
 
