@@ -82,7 +82,7 @@ class PrePublishHook(Hook):
             # report progress:
             progress_cb(0, "Validating", task)
             if item["type"] == "light_grp":
-                errors.extend(self._validate_item_for_publish(item))
+                pass
             elif item["type"] == "cam_grp":
                 errors.extend(self._validate_item_for_publish(item))
             elif item["type"] == "mesh_grp":

@@ -103,10 +103,8 @@ class ScanSceneHook(Hook):
         cmds.setAttr('defaultRenderGlobals.imageFilePrefix','<RenderLayer>/<Scene>',type='string') 
         
         ## Now force an item for render submissions to always show up in the secondaries
-        items.append({"type":"renderPreview", "name":'renderPreview'})
-        items.append({"type":"renderFinal", "name":'renderFinal'})
-        items.append({"type":"xml_grp", "name":'renderglobals_xml'})
-        items.append({"type":"light_grp", "name":'light_xml'})
+        items.append({"type": "xml_grp", "name": 'renderglobals_xml'})
+        items.append({"type": "light_grp", "name": 'light_xml'})
         
         ## NOW MOVE ON TO PUBLISHING STEPS
         return items
