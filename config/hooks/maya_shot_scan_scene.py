@@ -121,7 +121,7 @@ class ScanSceneHook(Hook):
                         items.append({"type":"fx_caches", "name":each})
                     ## CAMERA -- Now get the camera
                     elif myType == 'shotCam' or myType == 'shotcam':
-                        items.append({"type":"camera", "name":each})
+                        items.append({"type": "camera", "name": each})
                     ## REFERENCES -- Now process the references to get their types
                     ## Anim Char and Prop
                     elif myType == 'anim%s' % configCONST.CHAR_SUFFIX or myType == configCONST.CHAR_SUFFIX:

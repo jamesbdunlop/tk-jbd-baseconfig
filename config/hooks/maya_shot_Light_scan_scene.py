@@ -7,18 +7,13 @@
 # By accessing, using, copying or modifying this work you indicate your 
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
-
-import os, sys
+import os
 import maya.cmds as cmds
-import maya.mel as mel
-import tank
+import configCONST as configCONST
+reload(configCONST)## leave this alone if you want to update the config using the maya shotgun reload menu
 from tank import Hook
 from tank import TankError
-if 'T:/software/bubblebathbay_sandbox/custom' not in sys.path:
-    sys.path.append('T:/software/bubblebathbay_sandbox/custom')
-import maya_asset_MASTERCLEANUPCODE as cleanup
-from debug import debug
-reload(cleanup)
+
 
 class ScanSceneHook(Hook):
     """
@@ -70,39 +65,39 @@ class ScanSceneHook(Hook):
         name = os.path.basename(scene_path)
 
         ## Turn off feature displacements for all meshes just incase artists forgot to!
-        allMeshNodes=cmds.ls(type='mesh',l=True)
+        allMeshNodes = cmds.ls(type='mesh', l=True)
         for each in allMeshNodes:
-            cmds.setAttr(each+".featureDisplacement",0)
+            cmds.setAttr(each+".featureDisplacement", 0)
             
         # create the primary item - this will match the primary output 'scene_item_type':            
         items.append({"type": "work_file", "name": name})
       
         ## Make sure all definitions are at FULL RES for alembic exporting.
         for grp in cmds.ls(assemblies = True, long = True):
-            if 'BAKE_CAM_hrc' in grp:
+            if 'BAKE_CAM_%s' % configCONST.GROUP_SUFFIX in grp:
                 ## Finds the shotCam group
-                items.append({"type":"cam_grp", "name":grp.split('|')[-1]})
+                items.append({"type": "cam_grp", "name": grp.split('|')[-1]})
                 ## returns the grp
-            if 'ABC_ANIM_CACHES_hrc' in grp:
+            if '%s_%s' % (configCONST.ANIM_CACHE.upper(), configCONST.GROUP_SUFFIX) in grp:
                 for eachChild in cmds.listRelatives(grp, children = True):
                      if cmds.ls(eachChild, dag=True, type="mesh"):
-                         items.append({"type":"mesh_grp", "name":eachChild})
+                         items.append({"type": "mesh_grp", "name" :eachChild})
                  ## returns each child in the grp                
-            if 'ABC_STATIC_CACHES_hrc' in grp:
+            if '%s_%s' % (configCONST.STATIC_CACHE.upper(), configCONST.GROUP_SUFFIX) in grp:
                 for eachChild in cmds.listRelatives(grp, children = True):
                      if cmds.ls(eachChild, dag=True, type="mesh"):
-                         items.append({"type":"mesh_grp", "name":eachChild})
+                         items.append({"type": "mesh_grp", "name": eachChild})
                  ## returns each child in the grp
-            if 'FX_CACHES_hrc' in grp:
-                items.append({"type":"fx_grp", "name":grp.split('|')[-1]})
+            if '%s_%s' % (configCONST.FX_CACHE.upper(), configCONST.GROUP_SUFFIX) in grp:
+                items.append({"type": "fx_grp", "name": grp.split('|')[-1]})
                 ## returns the grp
         
-        #finding the Cameras in the scene and Making sure that 'shotCam_bake' is renderable.
-        for eachCam in cmds.ls(type='camera'):
-            if 'shotCam_bake' in eachCam:
-                cmds.setAttr('%s.renderable'%eachCam,1)
+        # Finding the Cameras in the scene and Making sure that 'shotCam_bake' is renderable.
+        for eachCam in cmds.ls(type = 'camera'):
+            if '%s_bake' % configCONST.SHOTCAM_SUFFIX in eachCam:
+                cmds.setAttr('%s.renderable' % eachCam,1)
             else:
-                cmds.setAttr('%s.renderable'%eachCam,0)
+                cmds.setAttr('%s.renderable' % eachCam,0)
         
         #Making Sure the it make layers for each layers
         cmds.setAttr('defaultRenderGlobals.imageFilePrefix','<RenderLayer>/<Scene>',type='string') 

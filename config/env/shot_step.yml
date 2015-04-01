@@ -327,14 +327,14 @@ engines:
             selected:                       true,
             tank_type:                      Maya Scene
             }
-        - { description:                    Publish FX Ocean,
-            display_group:                  Ocean,
-            display_name:                   FX - Ocean,
-            icon:                           icons/ocean_icon.png,
-            name:                           fx_caches,
-            publish_template:               maya_shot_lightingOcean,
+        - { description:                    Export Light XML,
+            display_group:                  XML,
+            display_name:                   Export Light XML,
+            icon:                           icons/Xml_tool_icon.png,
+            name:                           lights_xml,
+            publish_template:               maya_shot_lights,
             required:                       false,
-            scene_item_type:                fx_grp,
+            scene_item_type:                light_grp,
             selected:                       true,
             tank_type:                      Maya Scene
             }
@@ -348,39 +348,6 @@ engines:
             scene_item_type:                cam_grp,
             selected:                       true,
             tank_type:                      Maya Scene
-            }
-        - { description:                    Export Light XML,
-            display_group:                  XML,
-            display_name:                   Export Light XML,
-            icon:                           icons/Xml_tool_icon.png,
-            name:                           lights_xml,
-            publish_template:               maya_shot_lights,
-            required:                       false,
-            scene_item_type:                light_grp,
-            selected:                       true,
-            tank_type:                      Maya Scene
-            }
-        - { description:                    Submit Preview Render,
-            display_group:                  Deadline,
-            display_name:                   Submit Preview Render,
-            icon:                           icons/Xml_tool_icon.png,
-            name:                           renderPreview,
-            publish_template:               maya_shot_lightingRenderPreview,
-            required:                       false,
-            scene_item_type:                renderPreview,
-            selected:                       true,
-            tank_type:                      Rendered Image
-            }
-        - { description:                    Submit Final Render,
-            display_group:                  Deadline,
-            display_name: Submit            Final Render,
-            icon:                           icons/Xml_tool_icon.png,
-            name:                           renderFinal,
-            publish_template:               maya_shot_lightingRenderFinal,
-            required:                       false,
-            scene_item_type:                renderFinal,
-            selected:                       false,
-            tank_type:                      Rendered Image
             }
         template_work: maya_shot_work
 ################################################################################################################################################################

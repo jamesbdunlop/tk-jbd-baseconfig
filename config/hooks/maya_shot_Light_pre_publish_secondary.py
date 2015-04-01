@@ -8,11 +8,10 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-import os, sys
+import os
 import maya.cmds as cmds
-if 'T:/software/bubblebathbay_sandbox/custom' not in sys.path:
-    sys.path.append('T:/software/bubblebathbay_sandbox/custom')
-from debug import debug
+import configCONST as configCONST
+reload(configCONST)## leave this alone if you want to update the config using the maya shotgun reload menu
 import tank
 from tank import Hook
 from tank import TankError
@@ -77,33 +76,20 @@ class PrePublishHook(Hook):
         
         # validate tasks:
         for task in tasks:
-            debug(app = None, method = 'lighingPrePublish.execute', message = 'task: %s' % task, verbose = True)
             item = task["item"]
-            debug(app = None, method = 'lighingPrePublish.execute', message = 'item: %s' % item, verbose = True)
             output = task["output"]
             errors = []
             # report progress:
             progress_cb(0, "Validating", task)
             if item["type"] == "light_grp":
                 errors.extend(self._validate_item_for_publish(item))
-                debug(app = None, method = 'lighingPrePublish.execute', message = 'light_grp validated', verbose = True)
             elif item["type"] == "cam_grp":
                 errors.extend(self._validate_item_for_publish(item))
-                debug(app = None, method = 'lighingPrePublish.execute', message = 'cam_grp validated', verbose = True)
             elif item["type"] == "mesh_grp":
                 errors.extend(self._validate_item_for_publish(item))
-                debug(app = None, method = 'lighingPrePublish.execute', message = 'mesh_grp validated', verbose = True)
             elif item["type"] == "fx_grp":
                 errors.extend(self._validate_item_for_publish(item))
-                debug(app = None, method = 'lighingPrePublish.execute', message = 'fx_grp validated', verbose = True)
-            elif item["type"] == "renderPreview":
-                debug(app = None, method = 'lighingPrePublish.execute', message = 'renderPreview validated', verbose = True)
-                pass
-            elif item["type"] == "renderFinal":
-                debug(app = None, method = 'lighingPrePublish.execute', message = 'renderFinal validated', verbose = True)
-                pass
             elif item["type"] == "xml_grp":
-                debug(app = None, method = 'lighingPrePublish.execute', message = 'xml_grp validated', verbose = True)
                 pass
             else:
                 # don't know how to publish this output types!
@@ -115,7 +101,6 @@ class PrePublishHook(Hook):
                 
             progress_cb(100)
                 
-        debug(app = None, method = 'lighingPrePublish.execute', message = 'Returning Results....', verbose = True)
         return results
 
     def _validate_item_for_publish(self, item):
@@ -127,7 +112,7 @@ class PrePublishHook(Hook):
         ## FINAL CHECKS PRE PUBLISH JUST TO MAKE SURE NOTHING ODD HAS HAPPENED IN THE SCENE BEFORE CLICKING THE PUBLISH BUTTON
         # check that the group still exists:
         try:
-            [cam for cam in cmds.ls(type = 'camera')  if 'shotCam_bake' in cam][0].replace('Shape', '')
+            [cam for cam in cmds.ls(type = 'camera')  if '%s_bake' % configCONST.SHOTCAM_SUFFIX in cam][0].replace('Shape', '')
         except:
             errors.append("ShotCamera couldn't be found in the scene!")
         if not cmds.objExists(item["name"]):

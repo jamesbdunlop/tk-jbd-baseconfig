@@ -204,6 +204,12 @@ SHOTCAM_SUFFIX                  = 'shotCam'
 
 LIGHTINGCLEANUP                 = ['parts_hrc', 'rig_hrc', '']
 
+## Really important to note here that these are matced to the TYPE names in the tk-jbd-lighting-fetchcaches application
+ANIM_CACHE                      = 'AnimationCaches'
+STATIC_CACHE                    = 'StaticCaches'
+CAMERA_CACHE                    = 'CameraCaches'
+GPU_CACHE                       = 'GpuCaches'
+FX_CACHE                        = 'FxCaches'
 ## Set platform dependant config constants
 if sys.platform == 'win32':
     ## OS specific
@@ -239,6 +245,7 @@ if sys.platform == 'win32':
     FX_BATCH_NAME               = '%s_FXCacheExport.bat' % getpass.getuser()   ## TO DO get a date time in here
     PATH_TO_ANIM_BAT            = r'%s/%s' % (TEMP_FOLDER, ALEMBIC_BATCH_NAME)
     PATH_TO_FX_BAT              = r'%s/%s' % (TEMP_FOLDER, FX_BATCH_NAME)
+
 
 ## OSX
 elif sys.platform == 'darwin':
