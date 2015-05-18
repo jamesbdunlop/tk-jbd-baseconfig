@@ -3,7 +3,7 @@
 # This file reflects the paths in the primary pipeline
 # configuration defined for this project.
 
-Windows: 'T:/software\genericconfig'
+Windows: 'T:\\software\\genericconfig'
 Darwin: '/volumes/genericconfig'
 Linux: '/development/genericconfig'
 
