@@ -16,7 +16,7 @@ engines:
       tk-multi-workfiles: '@workfiles-launch-at-startup'}
     compatibility_dialog_min_version: 2015
     debug_logging: false
-    location: {name: tk-maya, type: app_store, version: v0.4.5}
+    location: {name: tk-maya, type: app_store, version: v0.4.7}
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
     template_project: null
@@ -36,7 +36,7 @@ engines:
     apps: {tk-multi-about: '@about', tk-multi-screeningroom: '@launch_screeningroom',
       tk-multi-workfiles: '@workfiles'}
     debug_logging: false
-    location: {name: tk-photoshop, type: app_store, version: v0.3.0}
+    location: {name: tk-photoshop, type: app_store, version: v0.3.1}
   tk-shell:
     apps: {tk-multi-screeningroom: '@launch_screeningroom', tk-shotgun-launch3dsmax: '@launch_3dsmax',
       tk-shotgun-launchmaya: '@launch_maya', tk-shotgun-launchnuke: '@launch_nuke',

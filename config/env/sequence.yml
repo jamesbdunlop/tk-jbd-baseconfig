@@ -16,7 +16,7 @@ engines:
       tk-multi-workfiles: '@workfiles-launch-at-startup'}
     compatibility_dialog_min_version: 2015
     debug_logging: false
-    location: {name: tk-maya, type: app_store, version: v0.4.5}
+    location: {name: tk-maya, type: app_store, version: v0.4.7}
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
     template_project: null

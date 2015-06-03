@@ -15,7 +15,7 @@ engines:
     default_group: Studio
     groups: []
     hook_launch_python: default
-    location: {name: tk-desktop, type: app_store, version: v1.0.8}
+    location: {name: tk-desktop, type: app_store, version: v1.0.13}
     show_recents: true
   tk-hiero:
     apps:
@@ -83,7 +83,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         launch_change_work_area_at_startup: false
-        location: {name: tk-multi-workfiles, type: app_store, version: v0.6.13}
+        location: {name: tk-multi-workfiles, type: app_store, version: v0.6.15}
         saveas_default_name: scene
         saveas_prefer_version_up: false
         sg_entity_type_extra_display_fields: {}
@@ -121,7 +121,7 @@ engines:
       tk-multi-workfiles: '@workfiles-launch-at-startup'}
     compatibility_dialog_min_version: 2015
     debug_logging: false
-    location: {name: tk-maya, type: app_store, version: v0.4.5}
+    location: {name: tk-maya, type: app_store, version: v0.4.7}
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
     template_project: null
@@ -141,7 +141,7 @@ engines:
     apps: {tk-multi-about: '@about', tk-multi-screeningroom: '@launch_screeningroom',
       tk-multi-workfiles: '@workfiles'}
     debug_logging: false
-    location: {name: tk-photoshop, type: app_store, version: v0.3.0}
+    location: {name: tk-photoshop, type: app_store, version: v0.3.1}
   tk-shell:
     apps: {tk-multi-launch3dsmax: '@launch_3dsmax', tk-multi-launchhiero: '@launch_hiero',
       tk-multi-launchmaya: '@launch_maya', tk-multi-launchnuke: '@launch_nuke', tk-shotgun-launchphotoshop: '@launch_photoshop'}
@@ -159,7 +159,7 @@ frameworks:
   tk-framework-adminui_v0.x.x:
     location: {name: tk-framework-adminui, type: app_store, version: v0.1.1}
   tk-framework-login_v1.x.x:
-    location: {name: tk-framework-login, type: app_store, version: v1.0.6}
+    location: {name: tk-framework-login, type: app_store, version: v1.1.1}
   tk-framework-softimageqt_v1.0.1:
     location: {name: tk-framework-softimageqt, type: app_store, version: v1.0.1}
   tk-framework-widget_v0.1.16:
