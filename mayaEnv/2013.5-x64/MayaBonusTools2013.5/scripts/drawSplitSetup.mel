@@ -1,0 +1,65 @@
+// Copyright (C) 1997-2011 Autodesk, Inc., and/or its licensors.
+// All rights reserved.
+//
+// The coded instructions, statements, computer programs, and/or related
+// material (collectively the "Data") in these files contain unpublished
+// information proprietary to Autodesk, Inc. ("Autodesk") and/or its licensors,
+// which is protected by U.S. and Canadian federal copyright law and by
+// international treaties.
+//
+// The Data is provided for use exclusively by You. You have the right to use,
+// modify, and incorporate this Data into other products for purposes authorized 
+// by the Autodesk software license agreement, without fee.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. AUTODESK
+// DOES NOT MAKE AND HEREBY DISCLAIMS ANY EXPRESS OR IMPLIED WARRANTIES
+// INCLUDING, BUT NOT LIMITED TO, THE WARRANTIES OF NON-INFRINGEMENT,
+// MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, OR ARISING FROM A COURSE 
+// OF DEALING, USAGE, OR TRADE PRACTICE. IN NO EVENT WILL AUTODESK AND/OR ITS
+// LICENSORS BE LIABLE FOR ANY LOST REVENUES, DATA, OR PROFITS, OR SPECIAL,
+// DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES, EVEN IF AUTODESK AND/OR ITS
+// LICENSORS HAS BEEN ADVISED OF THE POSSIBILITY OR PROBABILITY OF SUCH DAMAGES.
+
+//
+// SCRIPT NAME: drawSplitSetup.mel v3.4
+// TESTED ON: Maya 4.0
+// DESCRIPTION: Loads the plugin, for the very first time, and creates
+//              the shelf button for the "Draw Split Tool" plugin.
+//              Please see the file "readme.txt" or "drawSplitTool.cpp"
+//              for full details.
+//
+global proc drawSplitSetup()
+{
+   if ( !`pluginInfo -q -l drawSplitTool` ) { 
+      if ( catch( `loadPlugin "drawSplitTool"` ) ) { 
+		  error "The plugin was not found. Did you put drawSplitTool in your plugin directory?";
+	  }
+   } else { 
+      pluginInfo -edit -autoload true "drawSplitTool"; 
+   } 
+
+   // CREATE THE OPTION VARIABLES IF FIRST TIME, AND CREATE TOOL'S SHELF BUTTON ON CURRENT ACTIVE SHELF:
+   global string $gShelfTopLevel;
+   if (`tabLayout -exists $gShelfTopLevel`)
+   {
+      if (!`optionVar -ex QT_drawSplitMinSampleSize`) optionVar -iv QT_drawSplitMinSampleSize 25;
+      if (!`optionVar -ex QT_drawSplitMultiSlices`) optionVar -iv QT_drawSplitMultiSlices 1;
+      if (!`optionVar -ex QT_drawSplitMultiSliceDropoffPower`) optionVar -fv QT_drawSplitMultiSliceDropoffPower 1;
+      if (!`optionVar -ex QT_drawSplitSubdivisions`) optionVar -iv QT_drawSplitSubdivisions 1;
+      if (!`optionVar -ex QT_drawSplitEdgeSnapping`) optionVar -iv QT_drawSplitEdgeSnapping 0;
+      if (!`optionVar -ex QT_drawSplitEdgeSnappingType`) optionVar -iv QT_drawSplitEdgeSnappingType 1;
+      if (!`optionVar -ex QT_drawSplitEdgeSnappingOffset`) optionVar -fv QT_drawSplitEdgeSnappingOffset 0.5;
+      if (!`optionVar -ex QT_drawSplitEdgeSnappingIntervals`) optionVar -iv QT_drawSplitEdgeSnappingIntervals 2;
+      if (!`optionVar -ex QT_drawSplitSelectNewVertsUponExit`) optionVar -iv QT_drawSplitSelectNewVertsUponExit 1;
+      if (!`optionVar -ex QT_drawSplitAutoBackfaceCulling`) optionVar -iv QT_drawSplitAutoBackfaceCulling 1;
+
+      shelfButton
+         -parent ($gShelfTopLevel + "|" + `tabLayout -q -st $gShelfTopLevel`)
+         -command "drawSplitTool"
+         -doubleClickCommand "toolPropertyWindow"
+         -image1 "drawSplitIcon.xpm"
+         -annotation "Draw Split Tool"
+      QT_drawSplitShelfButton;
+   }
+   else
+      error "You need a shelf active for Draw Split Tool setup!";
+}
