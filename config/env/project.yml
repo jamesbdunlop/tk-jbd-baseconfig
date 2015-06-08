@@ -15,7 +15,7 @@ engines:
     default_group: Studio
     groups: []
     hook_launch_python: default
-    location: {name: tk-desktop, type: app_store, version: v1.0.13}
+    location: {name: tk-desktop, type: app_store, version: v2.0.2}
     show_recents: true
   tk-hiero:
     apps:
@@ -58,7 +58,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.8}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
         primary_description: Publish and version up the selected Hiero project
         primary_display_name: Hiero Publish
         primary_icon: icons/publish_hiero_main.png
