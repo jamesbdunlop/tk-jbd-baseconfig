@@ -107,9 +107,13 @@ for eachPath in configCONST.MAYA_PLUGIN_PATHS:
 ## SET FINAL CONFIGURATIONS
 ## MENTALCORE STARTUP
 if MENTALCORE:
-    mu.executeDeferred('mentalcore.startup()')
-    print 'mentalcore.startup() forced to load successfully...'
-
+    ## Try and force a mentalcore load if it is installed...
+    ## ---- MENTALCORE STARTUP
+    try:
+        mu.executeDeferred('mentalcore.startup()')
+        print 'mentalcore.startup() forced to load successfully...'
+    except NameError:
+        print 'No Mentalcore found... skipping load...'
 ##################################################################
 #### IS THE BULLDOG UI BEING USED BY THIS CONFIG?
 if configCONST.USE_BULLDOG_UI:
@@ -163,29 +167,3 @@ if configCONST.USE_BULLDOG_UI:
                 print 'source \"%s/%s\"' % (configCONST.BULLDOG_SCRIPT_PATHS[1], eachMel)
             except RuntimeError:
                 print 'MEL LOAD FAILED: %s failed to load...' % eachMel
-
-## Try and force a mentalcore load if it is installed...
-## ---- MENTALCORE STARTUP
-try:
-    mu.executeDeferred('mentalcore.startup()')
-    print 'mentalcore.startup() forced to load successfully...'
-except NameError:
-    print 'No Mentalcore found... skipping load...'
-
-## PYCHARM
-## PyCharm fix for copy paste into script editor!!!
-# def removeInvalidClipboardData():
-#     oldMimeData = QtGui.qApp.clipboard().mimeData()
-#     newMimeData = QtCore.QMimeData()
-#     for format in oldMimeData.formats():
-#         if 'text/uri-list' in format: #This breaks maya paste
-#             continue
-#         data = oldMimeData.data(format)
-#         newMimeData.setData(format, data)
-#
-#     clipboard = QtGui.qApp.clipboard()
-#     clipboard.blockSignals(True)
-#     clipboard.setMimeData(newMimeData)
-#     clipboard.blockSignals(False)
-# QtGui.qApp.clipboard().dataChanged.connect(removeInvalidClipboardData)
-# cmds.warning('PyCharm fix installed....')

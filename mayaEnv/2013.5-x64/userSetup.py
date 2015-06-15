@@ -158,7 +158,3 @@ if configCONST.USE_BULLDOG_UI:
                 print 'source \"%s/%s\"' % (configCONST.BULLDOG_SCRIPT_PATHS[1], eachMel)
             except RuntimeError:
                 print 'MEL LOAD FAILED: %s failed to load...' % eachMel
-
-## ---- MENTALCORE STARTUP
-mu.executeDeferred('mentalcore.startup()')
-print 'mentalcore.startup() forced to load successfully...'
