@@ -3,8 +3,8 @@ engines:
   tk-maya:
     apps:
       tk-changeworkspace:
-        display_name: Change Workspace
-        location: {name: tk-jbd-changeworkspace, type: manual, version: v0.0.1}
+        display_name:               Change Workspace
+        location:                   {"type": "manual", name: tk-jbd-changeworkspace, version: v0.0.1}
       tk-maya-breakdown:
         hook_multi_update: maya_asset_SCBRKDWN_breakdown_update
         hook_scan_scene: maya_asset_SCBRKDWN_scan_scene
@@ -86,7 +86,7 @@ engines:
           - [project, is, '{context.project}']
           hierarchy: [entity, content]
         filter_publishes_hook: '{self}/filter_publishes.py'
-        location: {name: tk-multi-loader2, type: app_store, version: v1.6.2}
+        location: {name: tk-multi-loader2, type: app_store, version: v1.7.1}
         menu_name: Publish Loaders...
         publish_filters: []
         title_name: Assets
@@ -102,7 +102,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Maya scene
         primary_display_name: Publish Environment Asset
         primary_icon: icons/publish_maya_main.png
@@ -123,7 +123,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Maya scene
         primary_display_name: Publish LIB MDL Asset
         primary_icon: icons/publish_maya_main.png
@@ -156,7 +156,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Maya scene
         primary_display_name: Publish Generic Rig
         primary_icon: icons/publish_maya_main.png
@@ -177,7 +177,7 @@ engines:
         hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
         hook_secondary_publish: maya_asset_MDL_ASSEMBLYDEF_secondary_publish
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Maya scene
         primary_display_name: Publish Building Asset
         primary_icon: icons/publish_maya_main.png
@@ -226,7 +226,7 @@ engines:
         hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
         hook_secondary_publish: maya_asset_MDL_CHAR_secondary_publish
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Maya scene
         primary_display_name: Publish Character Asset
         primary_icon: icons/publish_maya_main.png
@@ -259,7 +259,7 @@ engines:
         hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
         hook_secondary_publish: maya_asset_MDL_ASSEMBLYDEF_secondary_publish
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish to assembly definition and version up the current
           Maya scene
         primary_display_name: Publish Static Building Asset
@@ -309,7 +309,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Maya scene
         primary_display_name: Publish Prop MDL Asset
         primary_icon: icons/publish_maya_main.png
@@ -342,7 +342,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Maya scene
         primary_display_name: Publish Character Asset
         primary_icon: icons/publish_maya_main.png
@@ -363,7 +363,7 @@ engines:
         hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
         hook_secondary_publish: maya_asset_MDL_ASSEMBLYDEF_secondary_publish
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Maya scene
         primary_display_name: Publish Building Asset
         primary_icon: icons/publish_maya_main.png
@@ -400,7 +400,7 @@ engines:
         hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
         hook_secondary_publish: maya_asset_MDL_ASSEMBLYDEF_secondary_publish
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Maya scene
         primary_display_name: Publish RIG Building Asset
         primary_icon: icons/publish_maya_main.png
@@ -437,7 +437,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Maya scene
         primary_display_name: Publish Prop Asset
         primary_icon: icons/publish_maya_main.png
@@ -458,7 +458,7 @@ engines:
         hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
         hook_secondary_publish: maya_asset_SHD_secondary_publish
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Maya scene
         primary_display_name: Publish Building Asset
         primary_icon: icons/publish_maya_main.png
@@ -568,7 +568,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publishes and versions up the current Nuke script.
         primary_display_name: Nuke Publish
         primary_icon: icons/publish_nuke_main.png
@@ -637,7 +637,7 @@ engines:
         sg_version_name_template: nuke_quick_asset_version_name
         width: 1024
       tk-nuke-writenode:
-        location: {name: tk-nuke-writenode, type: app_store, version: v1.0.14}
+        location: {name: tk-nuke-writenode, type: app_store, version: v1.0.15}
         template_script_work: nuke_asset_work
         write_nodes:
         - file_type: exr
@@ -675,7 +675,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the current Photoshop scene
         primary_display_name: Photoshop Publish
         primary_icon: icons/publish_photoshop_main.png
@@ -733,7 +733,7 @@ frameworks:
   tk-framework-shotgunutils_v1.x.x:
     location: {name: tk-framework-shotgunutils, type: app_store, version: v1.0.10}
   tk-framework-shotgunutils_v2.x.x:
-    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.1.4}
+    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.4.1}
   tk-framework-softimageqt_v1.0.1:
     location: {name: tk-framework-softimageqt, type: app_store, version: v1.0.1}
   tk-framework-widget_v0.1.1:

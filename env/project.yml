@@ -15,7 +15,7 @@ engines:
     default_group: Studio
     groups: []
     hook_launch_python: default
-    location: {name: tk-desktop, type: app_store, version: v2.0.2}
+    location: {name: tk-desktop, type: app_store, version: v2.0.5}
     show_recents: true
   tk-hiero:
     apps:
@@ -58,7 +58,7 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.9}
+        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
         primary_description: Publish and version up the selected Hiero project
         primary_display_name: Hiero Publish
         primary_icon: icons/publish_hiero_main.png
@@ -157,9 +157,9 @@ engines:
     template_project: null
 frameworks:
   tk-framework-adminui_v0.x.x:
-    location: {name: tk-framework-adminui, type: app_store, version: v0.1.1}
+    location: {name: tk-framework-adminui, type: app_store, version: v0.1.2}
   tk-framework-login_v1.x.x:
-    location: {name: tk-framework-login, type: app_store, version: v1.1.1}
+    location: {name: tk-framework-login, type: app_store, version: v1.2.1}
   tk-framework-softimageqt_v1.0.1:
     location: {name: tk-framework-softimageqt, type: app_store, version: v1.0.1}
   tk-framework-widget_v0.1.16:

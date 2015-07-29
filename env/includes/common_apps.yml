@@ -4,7 +4,7 @@ frameworks:
   tk-framework-qtwidgets_v1.x.x:
     location: {name: tk-framework-qtwidgets, type: app_store, version: v1.0.1}
   tk-framework-shotgunutils_v2.x.x:
-    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.1.4}
+    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.4.1}
   tk-framework-widget_v0.1.18:
     location: {name: tk-framework-widget, type: app_store, version: v0.1.18}
   tk-framework-widget_v0.1.20:
