@@ -116,3 +116,7 @@ class BeforeAppLaunch(tank.Hook):
         for eachSysPath in sys_paths:
             if eachSysPath not in sys.path:
                 sys.path.append(eachSysPath)
+
+
+        for path in sys.path:
+            print path

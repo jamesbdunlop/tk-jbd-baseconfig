@@ -133,7 +133,7 @@ DEBUGGING                       = True
 
 ## SETUP BASE CONSTANTS FOR THE CONFIG
 USER_NAME                       = '%s' % getpass.getuser()
-MAYA_VERSION                    = '2015-x64'
+MAYA_VERSION                    = '2016'
 BULLDOG_MAYA_VERSION            = '2015'
 LOGFILE_NAME                    = 'tankLog'
 ## SHOT GUN BASE CONSTANTS
