@@ -2,9 +2,9 @@ about:
   location: {name: tk-multi-about, type: app_store, version: v0.1.20}
 frameworks:
   tk-framework-qtwidgets_v1.x.x:
-    location: {name: tk-framework-qtwidgets, type: app_store, version: v1.0.1}
+    location: {name: tk-framework-qtwidgets, type: app_store, version: v1.0.3}
   tk-framework-shotgunutils_v2.x.x:
-    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.4.1}
+    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.4.3}
   tk-framework-widget_v0.1.18:
     location: {name: tk-framework-widget, type: app_store, version: v0.1.18}
   tk-framework-widget_v0.1.20:

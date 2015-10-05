@@ -15,7 +15,7 @@ engines:
     default_group: Studio
     groups: []
     hook_launch_python: default
-    location: {name: tk-desktop, type: app_store, version: v2.0.5}
+    location: {name: tk-desktop, type: app_store, version: v2.0.6}
     show_recents: true
   tk-hiero:
     apps:
@@ -32,7 +32,7 @@ engines:
         hook_translate_template: default
         hook_update_version_data: default
         hook_upload_thumbnail: default
-        location: {name: tk-hiero-export, type: app_store, version: v0.1.30}
+        location: {name: tk-hiero-export, type: app_store, version: v0.1.31}
         nuke_script_published_file_type: Nuke Script
         nuke_script_toolkit_write_nodes:
         - {channel: stereoexr32, name: 'Stereo Exr, 32 bit'}
@@ -141,7 +141,7 @@ engines:
     apps: {tk-multi-about: '@about', tk-multi-screeningroom: '@launch_screeningroom',
       tk-multi-workfiles: '@workfiles'}
     debug_logging: false
-    location: {name: tk-photoshop, type: app_store, version: v0.3.1}
+    location: {name: tk-photoshop, type: app_store, version: v0.3.2}
   tk-shell:
     apps: {tk-multi-launch3dsmax: '@launch_3dsmax', tk-multi-launchhiero: '@launch_hiero',
       tk-multi-launchmaya: '@launch_maya', tk-multi-launchnuke: '@launch_nuke', tk-shotgun-launchphotoshop: '@launch_photoshop'}

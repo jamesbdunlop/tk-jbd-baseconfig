@@ -87,7 +87,7 @@ engines:
           - [project, is, '{context.project}']
           hierarchy: [entity, content]
         filter_publishes_hook: '{self}/filter_publishes.py'
-        location: {name: tk-multi-loader2, type: app_store, version: v1.7.1}
+        location: {name: tk-multi-loader2, type: app_store, version: v1.7.2}
         menu_name: Publish Loaders...
         publish_filters: []
         title_name: File Loader 2.0
@@ -300,7 +300,7 @@ engines:
           - [project, is, '{context.project}']
           hierarchy: [entity, content]
         filter_publishes_hook: '{self}/filter_publishes.py'
-        location: {name: tk-multi-loader2, type: app_store, version: v1.7.1}
+        location: {name: tk-multi-loader2, type: app_store, version: v1.7.2}
         menu_name: Maya Render Loader...
         publish_filters: []
         title_name: File Loader 2.0
@@ -338,7 +338,8 @@ engines:
           selected: true, tank_type: Quicktime}
         template_work: nuke_shot_work
       tk-multi-reviewsubmission:
-        location: {name: tk-multi-reviewsubmission, type: app_store, version: v0.1.12}
+        codec_settings_hook: '{self}/codec_settings.py'
+        location: {name: tk-multi-reviewsubmission, type: app_store, version: v0.2.0}
         movie_height: 540
         movie_path_template: nuke_shot_render_movie
         movie_width: 1024
@@ -384,19 +385,22 @@ engines:
         hook_scan_scene: default
         location: {name: tk-nuke-breakdown, type: app_store, version: v0.3.0}
       tk-nuke-quickdailies:
+        codec_settings_hook: '{self}/codec_settings.py'
         current_scene_template: nuke_shot_work
         height: 768
-        location: {name: tk-nuke-quickdailies, type: app_store, version: v0.1.8}
+        location: {name: tk-nuke-quickdailies, type: app_store, version: v0.2.0}
         movie_template: shot_quicktime_quick
         post_hooks: [snapshot_history_post_quickdaily]
         sg_version_name_template: nuke_quick_shot_version_name
+        upload_movie: false
         width: 1024
       tk-nuke-writenode:
-        location: {name: tk-nuke-writenode, type: app_store, version: v1.0.15}
+        location: {name: tk-nuke-writenode, type: app_store, version: v1.0.18}
         template_script_work: nuke_shot_work
         write_nodes:
         - file_type: png
           name: PNG
+          promote_write_knobs: []
           proxy_publish_template: null
           proxy_render_template: null
           publish_template: nuke_shot_render_pub_png
@@ -470,7 +474,7 @@ engines:
         template_work: photoshop_shot_work
         template_work_area: shot_work_area_photoshop
     debug_logging: true
-    location: {name: tk-photoshop, type: app_store, version: v0.3.1}
+    location: {name: tk-photoshop, type: app_store, version: v0.3.2}
   tk-shell:
     apps:
       tk-multi-about:
@@ -486,11 +490,11 @@ engines:
     location: {name: tk-shell, type: app_store, version: v0.4.1}
 frameworks:
   tk-framework-qtwidgets_v1.x.x:
-    location: {name: tk-framework-qtwidgets, type: app_store, version: v1.0.1}
+    location: {name: tk-framework-qtwidgets, type: app_store, version: v1.0.3}
   tk-framework-shotgunutils_v1.x.x:
     location: {name: tk-framework-shotgunutils, type: app_store, version: v1.0.10}
   tk-framework-shotgunutils_v2.x.x:
-    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.4.1}
+    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.4.3}
   tk-framework-widget_v0.1.1:
     location: {name: tk-framework-widget, type: app_store, version: v0.1.1}
   tk-framework-widget_v0.1.10:
