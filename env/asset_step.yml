@@ -2,498 +2,788 @@ description: Apps and Engines related to Asset based work.
 engines:
   tk-maya:
     apps:
-      tk-changeworkspace:
-        display_name: Change Workspace
-        location: {name: tk-jbd-changeworkspace, type: manual, version: v0.0.1}
-
-      tk-maya-breakdown:
-        hook_multi_update: maya_asset_SCBRKDWN_breakdown_update
-        hook_scan_scene: maya_asset_SCBRKDWN_scan_scene
-        location: {name: tk-maya-breakdown, type: app_store, version: v0.3.1}
-
+################################################################################################################################################################
+## CUSTOM APPLICATIONS
+################################################################################################################################################################
       tk-maya-envReporter:
-        cfgCONST: true
-        display_name: Development/1. Export Env Data
-        location: {disabled: true, name: tk-jbd-envReporter, type: manual, version: v0.0.1}
-        mayaEnvs: true
-        printToFile: true
-        syspath: true
-
+        display_name:               Development/1. Export Env Data
+        location:                   {"type": "manual", name: tk-jbd-envReporter, version: v0.0.1, "disabled": true}
+        syspath:                    true
+        cfgCONST:                   true
+        printToFile:                true
+        mayaEnvs:                   true
+        ################################################################################################################################################################
+      tk-changeworkspace:
+        display_name:               Change Workspace
+        location:                   {"type": "manual", name: tk-jbd-changeworkspace, version: v0.0.1}
+        ################################################################################################################################################################
+      tk-submit-maya-shotPlayblast:
+        location:                   {"type": "manual", "name": "tk-jbd-submit-mayaplayblast", "version": "v0.0.1"}
+        display_name:               .Publish TurnTable For Review...
+        showOptions:                true
+        isAsset:                    true
+        allowAssetTurnTableBuild:   true
+        movie_width:                1280
+        movie_height:               720
+        movie_path_template:        maya_asset_playblast
+        movie_workpath_template:    maya_assetwork_playblast
+        new_version_status:         rev
+        sg_in_frame_field:          sg_cut_in
+        sg_out_frame_field:         sg_cut_out
+        store_on_disk:              true
+        template_work:              maya_asset_work
+        upload_to_shotgun:          true
+        version_number_padding:     3
+        ################################################################################################################################################################
+################################################################################################################################################################
+## MAYA CORE APPLICATIONS
+################################################################################################################################################################
+      tk-maya-breakdown:
+        location:                   {name: tk-maya-breakdown, type: app_store, version: v0.3.1}
+        hook_multi_update:          maya_asset_SCBRKDWN_breakdown_update
+        hook_scan_scene:            maya_asset_SCBRKDWN_scan_scene
+        ################################################################################################################################################################
       tk-multi-about:
-        location: {name: tk-multi-about, type: app_store, version: v0.1.20}
-
+        location:                   {name: tk-multi-about, type: app_store, version: v0.1.20}
+######################################################################################################1##########################################################
+## MAYA LOADERS
+################################################################################################################################################################
       tk-multi-loader-PUBLISH_LOADER:
         action_mappings:
-          Maya Scene: [open, assemblyReference, reference, import, texture_node, importDGSHD]
-          Photoshop Image: [texture_node]
-          Rendered Image: [texture_node]
-        actions_hook: '{config}/tk-maya_actions.py'
-        download_thumbnails: true
+          Maya Scene:               [open, assemblyReference, reference, import, texture_node, importDGSHD]
+          Photoshop Image:          [texture_node]
+          Rendered Image:           [texture_node]
+        actions_hook:               '{config}/tk-maya_actions.py'
+        download_thumbnails:        true
+
         entities:
-        - caption: MDL
-          entity_type: Asset
+        - caption:                  MDL
+          entity_type:              Asset
           filters:
           - [project, is, '{context.project}']
           - [sg_asset_type, is_not, Environment]
-          hierarchy: [sg_asset_type, code]
           publish_filters:
           - [name, contains, primaryPublish]
           - [name, not_contains, RIG]
           - [name, not_contains, SHD]
           - [name, not_contains, BBOX]
-        - caption: ADEFS|MDL|RIG
-          entity_type: Asset
+          hierarchy:                [sg_asset_type, code]
+
+        - caption:                  ADEFS|MDL|RIG
+          entity_type:              Asset
           filters:
           - [project, is, '{context.project}']
           - [sg_asset_type, is_not, Environment]
           - [sg_asset_type, is_not, Library]
           - [sg_asset_type, is_not, Prop]
           - [sg_asset_type, is_not, Character]
-          hierarchy: [sg_asset_type, code]
           publish_filters:
           - [name, contains, ADEF]
           - [name, not_contains, primaryPublish]
-        - caption: RIG
-          entity_type: Asset
+          hierarchy:                [sg_asset_type, code]
+
+        - caption:                  RIG
+          entity_type:              Asset
           filters:
           - [project, is, '{context.project}']
           - [sg_asset_type, is_not, Environment]
           - [sg_asset_type, is_not, Landscape]
           - [sg_asset_type, is_not, Building]
-          hierarchy: [sg_asset_type, code]
           publish_filters:
           - [name, contains, RIG]
           - [name, contains, primaryPublish]
-        - caption: SRF
-          entity_type: Asset
+          hierarchy:                [sg_asset_type, code]
+
+        - caption:                  SRF
+          entity_type:              Asset
           filters:
           - [project, is, '{context.project}']
           - [sg_asset_type, is_not, Environment]
-          hierarchy: [sg_asset_type, code]
           publish_filters:
           - [name, not_contains, MDL]
           - [name, not_contains, RIG]
           - [name, not_contains, BBOX]
           - [name, not_contains, ADEF]
-        - caption: ENV
-          entity_type: Asset
+          hierarchy:                [sg_asset_type, code]
+
+        - caption:                  ENV
+          entity_type:              Asset
           filters:
           - [project, is, '{context.project}']
           - [sg_asset_type, is, Environment]
-          hierarchy: [sg_asset_type, code]
           publish_filters:
           - [name, contains, primaryPublish]
-        - caption: My Tasks
-          entity_type: Task
+          hierarchy:                [sg_asset_type, code]
+
+        - caption:                  My Tasks
+          entity_type:              Task
           filters:
           - [task_assignees, is, '{context.user}']
           - [project, is, '{context.project}']
-          hierarchy: [entity, content]
-        filter_publishes_hook: '{self}/filter_publishes.py'
-        location: {name: tk-multi-loader2, type: app_store, version: v1.7.2}
-        menu_name: Publish Loaders...
-        publish_filters: []
-        title_name: Assets
+          hierarchy:                [entity, content]
 
-      tk-multi-publish-ENV:
-        allow_taskless_publishes: false
-        display_name: MDL/4. ENVIRONMENT
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_MDL_post_publish
-        hook_primary_pre_publish: maya_asset_MDL_pre_publish_primary
-        hook_primary_publish: maya_asset_MDL_primary_publish
-        hook_scan_scene: maya_asset_MDL_ENV_scan_scene
-        hook_secondary_pre_publish: default
-        hook_secondary_publish: default
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish Environment Asset
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
-        secondary_outputs: []
-        template_work: maya_asset_work
+        filter_publishes_hook:      '{self}/filter_publishes.py'
+        location:                   {name: tk-multi-loader2, type: app_store, version: v1.7.2}
+        menu_name:                  Publish Loaders...
+        publish_filters:            []
+        title_name:                 Assets
 
-      tk-multi-publish-GENERIC:
-        allow_taskless_publishes: false
-        display_name: MDL/5. LIB
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_MDL_post_publish
-        hook_primary_pre_publish: maya_asset_MDL_pre_publish_primary
-        hook_primary_publish: maya_asset_MDL_primary_publish
-        hook_scan_scene: maya_asset_MDL_LIB_scan_scene
-        hook_secondary_pre_publish: default
-        hook_secondary_publish: default
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish LIB MDL Asset
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
-        secondary_outputs:
-        - {description: maya goZ cache files, display_group: goZ, display_name: mayaGoZ
-            ma Files, icon: icons/goZ.png, name: GoZ_ma, publish_template: maya_asset_GOZ_ma,
-          required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
-            Scene}
-        - {description: zbrush goZ ztn|ztl cache files, display_group: goZ, display_name: zbrushGoZ
-            ztn|ztl Files, icon: icons/goZ.png, name: GoZ_ztn, publish_template: maya_asset_GOZ_ztn,
-          required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
-            Scene}
-        - {description: zbrush main file, display_group: Zbrush Files, display_name: Zbrush
-            Files from /work/zbrush, icon: icons/goZ.png, name: zbrush_ztl, publish_template: maya_asset_zbrush,
-          required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
-            Scene}
-        template_work: maya_asset_work
-
-      tk-multi-publish-LIB-RIG:
-        allow_taskless_publishes: false
-        display_name: RIG/LIB
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_RIG_post_publish
-        hook_primary_pre_publish: maya_asset_RIG_pre_publish_primary
-        hook_primary_publish: maya_asset_RIG_primary_publish
-        hook_scan_scene: maya_asset_RIG_LIB_scan_scene
-        hook_secondary_pre_publish: default
-        hook_secondary_publish: default
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish Generic Rig
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
-        secondary_outputs: []
-        template_work: maya_asset_work
-
-      tk-multi-publish-LND:
-        allow_taskless_publishes: false
-        display_name: MDL/1. LANDSCAPE|ADEF
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_MDL_post_publish
-        hook_primary_pre_publish: maya_asset_MDL_pre_publish_primary
-        hook_primary_publish: maya_asset_MDL_primary_publish
-        hook_scan_scene: maya_asset_MDL_LND_scan_scene
-        hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
-        hook_secondary_publish: maya_asset_MDL_ASSEMBLYDEF_secondary_publish
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish Building Asset
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
-        secondary_outputs:
-        - {description: Publish Alembic Cache Representation, display_group: Scene
-            Assembly Representations, display_name: Alembic Cache, icon: icons/cache.png,
-          name: alembic_cache, publish_template: maya_asset_ADEF_alembic, required: true,
-          scene_item_type: mesh_group, selected: true, tank_type: Alembic Cache}
-        - {description: Publish GPU Cache Representation, display_group: Scene Assembly
-            Representations, display_name: GPU Cache, icon: icons/gpuCache.png, name: gpu_cache,
-          publish_template: maya_asset_ADEF_gpu, required: true, scene_item_type: mesh_group,
-          selected: true, tank_type: Alembic Cache}
-        - {description: Publish Bounding Box Representation, display_group: Scene
-            Assembly Representations, display_name: Bounding Box, icon: icons/boundingBox.png,
-          name: bounding_box, publish_template: maya_asset_ADEF_boundingbox, required: true,
-          scene_item_type: mesh_group, selected: true, tank_type: Maya Scene}
-        - {description: Publish Assembly Definition Node, display_group: Scene Assembly
-            Definition Output, display_name: Scene Assembly Definition, icon: icons/building.png,
-          name: assembly_definition, publish_template: maya_asset_ADEF_assembly, required: true,
-          scene_item_type: mesh_group, selected: true, tank_type: Maya Scene}
-        - {description: maya goZ cache files, display_group: goZ, display_name: mayaGoZ
-            ma Files, icon: icons/goZ.png, name: GoZ_ma, publish_template: maya_asset_GOZ_ma,
-          required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
-            Scene}
-        - {description: zbrush goZ ztn|ztl cache files, display_group: goZ, display_name: zbrushGoZ
-            ztn|ztl Files, icon: icons/goZ.png, name: GoZ_ztn, publish_template: maya_asset_GOZ_ztn,
-          required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
-            Scene}
-        - {description: zbrush main file, display_group: Zbrush Files, display_name: Zbrush
-            Files from /work/zbrush, icon: icons/goZ.png, name: zbrush_ztl, publish_template: maya_asset_zbrush,
-          required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
-            Scene}
-        template_work: maya_asset_work
-
-      tk-multi-publish-MDL-CHAR:
-        allow_taskless_publishes: false
-        display_name: MDL/2. CHARACTER
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_MDL_post_publish
-        hook_primary_pre_publish: maya_asset_MDL_pre_publish_primary
-        hook_primary_publish: maya_asset_MDL_primary_publish
-        hook_scan_scene: maya_asset_MDL_CHAR_scan_scene
-        hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
-        hook_secondary_publish: maya_asset_MDL_CHAR_secondary_publish
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish Character Asset
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
-        secondary_outputs:
-        - {description: maya goZ cache files, display_group: goZ, display_name: mayaGoZ
-            ma Files, icon: icons/goZ.png, name: GoZ_ma, publish_template: maya_asset_GOZ_ma,
-          required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
-            Scene}
-        - {description: zbrush goZ ztn|ztl cache files, display_group: goZ, display_name: zbrushGoZ
-            ztn|ztl Files, icon: icons/goZ.png, name: GoZ_ztn, publish_template: maya_asset_GOZ_ztn,
-          required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
-            Scene}
-        - {description: zbrush main file, display_group: Zbrush Files, display_name: Zbrush
-            Files from /work/zbrush, icon: icons/goZ.png, name: zbrush_ztl, publish_template: maya_asset_zbrush,
-          required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
-            Scene}
-        template_work: maya_asset_work
-
+################################################################################################################################################################
+## MAYA PUBLISHING
+## MODELLING
+################################################################################################################################################################
+## MDL STATIC BUILDINGS
+################################################################################################################################################################
       tk-multi-publish-MDL-STATIC-BLD:
-        allow_taskless_publishes: false
-        display_name: MDL/0. BUILDING|ADEF
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_MDL_post_publish
-        hook_primary_pre_publish: maya_asset_MDL_pre_publish_primary
-        hook_primary_publish: maya_asset_MDL_primary_publish
-        hook_scan_scene: maya_asset_MDL_BLD_ASSEMBLYDEF_STATIC_scan_scene
+        allow_taskless_publishes:   false
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        display_name:               MDL/0. BUILDING|ADEF
+        expand_single_items:        false
+        hook_copy_file:             default
+        hook_post_publish:          maya_asset_MDL_post_publish
+        hook_primary_pre_publish:   maya_asset_MDL_pre_publish_primary
+        hook_primary_publish:       maya_asset_MDL_primary_publish
+        hook_scan_scene:            maya_asset_MDL_BLD_ASSEMBLYDEF_STATIC_scan_scene
         hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
-        hook_secondary_publish: maya_asset_MDL_ASSEMBLYDEF_secondary_publish
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish to assembly definition and version up the current Maya scene
-        primary_display_name: Publish Static Building Asset
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
+        hook_secondary_publish:     maya_asset_MDL_ASSEMBLYDEF_secondary_publish
+        hook_thumbnail:             default
+        primary_description:        Publish to assembly definition and version up the current Maya scene
+        primary_display_name:       Publish Static Building Asset
+        primary_icon:               icons/publish_maya_main.png
+        primary_publish_template:   maya_asset_publish
+        primary_scene_item_type:    work_file
+        primary_tank_type:          Maya Scene
         secondary_outputs:
-        - {description: Publish Alembic Cache Representation, display_group: Scene
-            Assembly Representations, display_name: Alembic Cache, icon: icons/cache.png,
-          name: alembic_cache, publish_template: maya_asset_ADEF_alembic, required: false,
-          scene_item_type: mesh_group, selected: true, tank_type: Alembic Cache}
-        - {description: Publish GPU Cache Representation, display_group: Scene Assembly
-            Representations, display_name: GPU Cache, icon: icons/gpuCache.png, name: gpu_cache,
-          publish_template: maya_asset_ADEF_gpu, required: false, scene_item_type: mesh_group,
-          selected: true, tank_type: Alembic Cache}
-        - {description: Publish Bounding Box Representation, display_group: Scene
-            Assembly Representations, display_name: Bounding Box, icon: icons/boundingBox.png,
-          name: bounding_box, publish_template: maya_asset_ADEF_boundingbox, required: false,
-          scene_item_type: mesh_group, selected: true, tank_type: Maya Scene}
-        - {description: Publish Assembly Definition Node, display_group: Scene Assembly
-            Definition Output, display_name: Scene Assembly Definition, icon: icons/building.png,
-          name: assembly_definition, publish_template: maya_asset_ADEF_assembly, required: false,
-          scene_item_type: mesh_group, selected: true, tank_type: Maya Scene}
-        - {description: maya goZ cache files, display_group: goZ, display_name: mayaGoZ
-            ma Files, icon: icons/goZ.png, name: GoZ_ma, publish_template: maya_asset_GOZ_ma,
-          required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
-            Scene}
-        - {description: zbrush goZ ztn|ztl cache files, display_group: goZ, display_name: zbrushGoZ
-            ztn|ztl Files, icon: icons/goZ.png, name: GoZ_ztn, publish_template: maya_asset_GOZ_ztn,
-          required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
-            Scene}
-        - {description: zbrush main file, display_group: Zbrush Files, display_name: Zbrush
-            Files from /work/zbrush, icon: icons/goZ.png, name: zbrush_ztl, publish_template: maya_asset_zbrush,
-          required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
-            Scene}
-        template_work: maya_asset_work
+        - { description:            Publish Alembic Cache Representation,
+            display_group:          Scene Assembly Representations,
+            display_name:           Alembic Cache, icon: icons/cache.png,
+            name:                   alembic_cache,
+            publish_template:       maya_asset_ADEF_alembic,
+            required:               false,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Alembic Cache}
 
+        - { description:            Publish GPU Cache Representation,
+            display_group:          Scene Assembly Representations,
+            display_name:           GPU Cache,
+            icon:                   icons/gpuCache.png,
+            name:                   gpu_cache,
+            publish_template:       maya_asset_ADEF_gpu,
+            required:               false,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Alembic Cache}
+
+        - { description:            Publish Bounding Box Representation,
+            display_group:          Scene Assembly Representations,
+            display_name:           Bounding Box,
+            icon:                   icons/boundingBox.png,
+            name:                   bounding_box,
+            publish_template:       maya_asset_ADEF_boundingbox,
+            required:               false,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+
+        - { description:            Publish Assembly Definition Node,
+            display_group:          Scene Assembly Definition Output,
+            display_name:           Scene Assembly Definition,
+            icon:                   icons/building.png,
+            name:                   assembly_definition,
+            publish_template:       maya_asset_ADEF_assembly,
+            required:               false,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+
+        - { description:            maya goZ cache files,
+            display_group:          goZ,
+            display_name:           mayaGoZ ma Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ma,
+            publish_template:       maya_asset_GOZ_ma,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush goZ ztn|ztl cache files,
+            display_group:          goZ,
+            display_name:           zbrushGoZ ztn|ztl Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ztn,
+            publish_template:       maya_asset_GOZ_ztn,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush main file,
+            display_group:          Zbrush Files,
+            display_name:           Zbrush Files from /work/zbrush,
+            icon:                   icons/goZ.png,
+            name:                   zbrush_ztl,
+            publish_template:       maya_asset_zbrush,
+            required:               false,
+            scene_item_type:        zbrush_group,
+            selected:               false,
+            tank_type:              Maya Scene}
+        template_work: maya_asset_work
+################################################################################################################################################################
+##### MDL LND PUBLISHING
+################################################################################################################################################################
+      tk-multi-publish-LND:
+        display_name:               MDL/1. LANDSCAPE|ADEF
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        allow_taskless_publishes:   false
+        expand_single_items:        false
+        hook_copy_file:             default
+        hook_post_publish:          maya_asset_MDL_post_publish
+        hook_primary_pre_publish:   maya_asset_MDL_pre_publish_primary
+        hook_primary_publish:       maya_asset_MDL_primary_publish
+        hook_scan_scene:            maya_asset_MDL_LND_scan_scene
+        hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
+        hook_secondary_publish:     maya_asset_MDL_ASSEMBLYDEF_secondary_publish
+        hook_thumbnail:             default
+        primary_description:        Publish and version up the current Maya scene
+        primary_display_name:       Publish Building Asset
+        primary_icon:               icons/publish_maya_main.png
+        primary_publish_template:   maya_asset_publish
+        primary_scene_item_type:    work_file
+        primary_tank_type:          Maya Scene
+        secondary_outputs:
+        - { description:            Publish Alembic Cache Representation,
+            display_group:          Scene Assembly Representations,
+            display_name:           Alembic Cache,
+            icon:                   icons/cache.png,
+            name:                   alembic_cache,
+            publish_template:       maya_asset_ADEF_alembic,
+            required:               true,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Alembic Cache}
+
+        - { description:            Publish GPU Cache Representation,
+            display_group:          Scene Assembly Representations,
+            display_name:           GPU Cache,
+            icon:                   icons/gpuCache.png,
+            name:                   gpu_cache,
+            publish_template:       maya_asset_ADEF_gpu,
+            required:               true,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Alembic Cache}
+
+        - { description:            Publish Bounding Box Representation,
+            display_group:          Scene Assembly Representations,
+            display_name:           Bounding Box,
+            icon:                   icons/boundingBox.png,
+            name:                   bounding_box,
+            publish_template:       maya_asset_ADEF_boundingbox,
+            required:               true,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+
+        - { description:            Publish Assembly Definition Node,
+            display_group:          Scene Assembly Definition Output,
+            display_name:           Scene Assembly Definition,
+            icon:                   icons/building.png,
+            name:                   assembly_definition,
+            publish_template:       maya_asset_ADEF_assembly,
+            required:               true,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            maya goZ cache files,
+            display_group:          goZ,
+            display_name:           mayaGoZ ma Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ma,
+            publish_template:       maya_asset_GOZ_ma,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush goZ ztn|ztl cache files,
+            display_group:          goZ,
+            display_name:           zbrushGoZ ztn|ztl Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ztn,
+            publish_template:       maya_asset_GOZ_ztn,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush main file,
+            display_group:          Zbrush Files,
+            display_name:           Zbrush Files from /work/zbrush,
+            icon:                   icons/goZ.png,
+            name:                   zbrush_ztl,
+            publish_template:       maya_asset_zbrush,
+            required:               false,
+            scene_item_type:        zbrush_group,
+            selected:               false,
+            tank_type:              Maya Scene}
+        template_work: maya_asset_work
+################################################################################################################################################################
+##### MDL CHARACTER PUBLISHING
+################################################################################################################################################################
+      tk-multi-publish-MDL-CHAR:
+        display_name:               MDL/2. CHARACTER
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        allow_taskless_publishes:   false
+        expand_single_items:        false
+        hook_copy_file:             default
+        hook_post_publish:          maya_asset_MDL_post_publish
+        hook_primary_pre_publish:   maya_asset_MDL_pre_publish_primary
+        hook_primary_publish:       maya_asset_MDL_primary_publish
+        hook_scan_scene:            maya_asset_MDL_CHAR_scan_scene
+        hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
+        hook_secondary_publish:     maya_asset_MDL_CHAR_secondary_publish
+        hook_thumbnail:             default
+        primary_description:        Publish and version up the current Maya scene
+        primary_display_name:       Publish Character Asset
+        primary_icon:               icons/publish_maya_main.png
+        primary_publish_template:   maya_asset_publish
+        primary_scene_item_type:    work_file
+        primary_tank_type:          Maya Scene
+        secondary_outputs:
+        - { description:            maya goZ cache files,
+            display_group:          goZ,
+            display_name:           mayaGoZ ma Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ma,
+            publish_template:       maya_asset_GOZ_ma,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush goZ ztn|ztl cache files,
+            display_group:          goZ,
+            display_name:           zbrushGoZ ztn|ztl Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ztn,
+            publish_template:       maya_asset_GOZ_ztn,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush main file,
+            display_group:          Zbrush Files,
+            display_name:           Zbrush Files from /work/zbrush,
+            icon:                   icons/goZ.png,
+            name:                   zbrush_ztl,
+            publish_template:       maya_asset_zbrush,
+            required:               false,
+            scene_item_type:        zbrush_group,
+            selected:               false,
+            tank_type:              Maya Scene}
+        template_work:              maya_asset_work
+################################################################################################################################################################
+##### MDL PROP PUBLISHING
+################################################################################################################################################################
       tk-multi-publish-PROP:
-        allow_taskless_publishes: false
-        display_name: MDL/3. PROP
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_MDL_post_publish
-        hook_primary_pre_publish: maya_asset_MDL_pre_publish_primary
-        hook_primary_publish: maya_asset_MDL_primary_publish
-        hook_scan_scene: maya_asset_MDL_PROP_scan_scene
+        display_name:               MDL/3. PROP
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        allow_taskless_publishes:   false
+        expand_single_items:        false
+        hook_copy_file:             default
+        hook_post_publish:          maya_asset_MDL_post_publish
+        hook_primary_pre_publish:   maya_asset_MDL_pre_publish_primary
+        hook_primary_publish:       maya_asset_MDL_primary_publish
+        hook_scan_scene:            maya_asset_MDL_PROP_scan_scene
         hook_secondary_pre_publish: default
-        hook_secondary_publish: default
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish Prop MDL Asset
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
+        hook_secondary_publish:     default
+        hook_thumbnail:             default
+        primary_description:        Publish and version up the current Maya scene
+        primary_display_name:       Publish Prop MDL Asset
+        primary_icon:               icons/publish_maya_main.png
+        primary_publish_template:   maya_asset_publish
+        primary_scene_item_type:    work_file
+        primary_tank_type:          Maya Scene
         secondary_outputs:
-        - {description: maya goZ cache files, display_group: goZ, display_name: mayaGoZ
-            ma Files, icon: icons/goZ.png, name: GoZ_ma, publish_template: maya_asset_GOZ_ma,
-          required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
-            Scene}
-        - {description: zbrush goZ ztn|ztl cache files, display_group: goZ, display_name: zbrushGoZ
-            ztn|ztl Files, icon: icons/goZ.png, name: GoZ_ztn, publish_template: maya_asset_GOZ_ztn,
-          required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
-            Scene}
-        - {description: zbrush main file, display_group: Zbrush Files, display_name: Zbrush
-            Files from /work/zbrush, icon: icons/goZ.png, name: zbrush_ztl, publish_template: maya_asset_zbrush,
-          required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
-            Scene}
+        - { description:            maya goZ cache files,
+            display_group:          goZ,
+            display_name:           mayaGoZ ma Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ma,
+            publish_template:       maya_asset_GOZ_ma,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush goZ ztn|ztl cache files,
+            display_group:          goZ,
+            display_name:           zbrushGoZ ztn|ztl Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ztn,
+            publish_template:       maya_asset_GOZ_ztn,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush main file,
+            display_group:          Zbrush Files,
+            display_name:           Zbrush Files from /work/zbrush,
+            icon:                   icons/goZ.png,
+            name:                   zbrush_ztl,
+            publish_template:       maya_asset_zbrush,
+            required:               false,
+            scene_item_type:        zbrush_group,
+            selected:               false,
+            tank_type:              Maya Scene}
+        template_work:              maya_asset_work
+################################################################################################################################################################
+##### MDL ENV PUBLISHING
+################################################################################################################################################################
+      tk-multi-publish-ENV:
+        display_name:               MDL/4. ENVIRONMENT
+        allow_taskless_publishes:   false
+        expand_single_items:        false
+        hook_copy_file:             default
+        hook_post_publish:          maya_asset_MDL_post_publish
+        hook_primary_pre_publish:   maya_asset_MDL_pre_publish_primary
+        hook_primary_publish:       maya_asset_MDL_primary_publish
+        hook_scan_scene:            maya_asset_MDL_ENV_scan_scene
+        hook_secondary_pre_publish: default
+        hook_secondary_publish:     default
+        hook_thumbnail:             default
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        primary_description:        Publish and version up the current Maya scene
+        primary_display_name:       Publish Environment Asset
+        primary_icon:               icons/publish_maya_main.png
+        primary_publish_template:   maya_asset_publish
+        primary_scene_item_type:    work_file
+        primary_tank_type:          Maya Scene
+        secondary_outputs:          []
+        template_work:              maya_asset_work
+################################################################################################################################################################
+##### MDL LIB PUBLISHING
+################################################################################################################################################################
+      tk-multi-publish-GENERIC:
+        display_name:               MDL/5. LIB
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        allow_taskless_publishes:   false
+        expand_single_items:        false
+        hook_copy_file:             default
+        hook_post_publish:          maya_asset_MDL_post_publish
+        hook_primary_pre_publish:   maya_asset_MDL_pre_publish_primary
+        hook_primary_publish:       maya_asset_MDL_primary_publish
+        hook_scan_scene:            maya_asset_MDL_LIB_scan_scene
+        hook_secondary_pre_publish: default
+        hook_secondary_publish:     default
+        hook_thumbnail:             default
+        primary_description:        Publish and version up the current Maya scene
+        primary_display_name:       Publish LIB MDL Asset
+        primary_icon:               icons/publish_maya_main.png
+        primary_publish_template:   maya_asset_publish
+        primary_scene_item_type:    work_file
+        primary_tank_type:          Maya Scene
+        secondary_outputs:
+        - { description:            maya goZ cache files,
+            display_group:          goZ,
+            display_name:           mayaGoZ ma Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ma,
+            publish_template:       maya_asset_GOZ_ma,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush goZ ztn|ztl cache files,
+            display_group:          goZ,
+            display_name:           zbrushGoZ ztn|ztl Files,
+            icon:                   icons/goZ.png,
+            name:                   GoZ_ztn,
+            publish_template:       maya_asset_GOZ_ztn,
+            required:               false,
+            scene_item_type:        goZ_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        - { description:            zbrush main file,
+            display_group:          Zbrush Files,
+            display_name:           Zbrush Files from /work/zbrush,
+            icon:                   icons/goZ.png,
+            name:                   zbrush_ztl,
+            publish_template:       maya_asset_zbrush,
+            required:               false,
+            scene_item_type:        zbrush_group,
+            selected:               false,
+            tank_type:              Maya Scene}
+        template_work:              maya_asset_work
+################################################################################################################################################################
+## MAYA PUBLISHING
+## SURFACING
+################################################################################################################################################################
+      tk-multi-publish-SRF:
+        display_name:               SRF/SRF Publish
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        allow_taskless_publishes:   false
+        expand_single_items:        false
+        hook_copy_file:             default
+        hook_post_publish:          maya_asset_SHD_post_publish
+        hook_primary_pre_publish:   maya_asset_MDL_pre_publish_primary
+        hook_primary_publish:       maya_asset_SHD_primary_publish
+        hook_scan_scene:            maya_asset_SHD_scan_scene
+        hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
+        hook_secondary_publish:     maya_asset_SHD_secondary_publish
+        hook_thumbnail:             default
+        primary_description:        Publish and version up the current Maya scene
+        primary_display_name:       Publish Building Asset
+        primary_icon:               icons/publish_maya_main.png
+        primary_publish_template:   maya_asset_publish
+        primary_scene_item_type:    work_file
+        primary_tank_type:          Maya Scene
+        secondary_outputs:
+        - { description:            Publish Shading XML,
+            display_group:          XML,
+            display_name:           Shading XML,
+            icon:                   icons/Xml_tool_icon.png,
+            name:                   shd_xml,
+            publish_template:       maya_asset_SHD_XML,
+            required:               false,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+
+        - { description:            Copy HiRes Textures To Publish Folders,
+            display_group:          Textures,
+            display_name:           Copy HiRes Textures To Publish Folders,
+            icon:                   icons/copyTextures-icon.png,
+            name:                   copyHiRes,
+            publish_template:       maya_asset_textures,
+            required:               false,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+
+        - { description:            Build Down Graded File Textures,
+            display_group:          Textures,
+            display_name:           Build DownGraded Textures,
+            icon:                   icons/downgrade-icon.png,
+            name:                   dg_texture,
+            publish_template:       maya_asset_textures_dg,
+            required:               false,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+
+        - { description:            UV Xml,
+            display_group:          XML,
+            display_name:           Build UV XML File,
+            icon:                   icons/Xml_tool_icon.png,
+            name:                   uvxml,
+            publish_template:       maya_asset_uvxml,
+            required:               false,
+            scene_item_type:        mesh_group,
+            selected:               true,
+            tank_type:              Maya Scene}
+        template_work: maya_asset_work
+################################################################################################################################################################
+## MAYA PUBLISHING
+## RIGGING
+################################################################################################################################################################
+##### RIG GENERIC PUBLISHING
+      tk-multi-publish-LIB-RIG:
+        display_name:               RIG/LIB
+        allow_taskless_publishes:   false
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        expand_single_items:        false
+        hook_copy_file:             default
+        hook_post_publish:          maya_asset_RIG_post_publish
+        hook_primary_pre_publish:   maya_asset_RIG_pre_publish_primary
+        hook_primary_publish:       maya_asset_RIG_primary_publish
+        hook_scan_scene:            maya_asset_RIG_LIB_scan_scene
+        hook_secondary_pre_publish: default
+        hook_secondary_publish:     default
+        hook_thumbnail:             default
+        primary_description:        Publish and version up the current Maya scene
+        primary_display_name:       Publish Generic Rig
+        primary_icon:               icons/publish_maya_main.png
+        primary_publish_template:   maya_asset_publish
+        primary_scene_item_type:    work_file
+        primary_tank_type:          Maya Scene
+        secondary_outputs:          []
+        template_work:              maya_asset_work
+################################################################################################################################################################
+##### RIG CHAR PUBLISHING
+      tk-multi-publish-RIG-CHAR:
+        display_name:               RIG/CHAR
+        allow_taskless_publishes:   false
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        expand_single_items:        false
+        hook_copy_file:             default
+        hook_post_publish:          maya_asset_RIG_post_publish
+        hook_primary_pre_publish:   maya_asset_RIG_pre_publish_primary
+        hook_primary_publish:       maya_asset_RIG_primary_publish
+        hook_scan_scene:            maya_asset_RIG_CHAR_scan_scene
+        hook_secondary_pre_publish: default
+        hook_secondary_publish:     default
+        hook_thumbnail:             default
+        primary_description:        Publish and version up the current Maya scene
+        primary_display_name:       Publish Character Asset
+        primary_icon:               icons/publish_maya_main.png
+        primary_publish_template:   maya_asset_publish
+        primary_scene_item_type:    work_file
+        primary_tank_type:          Maya Scene
+        secondary_outputs:          []
+        template_work:              maya_asset_work
+################################################################################################################################################################
+##### RIG PROP PUBLISHING
+      tk-multi-publish-RIG_PROP:
+        display_name:               RIG/PROP
+        allow_taskless_publishes:   false
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        expand_single_items:        false
+        hook_copy_file:             default
+        hook_post_publish:          maya_asset_RIG_post_publish
+        hook_primary_pre_publish:   maya_asset_RIG_pre_publish_primary
+        hook_primary_publish:       maya_asset_RIG_primary_publish
+        hook_scan_scene:            maya_asset_RIG_PROP_scan_scene
+        hook_secondary_pre_publish: default
+        hook_secondary_publish:     default
+        hook_thumbnail:             default
+        primary_description:        Publish and version up the current Maya scene
+        primary_display_name:       Publish Prop Asset
+        primary_icon:               icons/publish_maya_main.png
+        primary_publish_template:   maya_asset_publish
+        primary_scene_item_type:    work_file
+        primary_tank_type:          Maya Scene
+        secondary_outputs:          []
+        template_work:              maya_asset_work
+################################################################################################################################################################
+##### RIG ANIM_BLD PUBLISHING
+      tk-multi-publish-RIG_ANIM-BLD:
+        display_name:               RIG/BLD ANIM
+        allow_taskless_publishes:   false
+        expand_single_items:        false
+        hook_copy_file:             default
+        hook_post_publish:          maya_asset_RIG_post_publish
+        hook_primary_pre_publish:   maya_asset_RIG_pre_publish_primary
+        hook_primary_publish:       maya_asset_RIG_primary_publish
+        hook_scan_scene:            maya_asset_RIG_BLD_ANIM_scan_scene
+        hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
+        hook_secondary_publish:     maya_asset_MDL_ASSEMBLYDEF_secondary_publish
+        hook_thumbnail:             default
+        location:                   {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        primary_description:        Publish and version up the current Maya scene
+        primary_display_name:       Publish RIG Building Asset
+        primary_icon:               icons/publish_maya_main.png
+        primary_publish_template:   maya_asset_publish
+        primary_scene_item_type:    work_file
+        primary_tank_type:          Maya Scene
+        secondary_outputs:
+        - { description:            Publish Alembic Cache Representation,
+            display_group:          Scene Assembly Representations,
+            display_name:           Alembic Cache,
+            icon:                   icons/cache.png,
+            name:                   alembic_cache,
+            publish_template:       maya_asset_ADEF_alembic,
+            required:               true,
+            scene_item_type:        mesh_group,
+            selected:               false,
+            tank_type:              Alembic Cache}
+
+        - { description:            Publish GPU Cache Representation,
+            display_group:          Scene Assembly Representations,
+            display_name:           GPU Cache,
+            icon:                   icons/gpuCache.png,
+            name:                   gpu_cache,
+            publish_template:       maya_asset_ADEF_gpu,
+            required:               true,
+            scene_item_type:        mesh_group,
+            selected:               false,
+            tank_type:              Alembic Cache}
+
+        - { description:            Publish Bounding Box Representation,
+            display_group:          Scene Assembly Representations,
+            display_name:           Bounding Box,
+            icon:                   icons/boundingBox.png,
+            name:                   bounding_box,
+            publish_template:       maya_asset_ADEF_boundingbox,
+            required:               true,
+            scene_item_type:        mesh_group,
+            selected:               false,
+            tank_type:              Maya Scene}
+
+        - { description:            Publish Assembly Definition Node,
+            display_group:          Scene Assembly Definition Output,
+            display_name:           Scene Assembly Definition,
+            icon:                   icons/building.png,
+            name:                   assembly_definition,
+            publish_template:       maya_asset_ADEF_assembly,
+            required:               true,
+            scene_item_type:        mesh_group,
+            selected:               false,
+            tank_type:              Maya Scene}
+        template_work: maya_asset_work
+################################################################################################################################################################
+##### RIG STATIC_BLD PUBLISHING
+      tk-multi-publish-RIG-STATIC-BLD:
+        display_name:                   RIG/BLD STATIC
+        allow_taskless_publishes:       false
+        location:                       {name: tk-multi-publish, type: app_store, version: v0.6.10}
+        expand_single_items:            false
+        hook_copy_file:                 default
+        hook_post_publish:              maya_asset_RIG_post_publish
+        hook_primary_pre_publish:       maya_asset_RIG_pre_publish_primary
+        hook_primary_publish:           maya_asset_RIG_primary_publish
+        hook_scan_scene:                maya_asset_RIG_BLD_STATIC_scan_scene
+        hook_secondary_pre_publish:     maya_asset_MDL_pre_publish_secondary
+        hook_secondary_publish:         maya_asset_MDL_ASSEMBLYDEF_secondary_publish
+        hook_thumbnail:                 default
+        primary_description:            Publish and version up the current Maya scene
+        primary_display_name:           Publish Building Asset
+        primary_icon:                   icons/publish_maya_main.png
+        primary_publish_template:       maya_asset_publish
+        primary_scene_item_type:        work_file
+        primary_tank_type:              Maya Scene
+        secondary_outputs:
+        - { description:                Publish Alembic Cache Representation,
+            display_group:              Scene Assembly Representations,
+            display_name:               Alembic Cache,
+            icon:                       icons/cache.png,
+            name:                       alembic_cache,
+            publish_template:           maya_asset_ADEF_alembic,
+            required:                   true,
+            scene_item_type:            mesh_group,
+            selected:                   false,
+            tank_type:                  Alembic Cache}
+
+        - { description:                Publish GPU Cache Representation,
+            display_group:              Scene Assembly Representations,
+            display_name:               GPU Cache,
+            icon:                       icons/gpuCache.png,
+            name:                       gpu_cache,
+            publish_template:           maya_asset_ADEF_gpu,
+            required:                   true,
+            scene_item_type:            mesh_group,
+            selected:                   false,
+            tank_type:                  Alembic Cache}
+
+        - { description:                Publish Bounding Box Representation,
+            display_group:              Scene Assembly Representations,
+            display_name:               Bounding Box,
+            icon:                       icons/boundingBox.png,
+            name:                       bounding_box,
+            publish_template:           maya_asset_ADEF_boundingbox,
+            required:                   true,
+            scene_item_type:            mesh_group,
+            selected:                   false,
+            tank_type:                  Maya Scene}
+
+        - { description:                Publish Assembly Definition Node,
+            display_group:              Scene Assembly Definition Output,
+            display_name:               Scene Assembly Definition,
+            icon:                       icons/building.png,
+            name:                       assembly_definition,
+            publish_template:           maya_asset_ADEF_assembly,
+            required:                   true,
+            scene_item_type:            mesh_group,
+            selected:                   false,
+            tank_type:                  Maya Scene}
         template_work: maya_asset_work
 
-      tk-multi-publish-RIG-CHAR:
-        allow_taskless_publishes: false
-        display_name: RIG/CHAR
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_RIG_post_publish
-        hook_primary_pre_publish: maya_asset_RIG_pre_publish_primary
-        hook_primary_publish: maya_asset_RIG_primary_publish
-        hook_scan_scene: maya_asset_RIG_CHAR_scan_scene
-        hook_secondary_pre_publish: default
-        hook_secondary_publish: default
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish Character Asset
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
-        secondary_outputs: []
-        template_work: maya_asset_work
-      tk-multi-publish-RIG-STATIC-BLD:
-        allow_taskless_publishes: false
-        display_name: RIG/BLD STATIC
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_RIG_post_publish
-        hook_primary_pre_publish: maya_asset_RIG_pre_publish_primary
-        hook_primary_publish: maya_asset_RIG_primary_publish
-        hook_scan_scene: maya_asset_RIG_BLD_STATIC_scan_scene
-        hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
-        hook_secondary_publish: maya_asset_MDL_ASSEMBLYDEF_secondary_publish
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish Building Asset
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
-        secondary_outputs:
-        - {description: Publish Alembic Cache Representation, display_group: Scene
-            Assembly Representations, display_name: Alembic Cache, icon: icons/cache.png,
-          name: alembic_cache, publish_template: maya_asset_ADEF_alembic, required: true,
-          scene_item_type: mesh_group, selected: false, tank_type: Alembic Cache}
-        - {description: Publish GPU Cache Representation, display_group: Scene Assembly
-            Representations, display_name: GPU Cache, icon: icons/gpuCache.png, name: gpu_cache,
-          publish_template: maya_asset_ADEF_gpu, required: true, scene_item_type: mesh_group,
-          selected: false, tank_type: Alembic Cache}
-        - {description: Publish Bounding Box Representation, display_group: Scene
-            Assembly Representations, display_name: Bounding Box, icon: icons/boundingBox.png,
-          name: bounding_box, publish_template: maya_asset_ADEF_boundingbox, required: true,
-          scene_item_type: mesh_group, selected: false, tank_type: Maya Scene}
-        - {description: Publish Assembly Definition Node, display_group: Scene Assembly
-            Definition Output, display_name: Scene Assembly Definition, icon: icons/building.png,
-          name: assembly_definition, publish_template: maya_asset_ADEF_assembly, required: true,
-          scene_item_type: mesh_group, selected: false, tank_type: Maya Scene}
-        template_work: maya_asset_work
-      tk-multi-publish-RIG_ANIM-BLD:
-        allow_taskless_publishes: false
-        display_name: RIG/BLD ANIM
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_RIG_post_publish
-        hook_primary_pre_publish: maya_asset_RIG_pre_publish_primary
-        hook_primary_publish: maya_asset_RIG_primary_publish
-        hook_scan_scene: maya_asset_RIG_BLD_ANIM_scan_scene
-        hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
-        hook_secondary_publish: maya_asset_MDL_ASSEMBLYDEF_secondary_publish
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish RIG Building Asset
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
-        secondary_outputs:
-        - {description: Publish Alembic Cache Representation, display_group: Scene
-            Assembly Representations, display_name: Alembic Cache, icon: icons/cache.png,
-          name: alembic_cache, publish_template: maya_asset_ADEF_alembic, required: true,
-          scene_item_type: mesh_group, selected: false, tank_type: Alembic Cache}
-        - {description: Publish GPU Cache Representation, display_group: Scene Assembly
-            Representations, display_name: GPU Cache, icon: icons/gpuCache.png, name: gpu_cache,
-          publish_template: maya_asset_ADEF_gpu, required: true, scene_item_type: mesh_group,
-          selected: false, tank_type: Alembic Cache}
-        - {description: Publish Bounding Box Representation, display_group: Scene
-            Assembly Representations, display_name: Bounding Box, icon: icons/boundingBox.png,
-          name: bounding_box, publish_template: maya_asset_ADEF_boundingbox, required: true,
-          scene_item_type: mesh_group, selected: false, tank_type: Maya Scene}
-        - {description: Publish Assembly Definition Node, display_group: Scene Assembly
-            Definition Output, display_name: Scene Assembly Definition, icon: icons/building.png,
-          name: assembly_definition, publish_template: maya_asset_ADEF_assembly, required: true,
-          scene_item_type: mesh_group, selected: false, tank_type: Maya Scene}
-        template_work: maya_asset_work
-      tk-multi-publish-RIG_PROP:
-        allow_taskless_publishes: false
-        display_name: RIG/PROP
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_RIG_post_publish
-        hook_primary_pre_publish: maya_asset_RIG_pre_publish_primary
-        hook_primary_publish: maya_asset_RIG_primary_publish
-        hook_scan_scene: maya_asset_RIG_PROP_scan_scene
-        hook_secondary_pre_publish: default
-        hook_secondary_publish: default
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish Prop Asset
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
-        secondary_outputs: []
-        template_work: maya_asset_work
-      tk-multi-publish-SRF:
-        allow_taskless_publishes: false
-        display_name: SRF/SRF Publish
-        expand_single_items: false
-        hook_copy_file: default
-        hook_post_publish: maya_asset_SHD_post_publish
-        hook_primary_pre_publish: maya_asset_MDL_pre_publish_primary
-        hook_primary_publish: maya_asset_SHD_primary_publish
-        hook_scan_scene: maya_asset_SHD_scan_scene
-        hook_secondary_pre_publish: maya_asset_MDL_pre_publish_secondary
-        hook_secondary_publish: maya_asset_SHD_secondary_publish
-        hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish Building Asset
-        primary_icon: icons/publish_maya_main.png
-        primary_publish_template: maya_asset_publish
-        primary_scene_item_type: work_file
-        primary_tank_type: Maya Scene
-        secondary_outputs:
-        - {description: Publish Shading XML, display_group: XML, display_name: Shading
-            XML, icon: icons/Xml_tool_icon.png, name: shd_xml, publish_template: maya_asset_SHD_XML,
-          required: false, scene_item_type: mesh_group, selected: true, tank_type: Maya
-            Scene}
-        - {description: Copy HiRes Textures To Publish Folders, display_group: Textures,
-          display_name: Copy HiRes Textures To Publish Folders, icon: icons/copyTextures-icon.png,
-          name: copyHiRes, publish_template: maya_asset_textures, required: false,
-          scene_item_type: mesh_group, selected: true, tank_type: Maya Scene}
-        - {description: Build Down Graded File Textures, display_group: Textures,
-          display_name: Build DownGraded Textures, icon: icons/downgrade-icon.png,
-          name: dg_texture, publish_template: maya_asset_textures_dg, required: false,
-          scene_item_type: mesh_group, selected: true, tank_type: Maya Scene}
-        - {description: UV Xml, display_group: XML, display_name: Build UV XML File,
-          icon: icons/Xml_tool_icon.png, name: uvxml, publish_template: maya_asset_uvxml,
-          required: false, scene_item_type: mesh_group, selected: true, tank_type: Maya
-            Scene}
-        template_work: maya_asset_work
       tk-multi-screeningroom: '@launch_screeningroom'
       tk-multi-snapshot:
         hook_copy_file: default
@@ -524,23 +814,7 @@ engines:
         template_work: maya_asset_work
         template_work_area: asset_work_area_maya
         version_compare_ignore_fields: []
-      tk-submit-maya-shotPlayblast:
-        allowAssetTurnTableBuild: true
-        display_name: .Publish TurnTable For Review...
-        isAsset: true
-        location: {name: tk-jbd-submit-mayaplayblast, type: manual, version: v0.0.1}
-        movie_height: 720
-        movie_path_template: maya_asset_playblast
-        movie_width: 1280
-        movie_workpath_template: maya_assetwork_playblast
-        new_version_status: rev
-        sg_in_frame_field: sg_cut_in
-        sg_out_frame_field: sg_cut_out
-        showOptions: true
-        store_on_disk: true
-        template_work: maya_asset_work
-        upload_to_shotgun: true
-        version_number_padding: 3
+
     compatibility_dialog_min_version: 2015
     debug_logging: false
     location: {name: tk-maya, type: app_store, version: v0.4.7}
