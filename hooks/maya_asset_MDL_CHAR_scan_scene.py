@@ -111,7 +111,7 @@ class ScanSceneHook(Hook):
         if asset_lib.goZScanScene():
             for eachGoZ in cmds.ls(type = 'transform'):
                 if cmds.objExists('%s.GoZBrushID' % eachGoZ):
-                    #print 'FOUND %s' % eachGoZ
+                    print 'FOUND %s' % eachGoZ
                     items.append({"type": "goZ_group", "name": cmds.getAttr('%s.GoZBrushID' % eachGoZ)})
 
             ## Scan the zbrush folder if it exists

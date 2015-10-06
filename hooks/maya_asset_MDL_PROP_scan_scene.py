@@ -97,7 +97,26 @@ class ScanSceneHook(Hook):
         #          if asset_lib.BLDTransformCheck(grp): ## Check for BLD step only to make sure the transforms are not frozen on the BLD grps
         #              items.append({"type":"mesh_group", "name":grp})
         #              asset_lib.assetCheckAndTag(type = 'BLD', customTag = 'staticBLD')
+        if asset_lib.goZScanScene():
+            for eachGoZ in cmds.ls(type = 'transform'):
+                if cmds.objExists('%s.GoZBrushID' % eachGoZ):
+                    print 'FOUND %s' % eachGoZ
+                    items.append({"type": "goZ_group", "name": cmds.getAttr('%s.GoZBrushID' % eachGoZ)})
 
+            ## Scan the zbrush folder if it exists
+            zbrushdir   = '%s/%s' % ('/'.join(scene_name.split("/")[0:-2]), 'zbrush')
+            ZBrushFiles = []
+            if os.path.isdir(zbrushdir):
+                getZbrushFiles = os.listdir(zbrushdir)
+                if getZbrushFiles:
+                    for eachZbrushFile in os.listdir(zbrushdir):
+                        if eachZbrushFile.endswith('.ZTL'):
+                            timeStamp = os.path.getmtime('%s/%s' % (zbrushdir, eachZbrushFile))
+                            ZBrushFiles.append([eachZbrushFile, timeStamp])
+            if ZBrushFiles:
+                ZBrushFiles = sorted(ZBrushFiles[-3:])
+                for eachZbrushFile in ZBrushFiles:
+                    items.append({"type": "zbrush_group", "name": eachZbrushFile[0]})
         #############################
         ## HARD FAILS
         ## Duplicate name check

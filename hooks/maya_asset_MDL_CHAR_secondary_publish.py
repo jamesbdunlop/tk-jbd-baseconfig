@@ -103,14 +103,14 @@ class PublishHook(Hook):
             elif output["name"] == "GoZ_ztn":
                 try:
                     secpubmsg.publishmessage('GOZ EXPORT -ztn %s' % item["name"], True)
-                    self._publish_goZZTL_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
+                    self._publish_goZ_archive_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
                     secpubmsg.publishmessage('GOZ EXPORT -ztn %s' % item["name"], False)
                 except Exception, e:
                     errors.append("Publish failed - %s" % e)
             elif output["name"] == "zbrush_ztl":
                 try:
                     secpubmsg.publishmessage('GOZ EXPORT zbrush ztl %s' % item["name"], True)
-                    self._publishzbrushZTL_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
+                    self._publish_zbrushZTL_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
                     secpubmsg.publishmessage('GOZ EXPORT zbrush ztl %s' % item["name"], False)
                 except Exception, e:
                     errors.append("Publish failed - %s" % e)
@@ -161,7 +161,7 @@ class PublishHook(Hook):
         except Exception, e:
             raise TankError("Failed to export GoZ ma file %s" % goZName)
 
-    def _publish_goZZTL_for_item(self, item, output, work_template, sg_task, comment, thumbnail_path, progress_cb):
+    def _publish_goZ_archive_for_item(self, item, output, work_template, sg_task, comment, thumbnail_path, progress_cb):
         """
         """
         tank_type = output["tank_type"]
@@ -195,7 +195,9 @@ class PublishHook(Hook):
             ## Now copy the file from the cache to the publish
             shutil.copyfile(fileSrcPath, fileDestPath)
         except Exception, e:
-            cmds.warning('No ZTL for %s' % goZName)
+            cmds.warning('ZTN fileSrcPath: %s' % fileSrcPath)
+            cmds.warning('No ZTN for %s check script editor for details.' % goZName)
+
 
         try:
             ## Now do the ZTL files
@@ -205,12 +207,14 @@ class PublishHook(Hook):
                 ## Now copy the file from the cache to the publish
                 shutil.copyfile(fileSrcPath, fileDestPath)
             else:
-                cmds.warning('No ZTL for %s' % goZName)
+                cmds.warning('ZTL fileSrcPath: %s' % fileSrcPath)
+                cmds.warning('No ZTL for %s check script editor for details.' % goZName)
         except Exception, e:
             raise TankError("Failed to export GoZ ztl file %s" % goZName)
 
-    def _publishzbrushZTL_for_item(self, item, output, work_template, sg_task, comment, thumbnail_path, progress_cb):
+    def _publish_zbrushZTL_for_item(self, item, output, work_template, sg_task, comment, thumbnail_path, progress_cb):
         """
+        This takes items from the zbrush subfolder for publishing
         """
         tank_type = output["tank_type"]
         publish_template = output["publish_template"]
@@ -229,14 +233,16 @@ class PublishHook(Hook):
         if not os.path.isdir(publish_path):
             os.mkdir(publish_path)
         ## Scan the zbrush folder if it exists
-        zbrushdir       = '%s/%s' % ('/'.join(scene_path.split("/")[0:-2]), 'zbrush')
-        fileSrcPath     = os.path.join(zbrushdir, '%s.ztl' % zbrushName)
-        fileDestPath    = os.path.join(publish_path, '%s.ztl' % zbrushName)
+        zbrushdir       = os.path.join((scene_path.split("maya%s" % os.path.sep)[0]), 'zbrush')
+        fileSrcPath     = os.path.join(zbrushdir, zbrushName)
+        fileDestPath    = os.path.join(publish_path, zbrushName)
         try:
             ## Now copy the file from the cache to the publish
             shutil.copyfile(fileSrcPath, fileDestPath)
         except Exception, e:
-            cmds.warning('No ZTL for %s' % zbrushName)
+            cmds.warning('ZTL source path %s' % fileSrcPath)
+            cmds.warning('ZTL dest path %s' % fileDestPath)
+            cmds.warning('No ZTL for %s check script editor for details' % zbrushName)
 
     def _register_publish(self, path, name, sg_task, publish_version, tank_type, comment, thumbnail_path, dependency_paths=None):
         """

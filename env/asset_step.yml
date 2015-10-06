@@ -5,10 +5,12 @@ engines:
       tk-changeworkspace:
         display_name: Change Workspace
         location: {name: tk-jbd-changeworkspace, type: manual, version: v0.0.1}
+
       tk-maya-breakdown:
         hook_multi_update: maya_asset_SCBRKDWN_breakdown_update
         hook_scan_scene: maya_asset_SCBRKDWN_scan_scene
         location: {name: tk-maya-breakdown, type: app_store, version: v0.3.1}
+
       tk-maya-envReporter:
         cfgCONST: true
         display_name: Development/1. Export Env Data
@@ -16,8 +18,10 @@ engines:
         mayaEnvs: true
         printToFile: true
         syspath: true
+
       tk-multi-about:
         location: {name: tk-multi-about, type: app_store, version: v0.1.20}
+
       tk-multi-loader-PUBLISH_LOADER:
         action_mappings:
           Maya Scene: [open, assemblyReference, reference, import, texture_node, importDGSHD]
@@ -90,6 +94,7 @@ engines:
         menu_name: Publish Loaders...
         publish_filters: []
         title_name: Assets
+
       tk-multi-publish-ENV:
         allow_taskless_publishes: false
         display_name: MDL/4. ENVIRONMENT
@@ -111,6 +116,7 @@ engines:
         primary_tank_type: Maya Scene
         secondary_outputs: []
         template_work: maya_asset_work
+
       tk-multi-publish-GENERIC:
         allow_taskless_publishes: false
         display_name: MDL/5. LIB
@@ -144,6 +150,7 @@ engines:
           required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
             Scene}
         template_work: maya_asset_work
+
       tk-multi-publish-LIB-RIG:
         allow_taskless_publishes: false
         display_name: RIG/LIB
@@ -165,6 +172,7 @@ engines:
         primary_tank_type: Maya Scene
         secondary_outputs: []
         template_work: maya_asset_work
+
       tk-multi-publish-LND:
         allow_taskless_publishes: false
         display_name: MDL/1. LANDSCAPE|ADEF
@@ -214,6 +222,7 @@ engines:
           required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
             Scene}
         template_work: maya_asset_work
+
       tk-multi-publish-MDL-CHAR:
         allow_taskless_publishes: false
         display_name: MDL/2. CHARACTER
@@ -247,6 +256,7 @@ engines:
           required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
             Scene}
         template_work: maya_asset_work
+
       tk-multi-publish-MDL-STATIC-BLD:
         allow_taskless_publishes: false
         display_name: MDL/0. BUILDING|ADEF
@@ -260,8 +270,7 @@ engines:
         hook_secondary_publish: maya_asset_MDL_ASSEMBLYDEF_secondary_publish
         hook_thumbnail: default
         location: {name: tk-multi-publish, type: app_store, version: v0.6.10}
-        primary_description: Publish to assembly definition and version up the current
-          Maya scene
+        primary_description: Publish to assembly definition and version up the current Maya scene
         primary_display_name: Publish Static Building Asset
         primary_icon: icons/publish_maya_main.png
         primary_publish_template: maya_asset_publish
@@ -297,6 +306,7 @@ engines:
           required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
             Scene}
         template_work: maya_asset_work
+
       tk-multi-publish-PROP:
         allow_taskless_publishes: false
         display_name: MDL/3. PROP
@@ -330,6 +340,7 @@ engines:
           required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
             Scene}
         template_work: maya_asset_work
+
       tk-multi-publish-RIG-CHAR:
         allow_taskless_publishes: false
         display_name: RIG/CHAR
