@@ -134,13 +134,15 @@ DEBUGGING                       = True
 ## SETUP BASE CONSTANTS FOR THE CONFIG
 USER_NAME                       = '%s' % getpass.getuser()
 MAYA_VERSION                    = '2016'
-BULLDOG_MAYA_VERSION            = '2015'
+BULLDOG_MAYA_VERSION            = '2016'
 LOGFILE_NAME                    = 'tankLog'
 ## SHOT GUN BASE CONSTANTS
 SHOTGUN_CONFIG_NAME             = 'genericconfig'
-SHOTGUN_URL                     = [INSERT YOUR URL HERE eg https://mystudio.shotgunstudio.com AS A STRING]
+#SHOTGUN_URL                     = [INSERT YOUR URL HERE eg https://mystudio.shotgunstudio.com AS A STRING]
+SHOTGUN_URL                     = 'https://framespersecond.shotgunstudio.com'
 SHOTGUN_TOOLKIT_NAME            = 'Toolkit'
-SHOTGUN_TOOLKIT_API_KEY         = [INSERT YOUR SHOTGUN API KEY HERE AS A STRING]
+#SHOTGUN_TOOLKIT_API_KEY         = [INSERT YOUR SHOTGUN API KEY HERE AS A STRING]
+SHOTGUN_TOOLKIT_API_KEY         = '724eea86a7f9fe4816278f2188382eacf42834a2b5cb85f814f125e96078a3b3'
 
 GOZ_PUBLIC_CACHEPATH            = 'C:\Users\Public\Pixologic\GoZProjects\Default'
 ## DEFAULT STUFF FOR THE CONFIG
@@ -221,6 +223,7 @@ if sys.platform == 'win32':
     SHOTGUN_PRIMARY_DRIVE       = 'I:'
     SHOTGUN_SECONDARY_DRIVE     = 'K:'
     SHOTGUN_CONFIG_PATH         = '%s/%s' % (SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME)
+    SHOTGUN_CONFIG_ROOT         = '%s/%s/config' % (SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME)
     SHOTGUN_ICON_PATH           = '%s/%s/config/icons' % (SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME)
     TANKCORE_PYTHON_PATH        = '%s/studio/install/core/python' % SHOTGUN_SOFTWARE_ROOT
     SGTK_PYTHON_PATH            = '%s/python-api' % SHOTGUN_SOFTWARE_ROOT
@@ -258,6 +261,7 @@ elif sys.platform == 'darwin':
     SHOTGUN_PRIMARY_DRIVE       = '/volumes/projects'
     SHOTGUN_SECONDARY_DRIVE     = '/volumes/renders'
     SHOTGUN_CONFIG_PATH         = '%s/%s' % (SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME)
+    SHOTGUN_CONFIG_ROOT         = '%s/%s/config' % (SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME)
     SHOTGUN_ICON_PATH           = '%s/%s/config/icons' % (SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME)
     TANKCORE_PYTHON_PATH        = '%s/studio/install/core/python' % SHOTGUN_SOFTWARE_ROOT
     SGTK_PYTHON_PATH            = '%s/python-api' % SHOTGUN_SOFTWARE_ROOT
@@ -287,6 +291,7 @@ else:
     SHOTGUN_PRIMARY_DRIVE       = '/projects'
     SHOTGUN_SECONDARY_DRIVE     = '/renders'
     SHOTGUN_CONFIG_PATH         = '%s/%s' % (SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME)
+    SHOTGUN_CONFIG_ROOT         = '%s/%s/config' % (SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME)
     SHOTGUN_ICON_PATH           = '%s/%s/config/icons' % (SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME)
     TANKCORE_PYTHON_PATH        = '%s/studio/install/core/python' % SHOTGUN_SOFTWARE_ROOT
     SGTK_PYTHON_PATH            = '%s/python-api' % SHOTGUN_SOFTWARE_ROOT
@@ -330,10 +335,11 @@ BULLDOG_PLUGIN_PATHS            = [
 ## BASE SYS PATHS CONSTANTS
 SYS_PATHS                       = [
                                     '%s/site-packages' % MAYA_DEFAULT_ENV,
-                                    '%s' % SHOTGUN_LIBRARY_PATH,
-                                    '%s' % TANKCORE_PYTHON_PATH,
-                                    '%s' % SGTK_PYTHON_PATH,
-                                    '%s' % MAYA_PYTHON_LIB,
+                                    SHOTGUN_LIBRARY_PATH,
+                                    TANKCORE_PYTHON_PATH,
+                                    SGTK_PYTHON_PATH,
+                                    MAYA_PYTHON_LIB,
+                                    SHOTGUN_CONFIG_ROOT
                                     ]
 
 MAYA_XBM_PATHS                  = []
