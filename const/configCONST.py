@@ -196,22 +196,31 @@ SURFVAR_PREFIX                  = 'SRFVar'
 ASSEMBLYDEF_SUFFIX              = 'ADEF'
 
 ###################################################################################################################
-
 ## MAYA NAMING CONVENTIONS
 GROUP_SUFFIX                    = 'hrc'
 GEO_SUFFIX                      = 'geo'
 NURBSCRV_SUFFIX                 = 'crv'
 IMPORT_SUFFIX                   = 'importDELME'
 SHOTCAM_SUFFIX                  = 'shotCam'
-
 LIGHTINGCLEANUP                 = ['parts_hrc', 'rig_hrc', '']
+SHOTCAM_SUFFIX                  = 'shotCam'
 
-## Really important to note here that these are matced to the TYPE names in the tk-jbd-lighting-fetchcaches application
+###################################################################################################################
+## CACHING
+## Really important to note here that these are matched to the TYPE names in the tk-jbd-lighting-fetchcaches application
 ANIM_CACHE                      = 'AnimationCaches'
 STATIC_CACHE                    = 'StaticCaches'
 CAMERA_CACHE                    = 'CameraCaches'
 GPU_CACHE                       = 'GpuCaches'
 FX_CACHE                        = 'FxCaches'
+CACHETAGS                       = {}
+for eachSuffix in (BUILDING_SUFFIX, ENVIRONMENT_SUFFIX, CHAR_SUFFIX, LND_SUFFIX, PROP_SUFFIX, CPROP_SUFFIX, LIB_SUFFIX, VEH_SUFFIX, SURFVAR_PREFIX, ASSEMBLYDEF_SUFFIX):
+    CACHETAGS['static{0}'.format(eachSuffix)] = STATIC_CACHE
+    CACHETAGS['anim{0}'.format(eachSuffix)] = ANIM_CACHE
+    CACHETAGS['fx{0}'.format(eachSuffix)] = FX_CACHE
+    CACHETAGS['gpu{0}'.format(eachSuffix)] = GPU_CACHE
+
+###################################################################################################################
 ## Set platform dependant config constants
 if sys.platform == 'win32':
     ## OS specific
@@ -344,3 +353,94 @@ SYS_PATHS                       = [
 
 MAYA_XBM_PATHS                  = []
 MAYA_PLUGIN_PATHS               = []
+
+
+###
+## SANITY CHECKS
+SANITY = {
+        'RIG_GENERIC': {
+                        "checkShapes": False,
+                        "history": False,
+                        "pivots": False,
+                        "freezeXFRM": False,
+                        "smoothLvl": True,
+                        "tagSmoothed": True,
+                        "checkVerts": False,
+                        "renderflags": True,
+                        "deleteIntermediate": False,
+                        "turnOffOpposite": True,
+                        "instanceCheck": False,
+                        "shaders": True,
+                        "removeNS": False,
+                        "coreArchives": False,
+                         "lightingCleanup": False
+                        },
+        'MDL_GENERIC': {
+                        "checkShapes": True,
+                        "history": True,
+                        "pivots": True,
+                        "freezeXFRM": True,
+                        "smoothLvl": True,
+                        "tagSmoothed": True,
+                        "checkVerts": True,
+                        "renderflags": True,
+                        "deleteIntermediate": True,
+                        "turnOffOpposite": True,
+                        "instanceCheck": True,
+                        "shaders": True,
+                        "removeNS": False,
+                        "coreArchives": False,
+                         "lightingCleanup": False
+                        },
+        'MDL_LND': {
+                         "checkShapes": True,
+                         "history": True,
+                         "pivots": False,
+                         "freezeXFRM": True,
+                         "smoothLvl": False,
+                         "tagSmoothed": True,
+                         "checkVerts": False,
+                         "renderflags": True,
+                         "deleteIntermediate": True,
+                         "turnOffOpposite": True,
+                         "instanceCheck": True,
+                         "shaders": True,
+                         "removeNS": True,
+                         "coreArchives": True,
+                         "lightingCleanup": False
+                         },
+        'MDL_ENV': {
+                         "checkShapes": False,
+                         "history": False,
+                         "pivots": False,
+                         "freezeXFRM": False,
+                         "smoothLvl": False,
+                         "tagSmoothed": False,
+                         "checkVerts": False,
+                         "renderflags": False,
+                         "deleteIntermediate": False,
+                         "turnOffOpposite": False,
+                         "instanceCheck": False,
+                         "shaders": False,
+                         "removeNS": False,
+                         "coreArchives": False,
+                         "lightingCleanup": False
+                         },
+        'SHD_GENERIC': {
+                         "checkShapes": True,
+                         "history": False,
+                         "pivots": False,
+                         "freezeXFRM": False,
+                         "smoothLvl": False,
+                         "tagSmoothed": False,
+                         "checkVerts": False,
+                         "renderflags": False,
+                         "deleteIntermediate": False,
+                         "turnOffOpposite": False,
+                         "instanceCheck": False,
+                         "shaders": False,
+                         "removeNS": False,
+                         "coreArchives": False,
+                         "lightingCleanup": True
+                         }
+        }
