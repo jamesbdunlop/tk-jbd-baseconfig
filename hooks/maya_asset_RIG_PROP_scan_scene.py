@@ -6,10 +6,12 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
 import configCONST as configCONST
-from maya_SceneScan import rig_scan_scene
+import hooks.maya_SceneScan as ss
+reload(ss)
+from hooks.maya_SceneScan import rig_scan_scene
 from tank import Hook
 
 class ScanSceneHook(Hook):
     def execute(self, **kwargs):
-        items = rig_scan_scene(configCONST.PROP_SUFFIX, True, configCONST.SANITY['RIG_GENERIC'])
+        items = rig_scan_scene(configCONST.PROP_SUFFIX, False, configCONST.SANITY['RIG_GENERIC'])
         return items

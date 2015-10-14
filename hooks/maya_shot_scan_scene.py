@@ -6,6 +6,8 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
 import configCONST as configCONST
+import hooks.maya_SceneScan as ss
+reload(ss)
 from hooks.maya_SceneScan import anim_scan_Scene
 from tank import Hook
 

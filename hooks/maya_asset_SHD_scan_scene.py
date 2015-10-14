@@ -6,10 +6,12 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
 import configCONST as configCONST
-from maya_SceneScan import shd_scan_scene
+import hooks.maya_SceneScan as shd
+reload(shd)
+from hooks.maya_SceneScan import shd_scan_Scene
 from tank import Hook
 
 class ScanSceneHook(Hook):
     def execute(self, **kwargs):
-        items = shd_scan_scene(configCONST.PROP_SUFFIX, True, configCONST.SANITY['SHD_GENERIC'])
+        items = shd_scan_Scene(configCONST.SANITY['SHD_GENERIC'])
         return items

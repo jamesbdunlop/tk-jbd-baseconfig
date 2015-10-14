@@ -1,19 +1,22 @@
 import os, tank, time
 from tank import TankError
 import configCONST as configCONST
+reload(configCONST)
 import maya_asset_lib as asset_lib
+reload(asset_lib)
 import maya_shd_lib as shd_lib
+reload(shd_lib)
 import maya.cmds as cmds
-from maya.mel import mel
+import maya.mel as mel
 
 def mdl_scan_scene(env = '', sanityChecks = {}):
     ## Look for a rig_hrc and fail if found.
     if asset_lib.rigGroupCheck():
         raise TankError('Rig group found!! Please use the RIG menus to publish rigs...')
 
-    items = setWorkFile()
+    items = setWorkFile(configCONST.MODEL_SHORTNAME)
     items = mdl_getMeshGroup(items)
-    mdl_genericHardFails(env, items)
+    mdl_genericHardFails(items)
     doSanityChecks(sanityChecks, items)
 
     ### NOW CUSTOM CONTEXT STUFF
@@ -70,10 +73,11 @@ def rig_scan_scene(env = '', static = False, sanityChecks =  {}):
     if not asset_lib.rigGroupCheck():
         raise TankError('No rig group found!! Please make sure your animation controls are under rig_%s.' % configCONST.GROUP_PREFIX)
 
-    items = setWorkFile()
+    items = setWorkFile(configCONST.RIG_SHORTNAME)
     items = mdl_getMeshGroup(items)
-    mdl_genericHardFails(env, items)
+    mdl_genericHardFails(items)
     doSanityChecks(sanityChecks, items)
+
     ### NOW CUSTOM CONTEXT STUFF
     if env == configCONST.BUILDING_SUFFIX:
         asset_lib.setRiggedSmoothPreviews()
@@ -87,7 +91,10 @@ def rig_scan_scene(env = '', static = False, sanityChecks =  {}):
         asset_lib.assetCheckAndTag(type = '%s' % configCONST.CHAR_SUFFIX, customTag = 'anim%s' % configCONST.CHAR_SUFFIX)
         items.pop()
 
-    elif env == configCONST.LIB_SUFFIX or env == configCONST.PROP_SUFFIX:
+    elif env == configCONST.LIB_SUFFIX:
+        items.pop()
+    elif env == configCONST.PROP_SUFFIX:
+        asset_lib.assetCheckAndTag(type = '%s' % configCONST.PROP_SUFFIX, customTag = 'anim%s' % configCONST.PROP_SUFFIX)
         items.pop()
 
     ## Global shader cleanup
@@ -99,6 +106,7 @@ def rig_scan_scene(env = '', static = False, sanityChecks =  {}):
             mel.eval("MLdeleteUnused();")
         except:
             pass
+    return items
 
 def anim_scan_Scene(env = '', sanityChecks = {}):
     """
@@ -106,16 +114,18 @@ def anim_scan_Scene(env = '', sanityChecks = {}):
     :param cleanup: for animation scene cleanup
     :return:
     """
-    items = setWorkFile()
+    items = setWorkFile(configCONST.ANIM_SHORTNAME)
     if env == configCONST.LAYOUT_SHORTNAME:
         ## set scene for ma export only
-         items = anim_getAssemblyReference(items, True)
+        items = anim_getAssemblyReference(items, True)
 
-    elif env ==  configCONST.ANIM_SHORTNAME:
+    elif env == configCONST.ANIM_SHORTNAME:
+        print 'Animation context found... processing items now...'
         ##Prep for full cache export
         items = anim_getCacheTypes(items)
+        print 'anim_scan_Scene anim_getCacheTypes: %s' % items
         items = anim_getAssemblyReference(items, False)
-
+        print 'anim_scan_Scene anim_getAssemblyReference: %s' % items
         ## NOW ADD THE TAGS FOR CREASES TO BE EXPORTED CORRECTLY
         ## NEED TO DO THIS LONG WAY IN CASE THE ATTR ALREADY EXISTS AND FAILS>.
         for each in cmds.ls(type = 'mesh', l = True):
@@ -126,12 +136,13 @@ def anim_scan_Scene(env = '', sanityChecks = {}):
                 except:
                     pass
     asset_lib.cleanupUnknown()
-
+    print 'anim_scan_Scene items: %s' % items
     return items
 
-def shd_scan_Scene(env = '', sanityChecks = {}):
-    items = setWorkFile()
-    mdl_genericHardFails()
+def shd_scan_Scene(sanityChecks = {}):
+    items = setWorkFile(configCONST.SURFACE_SHORTNAME)
+    items = mdl_getMeshGroup(items)
+    mdl_genericHardFails(items)
     doSanityChecks(sanityChecks, items)
 
     ## Now do the smartConn
@@ -158,7 +169,7 @@ def shd_scan_Scene(env = '', sanityChecks = {}):
 ########################################################################################################################
 ###############
 ### MODEL STUFF
-def setWorkFile():
+def setWorkFile(contextName):
     items = []
     # get the main scene:
     scene_name = cmds.file(query=True, sn= True)
@@ -169,12 +180,13 @@ def setWorkFile():
     ## Check that we are checking into the right context!!
     srv = tank.tank_from_path(configCONST.SHOTGUN_CONFIG_PATH)
     context = srv.context_from_path(path=scene_name)
-    if context.step['name'] != configCONST.MODEL_SHORTNAME:
+    if context.step['name'] != contextName:
         raise TankError("Please Save your file under the correct context before Publishing!")
 
     name = os.path.basename(scene_path)
     # create the primary item - this will match the primary output 'scene_item_type':
     items.append({"type": "work_file", "name": name})
+    print 'setWorkFile success!'
     return items
 
 def findGoZItems(items):
@@ -217,7 +229,7 @@ def mdl_getMeshGroup(items, env = ''):
                 items.append({"type": "mesh_group", "name": grp})
     return items
 
-def mdl_genericHardFails(env, items):
+def mdl_genericHardFails(items):
     #############################
     ## INITIAL HARD FAILS
     ## Do a quick check for geo_hrc and rig_hrc
@@ -290,9 +302,9 @@ def anim_getCacheTypes(items):
     """
     CACHETAGS = configCONST.CACHETAGS
     for eachTransform in cmds.ls(transforms = True):
-        if cmds.objExists('%s.type' % eachTransform):
+        if cmds.objExists('%s.type' % eachTransform) and eachTransform != 'camGate':
             cacheType = cmds.getAttr('%s.type' % eachTransform)
-            items.append({"type":CACHETAGS[cacheType], "name":eachTransform})
+            items.append({"type": CACHETAGS[cacheType], "name":eachTransform})
 
     ## NPARTICLES
     for eachNpart in cmds.ls(type = 'nParticle'):
@@ -300,5 +312,5 @@ def anim_getCacheTypes(items):
         items.append({"type":"nparticle_caches", "name":eachNpart})
 
     ## ANIM CURVES
-    items.append({"type":"anim_atom", "name":"Animation Curves"})
+    items.append({"type":configCONST.ATOM_CACHE, "name":"Animation Curves"})
     return items
