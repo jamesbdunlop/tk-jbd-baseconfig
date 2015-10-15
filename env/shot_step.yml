@@ -227,10 +227,10 @@ engines:
             display_group:                  Cameras,
             display_name:                   Cameras,
             icon:                           icons/cam_icon.png,
-            name:                           camera,
+            name:                           CameraCaches,
             publish_template:               maya_shot_cam,
             required:                       false,
-            scene_item_type:                camera,
+            scene_item_type:                CameraCaches,
             selected:                       true,
             tank_type:                      Maya Scene Cache
             }
@@ -238,10 +238,10 @@ engines:
             display_group:                  GPU Caches,
             display_name:                   GPUCaches,
             icon:                           icons/cache.png,
-            name:                           gpu_caches,
+            name:                           GpuCaches,
             publish_template:               maya_shot_gpu,
             required:                       false,
-            scene_item_type:                gpu_caches,
+            scene_item_type:                GpuCaches,
             selected:                       true,
             tank_type:                      Alembic Cache
             }
@@ -249,10 +249,10 @@ engines:
             display_group:                  Static Alembic Caches,
             display_name:                   StaticCaches,
             icon:                           icons/cache.png,
-            name:                           static_caches,
+            name:                           StaticCaches,
             publish_template:               maya_shot_static_alembic,
             required:                       false,
-            scene_item_type:                static_caches,
+            scene_item_type:                StaticCaches,
             selected:                       true,
             tank_type:                      Alembic Cache
             }
@@ -260,22 +260,11 @@ engines:
             display_group:                  Anim Alembic Caches,
             display_name:                   AnimatedCaches,
             icon:                           icons/animCache_icon.png,
-            name:                           anim_caches,
+            name:                           AnimationCaches,
             publish_template:               maya_shot_anim_alembic,
             required:                       false,
-            scene_item_type:                anim_caches,
+            scene_item_type:                AnimationCaches,
             selected:                       true,
-            tank_type:                      Alembic Cache
-            }
-        - { description:                    Publish ATOM,
-            display_group:                  Animation Transfer Object Model (ATOM),
-            display_name:                   ATOM,
-            icon:                           icons/animCurve_icon.png,
-            name:                           anim_atom,
-            publish_template:               maya_shot_anim_atom,
-            required:                       false,
-            scene_item_type:                anim_atom,
-            selected:                       false,
             tank_type:                      Alembic Cache
             }
         template_work: maya_shot_work

@@ -33,9 +33,6 @@ class PrePublishHook(Hook):
                 errors.extend(self._validate_item_for_publish(item))
             elif item["type"] == configCONST.GPU_CACHE:
                 errors.extend(self._validate_item_for_publish(item))
-            elif item["type"] == configCONST.ATOM_CACHE:
-                pass
-                #errors.extend(self._validate_item_for_publish(item))
             else:
                 # don't know how to publish this output types!
                 errors.append("Don't know how to publish this item! \nPlease contact your supervisor..." % output["name"])          

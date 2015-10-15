@@ -46,6 +46,7 @@ def _do_maya_publish(task, work_template, comment, thumbnail_path, sg_task, prog
     logger.info('publish_path: %s' % publish_path)
     logger.info('publishing Maya scene file now..')
     publishMayaSceneFile(task, publish_path, publish_template, output, fields, progress_cb, tank, comment, thumbnail_path, sg_task, parent)
+    return publish_path
 
 def publishMayaSceneFile(task, publish_path, publish_template, output, fields, progress_cb, tank, comment, thumbnail_path, sg_task, parent):
     progress_cb(0.0, "Finding scene dependencies", task)

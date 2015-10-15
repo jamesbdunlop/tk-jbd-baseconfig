@@ -191,6 +191,7 @@ SG_VEH_TYPE_NAME                = 'Vehicle'
 
 SURFVAR_PREFIX                  = 'SRFVar'
 
+CAMERA_SUFFIX                   = 'CAM'
 ###################################################################################################################
 ## NOTE!!! If you change these you MUST MANUALLY CHANGE THEM IN THE asset_step.yml and the shot_step.yml as well!!!
 ASSEMBLYDEF_SUFFIX              = 'ADEF'
@@ -204,11 +205,14 @@ IMPORT_SUFFIX                   = 'importDELME'
 SHOTCAM_SUFFIX                  = 'shotCam'
 LIGHTINGCLEANUP                 = ['parts_hrc', 'rig_hrc', '']
 SHOTCAM_SUFFIX                  = 'shotCam'
-
+GPU_SUFFIX                      = 'GPU'
+ALEMBIC_SUFFIX                  = 'ABC'
 ###################################################################################################################
 ## CACHING
 ## Really important to note here that these are matched to the TYPE names in the tk-jbd-lighting-fetchcaches application
+## Also note these are tied into the shot_Step.yml
 ANIM_CACHE                      = 'AnimationCaches'
+ATOM_CACHE                      = 'AtomnCaches'
 STATIC_CACHE                    = 'StaticCaches'
 CAMERA_CACHE                    = 'CameraCaches'
 GPU_CACHE                       = 'GpuCaches'
@@ -219,7 +223,7 @@ for eachSuffix in (BUILDING_SUFFIX, ENVIRONMENT_SUFFIX, CHAR_SUFFIX, LND_SUFFIX,
     CACHETAGS['anim{0}'.format(eachSuffix)] = ANIM_CACHE
     CACHETAGS['fx{0}'.format(eachSuffix)] = FX_CACHE
     CACHETAGS['gpu{0}'.format(eachSuffix)] = GPU_CACHE
-
+CACHETAGS[SHOTCAM_SUFFIX] = CAMERA_CACHE
 ###################################################################################################################
 ## Set platform dependant config constants
 if sys.platform == 'win32':

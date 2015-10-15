@@ -1,248 +1,192 @@
-import os
-import sys
+import logging
+logger = logging.getLogger(__name__)
 
+import os
 import maya.cmds as cmds
 import maya.mel as mel
-
 import sgtk
-import tank
 from tank import Hook
 from tank import TankError
 import configCONST as configCONST
-import maya_secondarypublishmessage as secpubmsg
 import maya_adef_lib as adef_lib
-from logger import log
 import maya_cam_lib as cam_lib
-reload(configCONST)## leave this alone if you want to update the config using the maya shotgun reload menu
+import hooks.maya_RegisterPublish as regPub
 
 
 class PublishHook(Hook):
     def execute(self, tasks, work_template, comment, thumbnail_path, sg_task, primary_publish_path, progress_cb, **kwargs):
+        results    = []
+        logger.info("primary_publish_path: %s" % primary_publish_path)
+        logger.info("tasks: %s" % tasks)
         ## Make sure the scene assembly plugins are loaded
         adef_lib.loadSceneAssemblyPlugins(TankError)
+        logger.info("Alembic Plugins loaded successfully")
 
         ## Instantiate the API
         tk = sgtk.sgtk_from_path(configCONST.SHOTGUN_CONFIG_PATH)
 
-        results         = []
-        gpuCaches       = []
-        staticCaches    = []
-        animCaches      = []
-
         ## Clean the animation alembic bat now for a fresh publish
-        pathToBatFile   = configCONST.PATH_TO_ANIM_BAT
+        pathToBatFile = configCONST.PATH_TO_ANIM_BAT
         if os.path.isfile(pathToBatFile):
             os.remove(pathToBatFile)
 
+        ## Build the asset lists for a nice quick clean selection for exporting in one hit as opposed to individual items
+        staticCaches, animCaches, gpuCaches = self._sortAlembicCaches(tk = tk, tasks = tasks)
+        logger.info("gpuCaches: %s" % gpuCaches)
+        logger.info("staticCaches: %s" % staticCaches)
+        logger.info("animCaches: %s" % animCaches)
+
+        progress_cb(0, "Processing Static, Animation, GPU Alembic now...")
+        cacheTasks = {
+                     'staticCaches': [],
+                     'animCaches': [],
+                     'gpuCaches': [],
+                     }
+        for task in tasks:
+            item = task["item"]
+            output = task["output"]
+            if item["type"] == configCONST.CAMERA_CACHE:
+                self._publish_camera_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb),
+
+            if item["type"] == configCONST.STATIC_CACHE:
+                if not cacheTasks['staticCaches']:
+                    cacheTasks['staticCaches'].append(item)
+            elif item["type"] == configCONST.ANIM_CACHE:
+                if not cacheTasks['animCaches']:
+                    cacheTasks['animCaches'].append(item)
+            elif item["type"] == configCONST.GPU_CACHE:
+                if not cacheTasks['gpuCaches']:
+                    cacheTasks['gpuCaches'].append(item)
+
+        for cacheTask, cacheData in cacheTasks.items():
+            if cacheData:
+                if cacheData[0]["type"] == configCONST.STATIC_CACHE:
+                    isStatic = True
+                    cacheGroup = staticCaches
+                    cacheName = 'staticCaches'
+                    cmds.select(cacheGroup, r = True)
+                    ## Do a quick check that every assembly reference marked for export as alembic is at full res
+                    for each in cmds.ls(sl= True):
+                        self._upResAssemblyRefs(each)
+                    self._publish_alembic_cache_for_item(cacheName, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb, isStatic)
+                    cachesToTransfer = True
+                elif cacheData[0]["type"] == configCONST.ANIM_CACHE:
+                    isStatic = False
+                    cacheGroup = animCaches
+                    cacheName = 'animCaches'
+                    cmds.select(cacheGroup, r = True)
+                    ## Do a quick check that every assembly reference marked for export as alembic is at full res
+                    for each in cmds.ls(sl= True):
+                        self._upResAssemblyRefs(each)
+                    self._publish_alembic_cache_for_item(cacheName, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb, isStatic)
+                    cachesToTransfer = True
+                elif cacheData[0]["type"] == configCONST.GPU_CACHE:
+                    isStatic = False
+                    cacheGroup = gpuCaches
+                    cacheName = 'gpuCaches'
+                    cmds.select(cacheGroup, r = True)
+                    self._publish_gpu_cache_for_item(cacheGroup, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
+                    cachesToTransfer = True
+
+        progress_cb(100)
+
+        ### COPY THE CACHE FILES TO THE SERVER NOW # Subprocess to copy files from the temp folder to the server
+        logger.info('Cache exports finished... moving cache files now if appropriate')
+        progress_cb(0, "Copying caches to server now...")
+        if cachesToTransfer:
+            import subprocess
+            CTEMP      = configCONST.TEMP_FOLDER
+            BATCHNAME  = configCONST.ALEMBIC_BATCH_NAME
+            progress_cb(50, "Copying caches to server now...")
+            p = subprocess.Popen(BATCHNAME, cwd=CTEMP, shell=True, bufsize=4096, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            stdout, stderr = p.communicate()
+            return results
+        else:
+            return results
+        progress_cb(100, "Caches moved. AllDone...")
+        logger.info(" ")
+
+    def _scanForAssetType(self, type = None, item = None, tk = None):
+        assetList = []
+        errors = []
+        assetName = item['name'].split('_hrc')[0]
+        if ':' in assetName:
+            assetName = assetName.split(':')[-1]
+        logger.info("assetName: %s" % assetName)
+
+        ## Work out which type we're processing now..
+        if type == configCONST.STATIC_CACHE:
+            sgTypes = (configCONST.SG_PROP_TYPE_NAME, configCONST.SG_ENV_TYPE_NAME)
+        elif type == configCONST.ANIM_CACHE:
+             sgTypes = (configCONST.SG_PROP_TYPE_NAME, configCONST.SG_ENV_TYPE_NAME, configCONST.SG_CHAR_TYPE_NAME)
+
+        ## Now process the assets and return the info
+        try:
+            assetType = tk.shotgun.find_one('Asset', filters = [["code", "is", assetName]], fields = ['sg_asset_type'])
+            logger.info("assetType: %s" % assetType)
+
+            if assetType:
+                getSGAssetType = assetType['sg_asset_type']
+
+                if getSGAssetType == configCONST.SG_PROP_TYPE_NAME:
+                    if configCONST.SG_PROP_TYPE_NAME in sgTypes:
+                        if item['name'] not in assetList:
+                            assetList.append(item['name'])
+                elif getSGAssetType == configCONST.SG_CHAR_TYPE_NAME:
+                    if configCONST.SG_CHAR_TYPE_NAME in sgTypes:
+                        if item['name'] not in assetList:
+                            assetList.append(item['name'])
+                elif getSGAssetType == configCONST.SG_ENV_TYPE_NAME:
+                    if configCONST.SG_ENV_TYPE_NAME in sgTypes:
+                        geoGrp = [geoGrp for geoGrp in cmds.listRelatives(item['name'], children = True) if '_{0}'.format(configCONST.GROUP_SUFFIX) in geoGrp][0]
+                        if geoGrp not in assetList:
+                            assetList.append(geoGrp)
+                else:
+                    pass
+        except Exception, e:
+            errors.append("Publish failed - %s" % e)
+
+        return assetList
+
+    def _sortAlembicCaches(self, tk, tasks):
         ## PROCESS THE ITEMS into lists so we can compress down the alembic export into selected items.
         ## This saves a bunch of time because we won't be running the animated stuff over the full range
         ## of the time line for EACH item, we can do it on a larger selection.
-        for task in tasks:
-            item    = task["item"]
-            output  = task["output"]
-            errors  = []
-            geoGrp  = ''
+        staticCaches = []
+        animCaches = []
+        gpuCaches  = []
 
+        for task in tasks:
+            item = task["item"]
+            output = task["output"]
+            errors = []
             ######################
             ## STATIC CACHES LIST
             ######################
-            progress_cb(0, "Processing Scene Secondaries now...", task)
             if item["type"] == configCONST.STATIC_CACHE:
-                try:
-                    assetName = item['name'].split('_hrc')[0]
-                    ## Do a ns check on assetName and strip it
-                    if ':' in assetName:
-                        assetName = assetName.split(':')[-1]
-                    log(app = None, method = 'execute', message = "assetName: %s" % assetName, printToLog = False, verbose = configCONST.DEBUGGING)
-
-                    assetType = tk.shotgun.find_one('Asset', filters = [["code", "is", assetName]], fields = ['sg_asset_type'])
-                    log(app = None, method = 'execute', message = "assetType: %s" % assetType, printToLog = False, verbose = configCONST.DEBUGGING)
-                    if assetType:
-                        if assetType['sg_asset_type'] == configCONST.SG_PROP_TYPE_NAME:
-                            if item['name'] not in staticCaches:
-                                staticCaches.append(item['name'])
-                        elif assetType['sg_asset_type'] == configCONST.SG_ENV_TYPE_NAME:
-                            ## Now process the assembly definition files as these have a difference hrc
-                            ## to normal references as they exist without a top level ns in the scene.
-                            geoGrp = [geoGrp for geoGrp in cmds.listRelatives(item['name'], children = True) if '_hrc' in geoGrp][0]
-                            if geoGrp not in staticCaches:
-                                staticCaches.append(geoGrp)
-                        else:
-                            pass
-                except Exception, e:
-                    errors.append("Publish failed - %s" % e)
-
+                 cache = self._scanForAssetType(type = configCONST.STATIC_CACHE, item = item, tk = tk)
+                 logger.info('cache: %s' % cache)
+                 if cache:
+                     staticCaches = staticCaches + cache
             ######################
             ## ANIM CACHES LIST
             ######################
             elif item["type"] == configCONST.ANIM_CACHE:
-                try:
-                    assetName = item['name'].split('_hrc')[0]
-                    ## Do a ns check on assetName and strip it
-                    if ':' in assetName:
-                        assetName = assetName.split(':')[-1]
-                    log(app = None, method = 'execute', message = "assetName: %s" % assetName, printToLog = False, verbose = configCONST.DEBUGGING)
-
-                    assetType = tk.shotgun.find_one('Asset', filters = [["code", "is", assetName]], fields = ['sg_asset_type'])
-                    log(app = None, method = 'execute', message = "assetType: %s" % assetType, printToLog = False, verbose = configCONST.DEBUGGING)
-
-                    if assetType:
-                        if assetType['sg_asset_type'] == configCONST.SG_PROP_TYPE_NAME:
-                            if item['name'] not in animCaches:
-                                animCaches.append(item['name'])
-                        elif assetType['sg_asset_type'] == configCONST.SG_CHAR_TYPE_NAME:
-                            if item['name'] not in animCaches:
-                                animCaches.append(item['name'])
-                        elif assetType['sg_asset_type'] == configCONST.SG_ENV_TYPE_NAME:
-                            ## Now process the assembly definition files as these have a difference hrc
-                            ## to normal references as they exist without a top level ns in the scene.
-                            geoGrp = [geoGrp for geoGrp in cmds.listRelatives(item['name'], children = True) if '_hrc' in geoGrp][0]
-                            if geoGrp not in animCaches:
-                                animCaches.append(geoGrp)
-                        else:
-                            pass
-                except Exception, e:
-                    errors.append("Publish failed - %s" % e)
+                 cache = self._scanForAssetType(type = configCONST.ANIM_CACHE, item = item, tk = tk)
+                 logger.info('cache: %s' % cache)
+                 if cache:
+                     animCaches = animCaches + cache
             ######################
             ## GPU CACHES
             ######################
             elif item["type"] == configCONST.GPU_CACHE:
                 if item['name'] not in gpuCaches:
                     gpuCaches.append(item['name'])
-            ######################
-            ## CAMERA
-            ######################
-            elif item["type"] == configCONST.CAMERA_CACHE:
-                self._publish_camera_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
-            ######################
-            ## ANIMATION CURVES
-            ######################
-            elif item["type"] == configCONST.ATOM_CACHE:
-                log(app = None, method = '_publish_animation_curves_for_item', message = "Processing Animation Curves now...", printToLog = False, verbose = configCONST.DEBUGGING)
-                self._publish_animation_curves_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
             else:
                 # don't know how to publish this output types!
                 errors.append("Don't know how to publish this item! Contact your supervisor to build a hook for this type.")
 
-            ## if there is anything to report then add to result
-            if len(errors) > 0:
-                ## add result:
-                results.append({"task":task, "errors":errors})
-
-            progress_cb(100, "Done Processing INITIAL Secondaries, moving to final caching....", task)
-
-        ## Because we don't want to continually iter through the tasks and do the same shit over and over
-        ## we're setting a quick Done true or false here because I'm tired and can't think of a better way at the moment....
-        staticDone      = False
-        animDone        = False
-        gpuDone         = False
-        cachesToExport  = False
-        progress_cb(0, "Processing Static, Anim, GPU and Fluid caches now...")
-
-        log(app = None, method = '_publish_fx_caches_for_item', message = "Processing DONE. Performing Cache exports now...", printToLog = False, verbose = configCONST.DEBUGGING)
-        log(app = None, method = '_publish_fx_caches_for_item', message = "gpuCaches: %s" % gpuCaches, printToLog = False, verbose = configCONST.DEBUGGING)
-        log(app = None, method = '_publish_fx_caches_for_item', message = "animCaches: %s" % animCaches, printToLog = False, verbose = configCONST.DEBUGGING)
-        log(app = None, method = '_publish_fx_caches_for_item', message = "staticCaches: %s" % staticCaches, printToLog = False, verbose = configCONST.DEBUGGING)
-
-        if gpuCaches or animCaches or staticCaches:
-            for task in tasks:
-                item    = task["item"]
-                output  = task["output"]
-                errors  = []
-
-                ## DEBUGG
-                ## report progress:
-                geoGrp  = ''
-                ## STATIC CACHES
-                if item["type"] == "static_caches":
-                    if not staticDone:
-                        ## Now process the publishing of the lists so we can bulk export the appropriate assets to avoid hundreds of alembic files.
-                        ## STATIC CACHES
-                        static      = True
-                        groupName   = 'staticCaches'
-                        if len(staticCaches) <= 0:
-                            print 'Static cache list empty, skipping...'
-                        else:
-                            progress_cb(25, "Processing Static Caches now...")
-                            log(app = None, method = '_publish_fx_caches_for_item', message = "Processing Static Caches now...", printToLog = False, verbose = configCONST.DEBUGGING)
-                            ## Select the cache objects for static export now
-                            ## and replace the current selection with this list.
-                            cmds.select(staticCaches, r = True)
-
-                            ## Do a quick check that every assembly reference marked for export as alembic is at full res
-                            for each in cmds.ls(sl= True):
-                                self._upResAssemblyRefs(each)
-
-                            ## Now publish
-                            self._publish_alembic_cache_for_item(groupName, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb, static)
-                            staticDone      = True
-                            cachesToExport  = True
-                            progress_cb(35, "Done processing Static Caches!")
-
-                ## ANIMATED CACHES
-                elif item["type"] == "anim_caches":
-                    if not animDone:
-                        static      = False
-                        groupName   = 'animCaches'
-                        if len(animCaches) <= 0:
-                            print 'Animated cache list empty, skipping...'
-                        else:
-                            progress_cb(45, "Processing Anim Caches now...")
-                            log(app = None, method = '_publish_fx_caches_for_item', message = "Processing Anim Caches now...", printToLog = False, verbose = configCONST.DEBUGGING)
-                            cmds.select(animCaches, r = True) # Select the cache objects for static export now and replace the current selection with this list.
-
-                            ## Do a quick check that every assembly reference marked for export as alembic is at full res
-                            for each in cmds.ls(sl= True):
-                                self._upResAssemblyRefs(each)
-
-                            ## Now publish
-                            self._publish_alembic_cache_for_item(groupName, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb, static)
-                            animDone        = True
-                            cachesToExport  = True
-                            progress_cb(50, "Done processing Anim Caches!")
-
-                ## GPU CACHES
-                elif item["type"] == "gpu_caches":
-                    if not gpuDone:
-                        if len(gpuCaches) <= 0:
-                            print 'GPU caches list empty, skipping...'
-                        else:
-                            progress_cb(55, "Processing GPU Caches now...")
-                            allItems        = gpuCaches
-                            log(app = None, method = '_publish_fx_caches_for_item', message = "Processing GPU Caches now...", printToLog = False, verbose = configCONST.DEBUGGING)
-                            ## Select the cache objects for static export now
-                            ## and replace the current selection with this list.
-                            cmds.select(gpuCaches, r = True)
-
-                            ## Now publish
-                            self._publish_gpu_cache_for_item(allItems, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
-                            gpuDone         = True
-                            cachesToExport  = True
-                else:
-                    pass
-
-        progress_cb(100)
-        log(app = None, method = '_publish_fx_caches_for_item', message = "Cache exports finished... moving cache files now if appropriate", printToLog = False, verbose = configCONST.DEBUGGING)
-
-        ### COPY THE CACHE FILES TO THE SERVER NOW
-        ### Subprocess to copy files from the temp folder to the server
-        progress_cb(0, "Copying caches to server now...")
-        if cachesToExport:
-            import subprocess
-            CTEMP           = configCONST.TEMP_FOLDER
-            BATCHNAME       = configCONST.ALEMBIC_BATCH_NAME
-            progress_cb(50, "Copying caches to server now...")
-            p               = subprocess.Popen(BATCHNAME, cwd=CTEMP, shell=True, bufsize=4096, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            stdout, stderr  = p.communicate()
-            # if p.returncode == 0:
-            #     return results
-            # else:
-            #     results.append({"task":'File Copy', "errors":['Publish failed - could not copy files to the server!']})
-            #     return results
-            return results
-        else:
-            return results
-        progress_cb(100, "Done...")
+        return staticCaches, animCaches, gpuCaches
 
     def _upResAssemblyRefs(self, aRef):
         """
@@ -266,39 +210,39 @@ class PublishHook(Hook):
         NOTE 2:
         GroupName is handled differently than normal here because we are processing the item[] as a list after the initial task iter see the execution for this
         """
-        group_name          = groupName
-        tank_type           = 'Alembic Cache'
-        publish_template    = output["publish_template"]
+        group_name     = groupName
+        tank_type      = 'Alembic Cache'
+        publish_template = output["publish_template"]
 
         # get the current scene path and extract fields from it
         # using the work template:
-        scene_path          = os.path.abspath(cmds.file(query=True, sn= True))
-        fields              = work_template.get_fields(scene_path)
-        publish_version     = fields["version"]
+        scene_path     = os.path.abspath(cmds.file(query=True, sn= True))
+        fields = work_template.get_fields(scene_path)
+        publish_version = fields["version"]
 
         # update fields with the group name:
-        fields["grp_name"]  = group_name
+        fields["grp_name"] = group_name
 
         ## create the publish path by applying the fields with the publish template:
-        publish_path        = publish_template.apply_fields(fields)
-        log(app = None, method = 'PublishHook', message = 'publish_path: %s' % publish_path, printToLog = False, verbose = configCONST.DEBUGGING)
+        publish_path   = publish_template.apply_fields(fields)
+        logger.info('publish_path: %s' % publish_path)
 
-        tempFolder          = configCONST.TEMP_FOLDER
-        log(app = None, method = 'PublishHook', message = 'tempFolder: %s' % tempFolder, printToLog = False, verbose = configCONST.DEBUGGING)
+        tempFolder     = configCONST.TEMP_FOLDER
+        logger.info('tempFolder: %s' % tempFolder)
         tempFilePath = '%s\\%s' % ( tempFolder, publish_path.replace(':', ''))
 
-        pathToVersionDir    = '\\'.join(publish_path.split('\\')[0:-1])
+        pathToVersionDir = '\\'.join(publish_path.split('\\')[0:-1])
         ## build and execute the Alembic export command for this item:
         if static:
-            frame_start     = 1
-            frame_end       = 1
+            frame_start = 1
+            frame_end  = 1
         else:
-            frame_start     = cmds.playbackOptions(query = True, animationStartTime = True)
-            frame_end       = cmds.playbackOptions(query = True, animationEndTime = True)
+            frame_start = cmds.playbackOptions(query = True, animationStartTime = True)
+            frame_end  = cmds.playbackOptions(query = True, animationEndTime = True)
 
         ## Exporting on selection requires the entire selection to be added with their full paths as -root flags for the export command
         ## Do this now by setting up a string and processing the selection into that string.
-        rootList            = ''
+        rootList = ''
         for eachRoot in cmds.ls(sl= True):
             rootList = '-root %s %s' % (str(cmds.ls(eachRoot, l = True)[0]), rootList)
 
@@ -312,248 +256,140 @@ class PublishHook(Hook):
         else:
             tempFolder = '%s/%s/' % (tempFolder, pathToVersionDir)
 
-        log(app = None, method = 'PublishHook', message = 'tempFolder: %s' % tempFolder, printToLog = False, verbose = configCONST.DEBUGGING)
+        logger.info('tempFolder: %s' % tempFolder)
         if not os.path.isdir(os.path.dirname(tempFolder)):
             os.makedirs(os.path.dirname(tempFolder))
 
-
         ## Now build the final export command to use with the python AbcExport
         abc_export_cmd = "-attr smoothed -attr dupAsset -attr mcAssArchive -attr version -ro -uvWrite -wholeFrameGeo -worldSpace -writeVisibility -fr %d %d %s -file %s" % (frame_start, frame_end, rootList, tempFilePath.replace("\\", "/"))
-        log(app = None, method = 'PublishHook', message = 'abc_export_cmd: %s' % abc_export_cmd, printToLog = False, verbose = configCONST.DEBUGGING)
+        logger.info('abc_export_cmd: %s' % abc_export_cmd)
 
         ## add to bat file
         ## Now write the bat file out for the file copy
         pathToBatFile = configCONST.PATH_TO_ANIM_BAT
-        log(app = None, method = 'PublishHook', message = 'pathToBatFile: %s' % pathToBatFile, printToLog = False, verbose = configCONST.DEBUGGING)
+        logger.info('pathToBatFile: %s' % pathToBatFile)
         if not os.path.isfile(pathToBatFile):
             outfile = open(pathToBatFile, "w")
         else:
             outfile = open(pathToBatFile, "a")
-        log(app = None, method = 'PublishHook', message = 'copy %s %s\n' % (tempFolder, publish_path), printToLog = False, verbose = configCONST.DEBUGGING)
+        logger.info('copy %s %s' % (tempFolder, publish_path))
         outfile.write('copy %s %s\n' % (tempFilePath, publish_path))
         outfile.close()
 
         try:
-            self.parent.log_debug("Executing command: %s" % abc_export_cmd)
-            secpubmsg.publishmessage('Exporting %s to alembic cache now to %s' % (group_name, publish_path), True)
-
+            logger.info('Exporting %s to alembic cache now to %s' % (group_name, publish_path))
             cmds.AbcExport(verbose = False, j = abc_export_cmd)
         except Exception, e:
-            raise TankError("Failed to export Alembic Cache!!")
+            raise TankError("Failed to export Alembic Cache %s!!" % group_name)
 
         ## Finally, register this publish with Shotgun
-        self._register_publish(publish_path,
-                               '%s_ABC' % group_name,
-                               sg_task,
-                               publish_version,
-                               tank_type,
-                               comment,
-                               thumbnail_path,
-                               [primary_publish_path])
-        secpubmsg.publishmessage('Exporting %s to alembic cache now to %s' % (group_name, publish_path), False)
+        regPub._register_publish(path = publish_path,
+                               name = '%s_%s' % (group_name, configCONST.GPU_SUFFIX),
+                               sg_task = sg_task,
+                               publish_version = publish_version,
+                               tank_type = tank_type,
+                               comment = comment,
+                               thumbnail_path = thumbnail_path,
+                               dependency_paths = [primary_publish_path],
+                               parent = self.parent)
+        logger.info('Alembic publish successfully registered.')
 
     def _publish_gpu_cache_for_item(self, items, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
         """
         """
-        group_name          = 'gpuCaches'
-        items               = items
-        tank_type           = 'Alembic Cache'
-        publish_template    = output["publish_template"]
+        group_name     = 'gpuCaches'
+        items = items
+        tank_type      = 'Alembic Cache'
+        publish_template = output["publish_template"]
 
         ## Get the current scene path and extract fields from it using the work template:
-        scene_path          = os.path.abspath(cmds.file(query=True, sn= True))
-        fields              = work_template.get_fields(scene_path)
-        publish_version     = fields["version"]
+        scene_path     = os.path.abspath(cmds.file(query=True, sn= True))
+        fields = work_template.get_fields(scene_path)
+        publish_version = fields["version"]
         ## Update fields with the group name:
-        fields["grp_name"]  = group_name
+        fields["grp_name"] = group_name
         ## Create the publish path by applying the fields with the publish template:
-        publish_path        = publish_template.apply_fields(fields)
-        fileName            = os.path.splitext(publish_path)[0].split('\\')[-1]
-        fileDir             = '/'.join(publish_path.split('\\')[0:-1])
-        pathToVersionDir    = '\\'.join(publish_path.split('\\')[0:-1])
+        publish_path   = publish_template.apply_fields(fields)
+        fileName = os.path.splitext(publish_path)[0].split('\\')[-1]
+        fileDir = '/'.join(publish_path.split('\\')[0:-1])
+        pathToVersionDir = '\\'.join(publish_path.split('\\')[0:-1])
 
         if not os.path.isdir(pathToVersionDir):
             os.mkdir(pathToVersionDir)
 
         try:
-            self.parent.log_debug("Executing GPU Cache export now to: \n\t\t%s" % publish_path)
-            secpubmsg.publishmessage('Exporting gpu now to %s\%s' % (fileDir, fileName), True)
-
+            logger.info('Exporting gpu now to %s\%s' % (fileDir, fileName))
             for each in items:
                 ## Now do the gpu cache export for each of the items
                 try:
                     mel.eval("gpuCache -startTime 1 -endTime 1 -optimize -optimizationThreshold 40000 -directory \"%s\" \"%s\";" % (fileDir, each))
                 except:
-                    cmds.warning('FAILED TO PUBLISH GPU CACHE: %s' %  each)
+                    logger.warning('FAILED TO PUBLISH GPU CACHE: %s' % each)
 
         except Exception, e:
             raise TankError("Failed to export gpu cache file.. check for corrupt assembly references!")
 
         ## Finally, register this publish with Shotgun
-        self._register_publish(publish_path,
-                               '%s_GPU' % group_name,
-                               sg_task,
-                               publish_version,
-                               tank_type,
-                               comment,
-                               thumbnail_path,
-                               [primary_publish_path])
-
-        secpubmsg.publishmessage('Exporting gpu now to %s\%s' % (fileDir, fileName), False)
+        regPub._register_publish(path = publish_path,
+                               name = '%s_%s' % (group_name, configCONST.GPU_SUFFIX),
+                               sg_task = sg_task,
+                               publish_version = publish_version,
+                               tank_type = tank_type,
+                               comment = comment,
+                               thumbnail_path = thumbnail_path,
+                               dependency_paths = [primary_publish_path],
+                               parent = self.parent)
+        logger.info('Camera publish successfully registered.')
+        logger.info('')
 
     def _publish_camera_for_item(self, item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
         """
         Export the camera
         """
+
         ## Do the regular Shotgun processing now
-        cam_name            = item['name']
-        tank_type           = 'Maya Scene'
-        publish_template    = output["publish_template"]
+        cam_name = item['name']
+        tank_type      = 'Maya Scene'
+        publish_template = output["publish_template"]
 
         ## Get the current scene path and extract fields from it using the work template:
-        scene_path          = os.path.abspath(cmds.file(query=True, sn= True))
-        fields              = work_template.get_fields(scene_path)
-        publish_version     = fields["version"]
+        scene_path     = os.path.abspath(cmds.file(query=True, sn= True))
+        fields = work_template.get_fields(scene_path)
+        publish_version = fields["version"]
+
         ## Update fields with the group name:
-        fields["cam_name"]  = cam_name
+        fields["cam_name"] = cam_name
+
         ## Create the publish path by applying the fields with the publish template:
-        publish_path        = publish_template.apply_fields(fields)
-        pathToVersionDir    = '\\'.join(publish_path.split('\\')[0:-1])
-
+        publish_path   = publish_template.apply_fields(fields)
+        pathToVersionDir = '\\'.join(publish_path.split('\\')[0:-1])
         if not os.path.isdir(pathToVersionDir):
-            os.mkdir(pathToVersionDir)
+            logger.info('Creating new publish folder.')
 
+            os.mkdir(pathToVersionDir)
+        ## Delete existing bake if it isn't already (It should be done by the scan scene.)
         if cmds.objExists('BAKE_CAM_hrc'):
+            logger.info('BAKE_CAM_hrc removed sucessfully.')
             cmds.delete('BAKE_CAM_hrc')
 
-        log(app = None, method = '_publish_camera_for_item', message = "Baking %s now..." % cam_name, printToLog = False, verbose = configCONST.DEBUGGING)
-
-        secpubmsg.publishmessage('Exporting camera now..', True)
+        ## Now bake the camera
         cam_lib._bakeCamera(cam_name)
+        logger.info('cam_lib._bakeCamera success!')
 
+        ## Export the baked cam to it's publish path now.
         cmds.select('BAKE_CAM_hrc', r = True)
         cmds.file(publish_path, options = "v=0;", typ = "mayaAscii", es = True, force= True)
+        logger.info('Exported camera successfully. Registering publish now.')
+
         ## Finally, register this publish with Shotgun
-        self._register_publish(publish_path,
-                               '%s_%s' % (cam_name, configCONST.CAMERA_SUFFIX),
-                               sg_task,
-                               publish_version,
-                               tank_type,
-                               comment,
-                               thumbnail_path,
-                               [primary_publish_path])
-
-        secpubmsg.publishmessage('Exporting camera now..', False)
-        if cmds.objExists('BAKE_CAM_hrc'):
-            cmds.delete('BAKE_CAM_hrc')
-
-    def _publish_animation_curves_for_item(self, item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
-        """
-        Method for publishing animation curves...
-        """
-        # Get the current scene path and extract fields from it
-        # Using the work template:
-        scene_path = os.path.abspath(cmds.file(query=True, sn = True)) # I:\bubblebathbay\episodes\ep106\ep106_sh030\FX\work\maya\ep106sh030.v025.ma
-        log(app = None, method = '_publish_animation_curves_for_item', message =  'scene_path: %s' % scene_path, printToLog = False, verbose = configCONST.DEBUGGING)
-
-        fields = work_template.get_fields(scene_path) # {'Shot': u'ep106_sh030', 'name': u'ep106sh030', 'Sequence': u'ep106', 'Step': u'FX', 'version': 25, 'group_name': u'spriteSpray_nParticle_T_RShape'}
-
-        ############################################################
-
-        ## Do the regular Shotgun processing now
-        group_name = '%s_ATOM' % fields['name'] # ep106sh030_animCurves_XML
-        log(app = None, method = '_publish_animation_curves_for_item', message =  'group_name: %s' % group_name, printToLog = False, verbose = configCONST.DEBUGGING)
-
-        tank_type = 'Maya Scene' # Maya Scene
-        log(app = None, method = '_publish_animation_curves_for_item', message =  'tank_type: %s' % tank_type, printToLog = False, verbose = configCONST.DEBUGGING)
-
-        publish_template = output["publish_template"] # <Sgtk TemplatePath maya_shot_fxRenderFinal: episodes/{Sequence}/{Shot}//FxLayers/R{version}>
-        log(app = None, method = '_publish_animation_curves_for_item', message =  'publish_template: %s' % publish_template, printToLog = False, verbose = configCONST.DEBUGGING)
-
-        ############################################################
-
-        publish_version         = fields["version"]
-
-        ## Update fields with the group_name
-        fields["group_name"]    = group_name
-
-        ## Get sequence and shot name from field directly
-        epShotName              = fields["name"]
-
-        ## create the publish path by applying the fields
-        ## with the publish template:
-        publish_path            = publish_template.apply_fields(fields)
-        pathToVersionDir        = '\\'.join(publish_path.split('\\')[0:-1])
-        log(app = None, method = '_publish_animation_curves_for_item', message = 'publish_path: %s' % publish_path, printToLog = False, verbose = configCONST.DEBUGGING)
-        log(app = None, method = '_publish_animation_curves_for_item', message = 'pathToVersionDir: %s' % pathToVersionDir, printToLog = False, verbose = configCONST.DEBUGGING)
-
-        if not os.path.isdir(pathToVersionDir):
-            os.makedirs(pathToVersionDir)
-        ################################################################################################################
-        ## ATOM EXPORT
-        ## Get min/max time
-        secpubmsg.publishmessage('Exporting ATOM now..', True)
-        min = cmds.playbackOptions(min = True, q = True)
-        max = cmds.playbackOptions(max = True, q = True)
-
-        ## Force ATOM UI to pop out
-        mel.eval('ExportAnimOptions;')
-
-        ## Get scene stuffs except for default cameras, and constraints...
-        assemblies = [x for x in cmds.ls(assemblies = True) if x not in ['persp', 'top', 'front', 'side']]
-        allDescendents = []
-        for root in assemblies:
-            descendents = cmds.listRelatives(root, allDescendents = True, fullPath = True)
-            if descendents:
-                for each in descendents:
-                    if not cmds.nodeType(each) in ['parentConstraint', 'pointConstraint', 'orientConstraint', 'aimConstraint', 'scaleConstraint', 'pointOnPolyConstraint']:
-                        allDescendents.append(each)
-        assemblies.extend(allDescendents)
-        cmds.select(assemblies, replace = True)
-
-        ## Perform ATOM Export
-        cmds.file(  publish_path,
-                    force = True,
-                    type = 'atomExport',
-                    exportSelected = True,
-                    options = 'precision=8;statics=1;baked=1;sdk=0;constraint=0;animLayers=1;selected=selectedOnly;whichRange=2;range=%s:%s;hierarchy=none;controlPoints=0;useChannelBox=1;options=keys;copyKeyCmd=-animation objects -time >%s:%s> -float >%s:%s> -option keys -hierarchy none -controlPoints 0 ' % (min, max, min, max, min, max),
-                    )
-
-        ## Delete ATOM UI after export
-        if cmds.window('OptionBoxWindow', exists = True):
-            cmds.deleteUI('OptionBoxWindow', window = True)
-        ################################################################################################################
-
-        ## Finally, register publish to shotgun...
-        self._register_publish(publish_path,
-                               group_name,
-                               sg_task,
-                               publish_version,
-                               tank_type,
-                               comment,
-                               thumbnail_path,
-                               [primary_publish_path])
-        secpubmsg.publishmessage('Exporting ATOM now..', False)
-
-    def _register_publish(self, path, name, sg_task, publish_version, tank_type, comment, thumbnail_path, dependency_paths = None):
-        """
-        Helper method to register publish using the
-        specified publish info.
-        """
-        # construct args:
-        args = {
-            "tk": self.parent.tank,
-            "context": self.parent.context,
-            "comment": comment,
-            "path": path,
-            "name": name,
-            "version_number": publish_version,
-            "thumbnail_path": thumbnail_path,
-            "task": sg_task,
-            "dependency_paths": dependency_paths,
-            "published_file_type":tank_type,
-        }
-
-        # register publish;
-        sg_data = tank.util.register_publish(**args)
-        return sg_data
+        regPub._register_publish(path = publish_path,
+                               name = '%s_%s' % (cam_name, configCONST.CAMERA_SUFFIX),
+                               sg_task = sg_task,
+                               publish_version = publish_version,
+                               tank_type = tank_type,
+                               comment = comment,
+                               thumbnail_path = thumbnail_path,
+                               dependency_paths = [primary_publish_path],
+                               parent = self.parent)
+        logger.info('Camera publish successfully registered.')
+        logger.info('')

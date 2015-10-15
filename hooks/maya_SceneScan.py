@@ -8,6 +8,9 @@ import maya_shd_lib as shd_lib
 reload(shd_lib)
 import maya.cmds as cmds
 import maya.mel as mel
+import logging
+logger = logging.getLogger(__name__)
+
 
 def mdl_scan_scene(env = '', sanityChecks = {}):
     ## Look for a rig_hrc and fail if found.
@@ -120,12 +123,18 @@ def anim_scan_Scene(env = '', sanityChecks = {}):
         items = anim_getAssemblyReference(items, True)
 
     elif env == configCONST.ANIM_SHORTNAME:
-        print 'Animation context found... processing items now...'
+        logger.info('Animation context found... processing items now...')
+        if cmds.objExists('BAKE_CAM_hrc'):
+            logger.info('BAKE_CAM_hrc removed sucessfully.')
+            cmds.delete('BAKE_CAM_hrc')
+
         ##Prep for full cache export
         items = anim_getCacheTypes(items)
-        print 'anim_scan_Scene anim_getCacheTypes: %s' % items
+        logger.info('anim_scan_Scene anim_getCacheTypes: %s' % items)
+
         items = anim_getAssemblyReference(items, False)
-        print 'anim_scan_Scene anim_getAssemblyReference: %s' % items
+        logger.info('anim_scan_Scene anim_getAssemblyReference: %s' % items)
+
         ## NOW ADD THE TAGS FOR CREASES TO BE EXPORTED CORRECTLY
         ## NEED TO DO THIS LONG WAY IN CASE THE ATTR ALREADY EXISTS AND FAILS>.
         for each in cmds.ls(type = 'mesh', l = True):
@@ -136,7 +145,7 @@ def anim_scan_Scene(env = '', sanityChecks = {}):
                 except:
                     pass
     asset_lib.cleanupUnknown()
-    print 'anim_scan_Scene items: %s' % items
+    logger.info('anim_scan_Scene items: %s' % items)
     return items
 
 def shd_scan_Scene(sanityChecks = {}):
