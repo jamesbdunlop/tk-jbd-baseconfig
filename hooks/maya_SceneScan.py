@@ -59,7 +59,7 @@ def mdl_scan_scene(env = '', sanityChecks = {}):
 
         bad = ['hyperLayout', 'hyperGraphInfo', 'hyperView']
         for each in bad:
-            print "CHECKING FOR ASSEMBLY DEFINITION HYPERLAYOUTS NOW"
+            logger.info( "CHECKING FOR ASSEMBLY DEFINITION HYPERLAYOUTS NOW")
             for eachNaughty in cmds.ls(type = each):
                 try:
                     getAdef = cmds.listConnections(eachNaughty)
@@ -157,14 +157,14 @@ def shd_scan_Scene(sanityChecks = {}):
     ## Now do the smartConn
     start = time.time()
     shd_lib.smartConn()
-    print 'Total time to %s: %s' % ('shd_lib.smartConn()', time.time()-start)
+    logger.info('Total time to %s: %s' % ('shd_lib.smartConn()', time.time()-start))
 
     ## Fix remap and ramps color entry plugs and any incorrect ordering
     ## Leads to bad plugs being inserted when the XML recreates all the values. Querying also creates which makes black colour entry plugs.
     start = time.time()
     shd_lib.fixRamps(cmds.ls(type = 'remapValue'))
     shd_lib.fixRamps(cmds.ls(type = 'ramp'))
-    print 'Total time to %s: %s' % ('shd_lib.fixRamps()', time.time()-start)
+    logger.info('Total time to %s: %s' % ('shd_lib.fixRamps()', time.time()-start))
 
     ## Removed duplicate dgSHD nodes...
     shd_lib.deleteDGSHD()
@@ -172,7 +172,7 @@ def shd_scan_Scene(sanityChecks = {}):
     ## Delete empty UV Sets
     start = time.time()
     asset_lib.deleteEmptyUVSets()
-    print 'Total time to %s: %s' % ('asset_lib.deleteEmptyUVSets()', time.time() - start)
+    logger.info('Total time to %s: %s' % ('asset_lib.deleteEmptyUVSets()', time.time() - start))
     return items
 
 ########################################################################################################################
@@ -195,7 +195,7 @@ def setWorkFile(contextName):
     name = os.path.basename(scene_path)
     # create the primary item - this will match the primary output 'scene_item_type':
     items.append({"type": "work_file", "name": name})
-    print 'setWorkFile success!'
+    logger.info('setWorkFile success!')
     return items
 
 def findGoZItems(items):

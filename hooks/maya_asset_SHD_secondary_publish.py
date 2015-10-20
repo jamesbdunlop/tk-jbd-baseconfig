@@ -14,79 +14,15 @@ import maya_secondarypublishmessage as secpubmsg
 reload(shd_lib)
 reload(shd_writexml)
 reload(getUvs)
-
+import logging
+logger = logging.getLogger(__name__)
 
 class PublishHook(Hook):
     """
     Single hook that implements publish functionality for secondary tasks
     """
     def execute(self, tasks, work_template, comment, thumbnail_path, sg_task, primary_publish_path, progress_cb, **kwargs):
-        """
-        Main hook entry point
-        :tasks:         List of secondary tasks to be published.  Each task is a 
-                        dictionary containing the following keys:
-                        {
-                            item:   Dictionary
-                                    This is the item returned by the scan hook 
-                                    {   
-                                        name:           String
-                                        description:    String
-                                        type:           String
-                                        other_params:   Dictionary
-                                    }
-
-                            output: Dictionary
-                                    This is the output as defined in the configuration - the 
-                                    primary output will always be named 'primary' 
-                                    {
-                                        name:             String
-                                        publish_template: template
-                                        tank_type:        String
-                                    }
-                        }
-
-        :work_template: template
-                        This is the template defined in the config that
-                        represents the current work file
-
-        :comment:       String
-                        The comment provided for the publish
-
-        :thumbnail:     Path string
-                        The default thumbnail provided for the publish
-
-        :sg_task:       Dictionary (shotgun entity description)
-                        The shotgun task to use for the publish    
-
-        :primary_publish_path: Path string
-                        This is the path of the primary published file as returned
-                        by the primary publish hook
-
-        :progress_cb:   Function
-                        A progress callback to log progress during pre-publish.  Call:
-
-                            progress_cb(percentage, msg)
-
-                        to report progress to the UI
-
-        :returns:       A list of any tasks that had problems that need to be reported 
-                        in the UI.  Each item in the list should be a dictionary containing 
-                        the following keys:
-                        {
-                            task:   Dictionary
-                                    This is the task that was passed into the hook and
-                                    should not be modified
-                                    {
-                                        item:...
-                                        output:...
-                                    }
-
-                            errors: List
-                                    A list of error messages (strings) to report    
-                        }
-        """""
         results = []
-
         ##################################################################
         ## PROCESS STUFF BEFORE DOWNGRADING
         for task in tasks:
@@ -240,24 +176,24 @@ class PublishHook(Hook):
         Export an Alembic cache for the specified item and publish it
         to Shotgun.
         """
-        log(None, method = '_publish_shd_xml_for_item', message = 'Doing shd_xml', printToLog = False, verbose = configCONST.DEBUGGING)
+        logger.info('Doing _publish_shd_xml_for_item')
 
         tank_type           = output["tank_type"]
         publish_template    = output["publish_template"]
 
-        log(None, method = '_publish_shd_xml_for_item', message = 'tank_type: %s' % tank_type, printToLog = False, verbose = configCONST.DEBUGGING)
-        log(None, method = '_publish_shd_xml_for_item', message = 'publish_template: %s' % publish_template, printToLog = False, verbose = configCONST.DEBUGGING)
+        logger.info('tank_type: %s' % tank_type)
+        logger.info('publish_template: %s' % publish_template)
 
         # get the current scene path and extract fields from it
         # using the work template:
         scene_path          = os.path.abspath(cmds.file(query=True, sn= True))
-        log(None, method = '_publish_shd_xml_for_item', message = 'scene_path: %s' % scene_path, printToLog = False, verbose = configCONST.DEBUGGING)
+        logger.info('scene_path: %s' % scene_path)
 
         if not 'SRFVar_' in scene_path:
             group_name      = '%s_%s_XML' % (item["name"].strip("|").replace('_%s' % configCONST.GROUP_SUFFIX, '').replace('_', ''), configCONST.SURFACE_SHORTNAME)
         else:
             group_name      = '%s_SHD_XML_SurfVar%s' % (item["name"].strip("|").replace('_%s' % configCONST.GROUP_SUFFIX, '').replace('_', ''), configCONST.SURFACE_SHORTNAME, scene_path.split('SRFVar_')[-1].split('\\')[0])
-        log(None, method = '_publish_shd_xml_for_item', message = 'group_name: %s' % group_name, printToLog = False, verbose = configCONST.DEBUGGING)
+        logger.info('group_name: %s' % group_name)
 
         fields              = work_template.get_fields(scene_path)
         publish_version     = fields["version"]
@@ -267,7 +203,7 @@ class PublishHook(Hook):
         ## create the publish path by applying the fields 
         ## with the publish template:
         publish_path        = publish_template.apply_fields(fields)
-        log(None, method = '_publish_shd_xml_for_item', message = 'publish_path: %s' % publish_path, printToLog = False, verbose = configCONST.DEBUGGING)
+        logger.info('publish_path: %s' % publish_path)
 
         try:
             secpubmsg.publishmessage('Writing Shading XML', True)

@@ -16,8 +16,6 @@ import hooks.maya_RegisterPublish as regPub
 class PublishHook(Hook):
     def execute(self, tasks, work_template, comment, thumbnail_path, sg_task, primary_publish_path, progress_cb, **kwargs):
         results    = []
-        logger.info("primary_publish_path: %s" % primary_publish_path)
-        logger.info("tasks: %s" % tasks)
         ## Make sure the scene assembly plugins are loaded
         adef_lib.loadSceneAssemblyPlugins(TankError)
         logger.info("Alembic Plugins loaded successfully")
@@ -42,12 +40,14 @@ class PublishHook(Hook):
                      'animCaches': [],
                      'gpuCaches': [],
                      }
+        ## Do the publishing tasks now.
         for task in tasks:
             item = task["item"]
             output = task["output"]
+            ## Publish the camera now if it is ready to go
             if item["type"] == configCONST.CAMERA_CACHE:
                 self._publish_camera_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb),
-
+            ## Sort the cache tasks to a single item for processing so we don't repeat. We will process this dictionary next.
             if item["type"] == configCONST.STATIC_CACHE:
                 if not cacheTasks['staticCaches']:
                     cacheTasks['staticCaches'].append(item)
@@ -57,7 +57,8 @@ class PublishHook(Hook):
             elif item["type"] == configCONST.GPU_CACHE:
                 if not cacheTasks['gpuCaches']:
                     cacheTasks['gpuCaches'].append(item)
-
+        ## ABC
+        ## Do the cache tasks just once now as we are selecting a full group of objects for export instead of each item/task found
         for cacheTask, cacheData in cacheTasks.items():
             if cacheData:
                 if cacheData[0]["type"] == configCONST.STATIC_CACHE:
@@ -89,7 +90,10 @@ class PublishHook(Hook):
                     cachesToTransfer = True
 
         progress_cb(100)
+        results = self._transferCachesToServer(cachesToTransfer, progress_cb, results)
+        return results
 
+    def _transferCachesToServer(self, cachesToTransfer, progress_cb, results):
         ### COPY THE CACHE FILES TO THE SERVER NOW # Subprocess to copy files from the temp folder to the server
         logger.info('Cache exports finished... moving cache files now if appropriate')
         progress_cb(0, "Copying caches to server now...")
