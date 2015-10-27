@@ -19,8 +19,10 @@ def mdl_scan_scene(env = '', sanityChecks = {}):
 
     items = setWorkFile(configCONST.MODEL_SHORTNAME)
     items = mdl_getMeshGroup(items)
-    mdl_genericHardFails(items)
-    doSanityChecks(sanityChecks, items)
+
+    if env != configCONST.ENVIRONMENT_SUFFIX:
+        mdl_genericHardFails(items)
+        doSanityChecks(sanityChecks, items)
 
     ### NOW CUSTOM CONTEXT STUFF
     if env == configCONST.ENVIRONMENT_SUFFIX:
