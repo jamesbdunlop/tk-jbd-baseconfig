@@ -89,7 +89,7 @@ def rig_scan_scene(env = '', static = False, sanityChecks =  {}):
         if static: ## Because some buildings may be background assets with no anim export necessary except 1 frame
             asset_lib.assetCheckAndTag(type = '%s' % configCONST.BUILDING_SUFFIX, customTag = 'static%s' % configCONST.BUILDING_SUFFIX)
         else:
-            asset_lib.assetCheckAndTag(type = '%s' % configCONST.BUILDING_SUFFIX, customTag = 'snim%s' % configCONST.BUILDING_SUFFIX)
+            asset_lib.assetCheckAndTag(type = '%s' % configCONST.BUILDING_SUFFIX, customTag = 'anim%s' % configCONST.BUILDING_SUFFIX)
 
     elif env == configCONST.CHAR_SUFFIX:
         ## Cache tag
@@ -314,8 +314,12 @@ def anim_getCacheTypes(items):
     CACHETAGS = configCONST.CACHETAGS
     for eachTransform in cmds.ls(transforms = True):
         if cmds.objExists('%s.type' % eachTransform) and eachTransform != 'camGate':
-            cacheType = cmds.getAttr('%s.type' % eachTransform)
-            items.append({"type": CACHETAGS[cacheType], "name":eachTransform})
+            cacheType = str(cmds.getAttr('%s.type' % eachTransform))
+
+            try:
+                items.append({"type": CACHETAGS[cacheType], "name":eachTransform})
+            except KeyError:
+                pass
 
     ## NPARTICLES
     for eachNpart in cmds.ls(type = 'nParticle'):
