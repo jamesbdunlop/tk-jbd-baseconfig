@@ -1,10 +1,14 @@
 about:
-  location: {name: tk-multi-about, type: app_store, version: v0.1.20}
+  location: {name: tk-multi-about, type: app_store, version: v0.2.0}
 frameworks:
   tk-framework-qtwidgets_v1.x.x:
     location: {name: tk-framework-qtwidgets, type: app_store, version: v1.0.3}
+  tk-framework-qtwidgets_v2.x.x:
+    location: {name: tk-framework-qtwidgets, type: app_store, version: v2.2.1}
   tk-framework-shotgunutils_v2.x.x:
-    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.4.3}
+    location: {name: tk-framework-shotgunutils, type: app_store, version: v2.5.1}
+  tk-framework-shotgunutils_v4.x.x:
+    location: {name: tk-framework-shotgunutils, type: app_store, version: v4.0.4}
   tk-framework-widget_v0.1.18:
     location: {name: tk-framework-widget, type: app_store, version: v0.1.18}
   tk-framework-widget_v0.1.20:
@@ -14,7 +18,7 @@ frameworks:
   tk-framework-widget_v0.1.24:
     location: {name: tk-framework-widget, type: app_store, version: v0.1.24}
   tk-framework-widget_v0.2.x:
-    location: {name: tk-framework-widget, type: app_store, version: v0.2.2}
+    location: {name: tk-framework-widget, type: app_store, version: v0.2.3}
 workfiles:
   allow_task_creation: true
   file_extensions: []
@@ -24,7 +28,7 @@ workfiles:
   hook_scene_operation: default
   launch_at_startup: false
   launch_change_work_area_at_startup: false
-  location: {name: tk-multi-workfiles, type: app_store, version: v0.6.15}
+  location: {name: tk-multi-workfiles, type: app_store, version: v0.7.1}
   saveas_default_name: scene
   saveas_prefer_version_up: false
   sg_entity_type_extra_display_fields: {}
@@ -46,7 +50,7 @@ workfiles-launch-at-startup:
   hook_scene_operation: default
   launch_at_startup: true
   launch_change_work_area_at_startup: false
-  location: {name: tk-multi-workfiles, type: app_store, version: v0.6.15}
+  location: {name: tk-multi-workfiles, type: app_store, version: v0.7.1}
   saveas_default_name: scene
   saveas_prefer_version_up: false
   sg_entity_type_extra_display_fields: {}

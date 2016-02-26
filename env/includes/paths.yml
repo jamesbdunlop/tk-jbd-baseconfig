@@ -20,6 +20,12 @@ maya_windows: 'C:\Program Files\Autodesk\Maya2016\bin\maya.exe'
 maya_mac: /Applications/Autodesk/maya2016/Maya.app
 maya_linux: maya
 
+#
+# zbrush
+#
+zbrush_windows: 'C:\Program Files (x86)\Pixologic\ZBrush 4R7\ZBrush64.exe'
+zbrush_mac: ''
+zbrush_linux: ''
 
 #
 # nuke
