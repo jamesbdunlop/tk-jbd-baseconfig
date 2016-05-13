@@ -352,11 +352,14 @@ SYS_PATHS                       = [
                                     TANKCORE_PYTHON_PATH,
                                     SGTK_PYTHON_PATH,
                                     MAYA_PYTHON_LIB,
-                                    SHOTGUN_CONFIG_ROOT
+                                    SHOTGUN_CONFIG_ROOT,
+                                    "T:/software/MSide",
+                                    "T:/software/Nucleolus",
+                                    "C:/Program Files (x86)/Epic Games/4.11/Engine/Extras/Maya_AnimationRiggingTools/MayaTools/General/Scripts"
                                     ]
 
 MAYA_XBM_PATHS                  = []
-MAYA_PLUGIN_PATHS               = []
+MAYA_PLUGIN_PATHS               = ['C:\Program Files\Pixar\RenderManStudio-20.7-maya2016\plug-ins']
 
 
 ###

@@ -7,8 +7,8 @@ import tank
 from tank import Hook
 from tank import TankError
 import configCONST as configCONST
-import maya_shd_lib as shd
-import maya_asset_lib as asset_lib
+import sg_shd_lib as shd
+import sg_asset_lib as asset_lib
 import renderGlobals_writeXML as writeXML
 import light_writeXML as write_light_xml
 from logger import log

@@ -5,9 +5,9 @@ import tank
 from tank import Hook
 from tank import TankError
 from logger import log
-import maya_adef_lib as adef_lib
+import sg_adef_lib as adef_lib
 import tk_findhumanuserid as fhu
-import maya_secondarypublishmessage as secpubmsg
+import sg_secondarypublishmessage as secpubmsg
 import configCONST as configCONST
 reload(adef_lib)
 

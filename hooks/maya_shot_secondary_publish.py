@@ -8,8 +8,8 @@ import sgtk
 from tank import Hook
 from tank import TankError
 import configCONST as configCONST
-import maya_adef_lib as adef_lib
-import maya_cam_lib as cam_lib
+import sg_adef_lib as adef_lib
+import sg_cam_lib as cam_lib
 import hooks.maya_RegisterPublish as regPub
 
 

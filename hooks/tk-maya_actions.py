@@ -16,9 +16,9 @@ import maya.cmds as cmds
 import maya.mel as mel
 from logger import log
 import configCONST as configCONST
-import maya_shd_lib as shd_lib
-import maya_asset_lib as asset_lib
-import maya_adef_lib as adef_lib
+import sg_shd_lib as shd_lib
+import sg_asset_lib as asset_lib
+import sg_adef_lib as adef_lib
 import shd_readXML as shd_readxml
 from PySide.QtGui import *
 from tank import TankError

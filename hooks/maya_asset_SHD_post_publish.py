@@ -10,7 +10,7 @@
 
 from tank import Hook
 from tank import TankError
-import maya_shd_lib as shd_lib
+import sg_shd_lib as shd_lib
 
 
 class PostPublishHook(Hook):

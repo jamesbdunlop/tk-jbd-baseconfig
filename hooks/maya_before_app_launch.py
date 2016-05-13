@@ -66,11 +66,6 @@ class BeforeAppLaunch(tank.Hook):
         if not os.path.isdir(configCONST.MAYA_APP_DIR):
             os.mkdir(configCONST.MAYA_APP_DIR)
 
-        ## Set bullDog stuff if it's marked to be used.
-        if configCONST.USE_BULLDOG_UI:
-            default_bbbshelf_path = "%s/bulldog_shelf.mel" % configCONST.MAYA_DEFAULT_ENV
-            sys.path.append('%s/bulldog' % configCONST.SHOTGUN_SOFTWARE_ROOT)
-
         ## Make the user config maya folders if they don't exist in the config based maya directories
         basepaths = [configCONST.MAYA_CONFIG_SCRIPT_PATH,
                      configCONST.MAYA_CONFIG_PREFS_PATH,
@@ -86,10 +81,6 @@ class BeforeAppLaunch(tank.Hook):
 
             ## Copy userSetup.py
             shutil.copy(configCONST.MAYA_DEFAULT_USERSETUPPY, configCONST.MAYA_CONFIG_SCRIPT_PATH)
-            if configCONST.USE_BULLDOG_UI:
-                ## Copy bullDogShelf
-                shutil.copy(default_bbbshelf_path, configCONST.MAYA_CONFIG_SHELVES_PATH)
-
         else:
             ## Check the sub dirs if they exist or not
             for eachPath in basepaths:
@@ -99,9 +90,6 @@ class BeforeAppLaunch(tank.Hook):
             ## Copy userSetup.py and bulldog shelf if the force reinstall is true in the base configCONST file
             if configCONST.FORCE_USERSETUP_REINSTALL:
                 shutil.copy(configCONST.MAYA_DEFAULT_USERSETUPPY, configCONST.MAYA_CONFIG_SCRIPT_PATH)
-                if configCONST.USE_BULLDOG_UI:
-                    ## Copy bullDogShelf
-                    shutil.copy(default_bbbshelf_path, configCONST.MAYA_CONFIG_SHELVES_PATH)
 
         ##############################################################################
         ## MAYA APP DIR
@@ -116,7 +104,6 @@ class BeforeAppLaunch(tank.Hook):
         for eachSysPath in sys_paths:
             if eachSysPath not in sys.path:
                 sys.path.append(eachSysPath)
-
 
         for path in sys.path:
             print path

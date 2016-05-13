@@ -6,11 +6,11 @@ from tank import Hook
 from tank import TankError
 from logger import log
 import configCONST as configCONST
-import maya_shd_lib as shd_lib
+import sg_shd_lib as shd_lib
 import shd_writeXML as shd_writexml
 import uv_writeXML as uvwrite
 import uv_getUVs as getUvs
-import maya_secondarypublishmessage as secpubmsg
+import sg_secondarypublishmessage as secpubmsg
 reload(shd_lib)
 reload(shd_writexml)
 reload(getUvs)

@@ -2,9 +2,9 @@ import os, tank, time
 from tank import TankError
 import configCONST as configCONST
 reload(configCONST)
-import maya_asset_lib as asset_lib
+import sg_asset_lib as asset_lib
 reload(asset_lib)
-import maya_shd_lib as shd_lib
+import sg_shd_lib as shd_lib
 reload(shd_lib)
 import maya.cmds as cmds
 import maya.mel as mel
