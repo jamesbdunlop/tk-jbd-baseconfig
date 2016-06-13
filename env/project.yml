@@ -33,7 +33,10 @@ engines:
         hook_translate_template: default
         hook_update_version_data: default
         hook_upload_thumbnail: default
-        location: {name: tk-hiero-export, type: app_store, version: v0.3.1}
+        location:
+          version: v0.3.10
+          type: app_store
+          name: tk-hiero-export
         nuke_script_published_file_type: Nuke Script
         nuke_script_toolkit_write_nodes:
         - {channel: stereoexr32, name: 'Stereo Exr, 32 bit'}
@@ -59,7 +62,10 @@ engines:
         hook_secondary_pre_publish: default
         hook_secondary_publish: default
         hook_thumbnail: default
-        location: {name: tk-multi-publish, type: app_store, version: v0.8.7}
+        location:
+          version: v0.9.2
+          type: app_store
+          name: tk-multi-publish
         primary_description: Publish and version up the selected Hiero project
         primary_display_name: Hiero Publish
         primary_icon: icons/publish_hiero_main.png
@@ -84,7 +90,10 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         launch_change_work_area_at_startup: false
-        location: {name: tk-multi-workfiles, type: app_store, version: v0.7.1}
+        location:
+          version: v0.7.3
+          type: app_store
+          name: tk-multi-workfiles
         saveas_default_name: scene
         saveas_prefer_version_up: false
         sg_entity_type_extra_display_fields: {}
@@ -125,7 +134,7 @@ engines:
     location: {name: tk-maya, type: app_store, version: v0.5.5}
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
-    template_project: null
+    template_project:
     use_sgtk_as_menu_name: false
   tk-nuke:
     apps: {tk-multi-about: '@about', tk-multi-screeningroom: '@launch_screeningroom',
@@ -134,7 +143,10 @@ engines:
     compatibility_dialog_min_version: 8
     debug_logging: false
     favourite_directories: []
-    location: {name: tk-nuke, type: app_store, version: v0.5.5}
+    location:
+      version: v0.6.2
+      type: app_store
+      name: tk-nuke
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
     project_favourite_name: Shotgun Current Project
@@ -150,7 +162,10 @@ engines:
     apps: {tk-multi-launch3dsmax: '@launch_3dsmax', tk-multi-launchhiero: '@launch_hiero',
       tk-multi-launchmaya: '@launch_maya', tk-multi-launchnuke: '@launch_nuke', tk-shotgun-launchphotoshop: '@launch_photoshop'}
     debug_logging: false
-    location: {name: tk-shell, type: app_store, version: v0.4.1}
+    location:
+      version: v0.5.0
+      type: app_store
+      name: tk-shell
   tk-softimage:
     apps: {tk-multi-about: '@about', tk-multi-screeningroom: '@launch_screeningroom',
       tk-multi-workfiles: '@workfiles'}
@@ -158,10 +173,13 @@ engines:
     location: {name: tk-softimage, type: app_store, version: v0.3.2}
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
-    template_project: null
+    template_project:
 frameworks:
   tk-framework-adminui_v0.x.x:
-    location: {name: tk-framework-adminui, type: app_store, version: v0.1.2}
+    location:
+      version: v0.1.5
+      type: app_store
+      name: tk-framework-adminui
   tk-framework-login_v1.x.x:
     location: {name: tk-framework-login, type: app_store, version: v1.2.2}
   tk-framework-softimageqt_v1.0.1:

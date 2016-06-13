@@ -19,7 +19,7 @@ engines:
     location: {name: tk-maya, type: app_store, version: v0.5.5}
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
-    template_project: null
+    template_project:
     use_sgtk_as_menu_name: false
   tk-nuke:
     apps: {tk-multi-about: '@about', tk-multi-screeningroom: '@launch_screeningroom',
@@ -28,7 +28,10 @@ engines:
     compatibility_dialog_min_version: 8
     debug_logging: false
     favourite_directories: []
-    location: {name: tk-nuke, type: app_store, version: v0.5.5}
+    location:
+      version: v0.6.2
+      type: app_store
+      name: tk-nuke
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
     project_favourite_name: Shotgun Current Project
@@ -45,7 +48,10 @@ engines:
       tk-shotgun-launchmaya: '@launch_maya', tk-shotgun-launchnuke: '@launch_nuke',
       tk-shotgun-launchphotoshop: '@launch_photoshop'}
     debug_logging: false
-    location: {name: tk-shell, type: app_store, version: v0.4.1}
+    location:
+      version: v0.5.0
+      type: app_store
+      name: tk-shell
   tk-softimage:
     apps: {tk-multi-about: '@about', tk-multi-screeningroom: '@launch_screeningroom',
       tk-multi-workfiles: '@workfiles'}
@@ -53,7 +59,7 @@ engines:
     location: {name: tk-softimage, type: app_store, version: v0.3.2}
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
-    template_project: null
+    template_project:
 frameworks:
   tk-framework-softimageqt_v1.0.1:
     location: {name: tk-framework-softimageqt, type: app_store, version: v1.0.1}
