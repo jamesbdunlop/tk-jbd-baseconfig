@@ -16,8 +16,9 @@
 #
 # maya
 #
-maya_windows: 'C:\Program Files\Autodesk\Maya2016\bin\maya.exe'
-maya_mac: /Applications/Autodesk/maya2016/Maya.app
+maya_windows: 'C:\Program Files\Autodesk\Maya2017\bin\maya.exe'
+maya_windows16: 'C:\Program Files\Autodesk\Maya2016\bin\maya.exe'
+maya_mac: /Applications/Autodesk/maya2017/Maya.app
 maya_linux: maya
 
 #

@@ -126,15 +126,13 @@ import sys, getpass
 ## CONFIG CONSTANTS
 #############################################
 ## SOME CUSTOM FLAGS FOR THINGS TO DO OR USE
-USE_BULLDOG_UI                  = True
-USE_BONUSTOOLS                  = True
+USE_BONUSTOOLS                  = False
 FORCE_USERSETUP_REINSTALL       = True
 DEBUGGING                       = True
 
 ## SETUP BASE CONSTANTS FOR THE CONFIG
 USER_NAME                       = '%s' % getpass.getuser()
-MAYA_VERSION                    = '2016'
-BULLDOG_MAYA_VERSION            = '2016'
+MAYA_VERSION                    = '2017'
 LOGFILE_NAME                    = 'tankLog'
 ## SHOT GUN BASE CONSTANTS
 SHOTGUN_CONFIG_NAME             = 'genericconfig'
@@ -262,7 +260,6 @@ if sys.platform == 'win32':
     PATH_TO_ANIM_BAT            = r'%s/%s' % (TEMP_FOLDER, ALEMBIC_BATCH_NAME)
     PATH_TO_FX_BAT              = r'%s/%s' % (TEMP_FOLDER, FX_BATCH_NAME)
 
-
 ## OSX
 elif sys.platform == 'darwin':
     ## OS specific
@@ -324,27 +321,6 @@ else:
     MAYA_PYTHON_LIB             = "%s/defaultMayaLibrary" % SHOTGUN_SOFTWARE_ROOT
 
 #######################
-## BULLDOG UI CONSTANTS
-## Note any additions to the script paths should be done AFTER these defaults as the index for these are used in the
-## userSetup.py
-BULLDOG_ROOT                    = '%s/bulldog' % SHOTGUN_SOFTWARE_ROOT
-BULLDOG_SCRIPT_PATHS            = [
-                                    '%s/bulldog/BDmaya/tools_freeMelScripts' % SHOTGUN_SOFTWARE_ROOT,
-                                    '%s/bulldog/BDmaya/tools_freeMelScripts/%s' % (SHOTGUN_SOFTWARE_ROOT, BULLDOG_MAYA_VERSION)
-                                    ]
-BULLDOG_SYS_PATHS               = [
-                                    '%s/' % SHOTGUN_SOFTWARE_ROOT,
-                                    '%s/bulldog/BDmaya/tools_freeMelScripts' % SHOTGUN_SOFTWARE_ROOT,
-                                    '%s/bulldog' % SHOTGUN_SOFTWARE_ROOT,
-                                    ]
-BULLDOG_XBM_PATHS               = [
-                                    '%s/bulldog/BDmaya/tools_freeMelScripts/Icons' % SHOTGUN_SOFTWARE_ROOT,
-                                    '%s/bulldog/BBicons/soup' % SHOTGUN_SOFTWARE_ROOT ]
-BULLDOG_PLUGIN_PATHS            = [
-                                    '%s/bulldog/BDmaya/plugins/%s/%s' % (SHOTGUN_SOFTWARE_ROOT, OSTYPE, BULLDOG_MAYA_VERSION)
-                                    ]
-
-#######################
 ## BASE SYS PATHS CONSTANTS
 SYS_PATHS                       = [
                                     '%s/site-packages' % MAYA_DEFAULT_ENV,
@@ -354,12 +330,13 @@ SYS_PATHS                       = [
                                     MAYA_PYTHON_LIB,
                                     SHOTGUN_CONFIG_ROOT,
                                     "T:/software/MSide",
-                                    "T:/software/Nucleolus",
-                                    "C:/Program Files (x86)/Epic Games/4.11/Engine/Extras/Maya_AnimationRiggingTools/MayaTools/General/Scripts"
+                                    "T:/software/Nebula",
+                                    "C:/Program Files (x86)/Epic Games/4.11/Engine/Extras/Maya_AnimationRiggingTools/MayaTools/General/Scripts",
+                                    "T:/software/mscreen",
                                     ]
 
 MAYA_XBM_PATHS                  = []
-MAYA_PLUGIN_PATHS               = ['C:\Program Files\Pixar\RenderManStudio-20.7-maya2016\plug-ins']
+MAYA_PLUGIN_PATHS               = []
 
 
 ###

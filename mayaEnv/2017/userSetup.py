@@ -2,8 +2,6 @@ import sys, os
 import maya.cmds as cmds
 import maya.utils as mu
 import maya.mel as mel
-from PySide import QtGui
-from PySide import QtCore
 
 ##################################################################
 ## EDIT BELOW TO MATCH YOUR SHOTGUN VOLUME SETUP
