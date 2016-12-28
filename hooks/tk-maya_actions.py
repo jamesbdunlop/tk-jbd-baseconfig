@@ -20,7 +20,6 @@ import sg_shd_lib as shd_lib
 import sg_asset_lib as asset_lib
 import sg_adef_lib as adef_lib
 import shd_readXML as shd_readxml
-from PySide.QtGui import *
 from tank import TankError
 HookBaseClass = sgtk.get_hook_baseclass()
 reload(shd_readxml)

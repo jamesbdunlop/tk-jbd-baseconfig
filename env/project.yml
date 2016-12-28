@@ -15,7 +15,10 @@ engines:
     default_group: Studio
     groups: []
     hook_launch_python: default
-    location: {name: tk-desktop, type: app_store, version: v2.0.10}
+    location:
+      version: v2.0.23
+      type: app_store
+      name: tk-desktop
     show_recents: true
   tk-hiero:
     apps:
@@ -34,7 +37,7 @@ engines:
         hook_update_version_data: default
         hook_upload_thumbnail: default
         location:
-          version: v0.3.10
+          version: v0.3.32
           type: app_store
           name: tk-hiero-export
         nuke_script_published_file_type: Nuke Script
@@ -48,7 +51,10 @@ engines:
         template_render_path: hiero_render_path
         template_version: hiero_version
       tk-hiero-openinshotgun:
-        location: {name: tk-hiero-openinshotgun, type: app_store, version: v0.3.0}
+        location:
+          version: v0.3.3
+          type: app_store
+          name: tk-hiero-openinshotgun
       tk-multi-about: '@about'
       tk-multi-publish:
         allow_taskless_publishes: true
@@ -63,7 +69,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.9.1
+          version: v0.9.6
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the selected Hiero project
@@ -91,7 +97,7 @@ engines:
         launch_at_startup: false
         launch_change_work_area_at_startup: false
         location:
-          version: v0.7.3
+          version: v0.7.4
           type: app_store
           name: tk-multi-workfiles
         saveas_default_name: scene
@@ -131,7 +137,10 @@ engines:
       tk-multi-workfiles: '@workfiles-launch-at-startup'}
     compatibility_dialog_min_version: 2015
     debug_logging: false
-    location: {name: tk-maya, type: app_store, version: v0.5.5}
+    location:
+      version: v0.7.9
+      type: app_store
+      name: tk-maya
     menu_favourites:
     - {app_instance: tk-multi-workfiles, name: Shotgun File Manager...}
     template_project:
@@ -144,7 +153,7 @@ engines:
     debug_logging: false
     favourite_directories: []
     location:
-      version: v0.6.1
+      version: v0.6.11
       type: app_store
       name: tk-nuke
     menu_favourites:
@@ -157,13 +166,16 @@ engines:
     apps: {tk-multi-about: '@about', tk-multi-screeningroom: '@launch_screeningroom',
       tk-multi-workfiles: '@workfiles'}
     debug_logging: false
-    location: {name: tk-photoshop, type: app_store, version: v0.3.3}
+    location:
+      version: v0.3.6
+      type: app_store
+      name: tk-photoshop
   tk-shell:
     apps: {tk-multi-launch3dsmax: '@launch_3dsmax', tk-multi-launchhiero: '@launch_hiero',
       tk-multi-launchmaya: '@launch_maya', tk-multi-launchnuke: '@launch_nuke', tk-shotgun-launchphotoshop: '@launch_photoshop'}
     debug_logging: false
     location:
-      version: v0.5.0
+      version: v0.5.1
       type: app_store
       name: tk-shell
   tk-softimage:
@@ -177,7 +189,7 @@ engines:
 frameworks:
   tk-framework-adminui_v0.x.x:
     location:
-      version: v0.1.5
+      version: v0.1.6
       type: app_store
       name: tk-framework-adminui
   tk-framework-login_v1.x.x:

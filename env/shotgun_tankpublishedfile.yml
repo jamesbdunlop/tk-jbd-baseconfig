@@ -21,6 +21,9 @@ engines:
         viewer_path_windows: '@rv_win'
       tk-shotgun-launchsoftimage: '@launch_softimage'
     debug_logging: false
-    location: {name: tk-shotgun, type: app_store, version: v0.5.1}
-frameworks: null
+    location:
+      version: v0.5.2
+      type: app_store
+      name: tk-shotgun
+frameworks:
 includes: [./includes/app_launchers.yml, ./includes/paths.yml]

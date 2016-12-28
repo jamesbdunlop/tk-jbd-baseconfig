@@ -1,15 +1,21 @@
 about:
-  location: {name: tk-multi-about, type: app_store, version: v0.2.0}
+  location:
+    version: v0.2.1
+    type: app_store
+    name: tk-multi-about
 frameworks:
   tk-framework-qtwidgets_v1.x.x:
     location: {name: tk-framework-qtwidgets, type: app_store, version: v1.0.3}
   tk-framework-qtwidgets_v2.x.x:
-    location: {name: tk-framework-qtwidgets, type: app_store, version: v2.2.1}
+    location:
+      version: v2.5.12
+      type: app_store
+      name: tk-framework-qtwidgets
   tk-framework-shotgunutils_v2.x.x:
     location: {name: tk-framework-shotgunutils, type: app_store, version: v2.5.1}
   tk-framework-shotgunutils_v4.x.x:
     location:
-      version: v4.2.0
+      version: v4.4.15
       type: app_store
       name: tk-framework-shotgunutils
   tk-framework-widget_v0.1.18:
@@ -21,7 +27,10 @@ frameworks:
   tk-framework-widget_v0.1.24:
     location: {name: tk-framework-widget, type: app_store, version: v0.1.24}
   tk-framework-widget_v0.2.x:
-    location: {name: tk-framework-widget, type: app_store, version: v0.2.3}
+    location:
+      version: v0.2.4
+      type: app_store
+      name: tk-framework-widget
 workfiles:
   allow_task_creation: true
   file_extensions: []
@@ -32,7 +41,7 @@ workfiles:
   launch_at_startup: false
   launch_change_work_area_at_startup: false
   location:
-    version: v0.7.3
+    version: v0.7.4
     type: app_store
     name: tk-multi-workfiles
   saveas_default_name: scene
@@ -57,7 +66,7 @@ workfiles-launch-at-startup:
   launch_at_startup: true
   launch_change_work_area_at_startup: false
   location:
-    version: v0.7.3
+    version: v0.7.4
     type: app_store
     name: tk-multi-workfiles
   saveas_default_name: scene
