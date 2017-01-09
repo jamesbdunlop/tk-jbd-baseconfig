@@ -16,10 +16,10 @@ import maya.cmds as cmds
 import maya.mel as mel
 from logger import log
 import configCONST as configCONST
-import sg_shd_lib as shd_lib
-import sg_asset_lib as asset_lib
-import sg_adef_lib as adef_lib
-import shd_readXML as shd_readxml
+import shotgun.sg_shd_lib as shd_lib
+import shotgun.sg_asset_lib as asset_lib
+import shotgun.sg_adef_lib as adef_lib
+import xml_import.shd_readXML as shd_readxml
 from tank import TankError
 HookBaseClass = sgtk.get_hook_baseclass()
 reload(shd_readxml)

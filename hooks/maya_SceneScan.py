@@ -1,15 +1,15 @@
 import os, tank, time
 from tank import TankError
 import configCONST as configCONST
-reload(configCONST)
-import sg_asset_lib as asset_lib
-reload(asset_lib)
-import sg_shd_lib as shd_lib
-reload(shd_lib)
+import shotgun.sg_asset_lib as asset_lib
+import shotgun.sg_shd_lib as shd_lib
 import maya.cmds as cmds
 import maya.mel as mel
 import logging
 logger = logging.getLogger(__name__)
+reload(configCONST)
+reload(asset_lib)
+reload(shd_lib)
 
 
 def mdl_scan_scene(env = '', sanityChecks = {}):

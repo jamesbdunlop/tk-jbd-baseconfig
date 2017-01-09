@@ -7,10 +7,10 @@ import tank
 from tank import Hook
 from tank import TankError
 import configCONST as configCONST
-import sg_shd_lib as shd
-import sg_asset_lib as asset_lib
-import renderGlobals_writeXML as writeXML
-import light_writeXML as write_light_xml
+import shotgun.sg_shd_lib as shd
+import shotgun.sg_asset_lib as asset_lib
+import xml_export.renderGlobals_writeXML as writeXML
+import xml_export.light_writeXML as write_light_xml
 from logger import log
 reload(configCONST)## leave this alone if you want to update the config using the maya shotgun reload menu
 

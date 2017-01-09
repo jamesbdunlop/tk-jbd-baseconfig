@@ -5,9 +5,9 @@ import tank
 from tank import Hook
 from tank import TankError
 from logger import log
-import sg_adef_lib as adef_lib
+import shotgun.sg_adef_lib as adef_lib
 import tk_findhumanuserid as fhu
-import sg_secondarypublishmessage as secpubmsg
+import shotgun.sg_secondarypublishmessage as secpubmsg
 import configCONST as configCONST
 reload(adef_lib)
 

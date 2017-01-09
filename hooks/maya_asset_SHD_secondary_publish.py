@@ -6,11 +6,11 @@ from tank import Hook
 from tank import TankError
 from logger import log
 import configCONST as configCONST
-import sg_shd_lib as shd_lib
-import shd_writeXML as shd_writexml
-import uv_writeXML as uvwrite
-import uv_getUVs as getUvs
-import sg_secondarypublishmessage as secpubmsg
+import shotgun.sg_shd_lib as shd_lib
+import xml_export.shd_writeXML as shd_writexml
+import xml_export.uv_writeXML as uvwrite
+import xml_export.uv_getUVs as getUvs
+import shotgun.sg_secondarypublishmessage as secpubmsg
 reload(shd_lib)
 reload(shd_writexml)
 reload(getUvs)

@@ -331,7 +331,7 @@ SYS_PATHS                       = [
                                     SHOTGUN_CONFIG_ROOT,
                                     "T:/software/MSide",
                                     "T:/software/Nebula",
-                                    "C:/Program Files (x86)/Epic Games/4.11/Engine/Extras/Maya_AnimationRiggingTools/MayaTools/General/Scripts",
+                                    "C:/Program Files (x86)/Epic Games/4.14/Engine/Extras/Maya_AnimationRiggingTools/MayaTools/General/Scripts",
                                     "T:/software/mscreen",
                                     ]
 
