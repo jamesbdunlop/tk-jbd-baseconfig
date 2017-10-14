@@ -70,7 +70,7 @@ class BeforeAppLaunch(tank.Hook):
 
         if not os.path.isdir(configCONST.MAYA_USER_APP_DIR):
             os.makedirs(configCONST.MAYA_USER_APP_DIR)
-            ##Hard making some of the maya folders so we can set the userSetup.py pre load
+            ## Hard making some of the maya folders so we can set the userSetup.py pre load
             for eachPath in basepaths:
                 if not os.path.isdir(eachPath):
                     os.makedirs(eachPath)
@@ -86,12 +86,10 @@ class BeforeAppLaunch(tank.Hook):
             ## Copy userSetup.py and bulldog shelf if the force reinstall is true in the base configCONST file
             if configCONST.FORCE_USERSETUP_REINSTALL:
                 shutil.copy(configCONST.MAYA_DEFAULT_USERSETUPPY, configCONST.MAYA_CONFIG_SCRIPT_PATH)
-
         ##############################################################################
         ## MAYA APP DIR
         ##############################################################################
         os.environ["MAYA_APP_DIR"] = configCONST.MAYA_USER_APP_DIR
-
         ##############################################################################
         ## ADDITIONAL SYSTEM PATHS
         ## NOTE A BUNCH OF THESE GET USED FROM THE configCONST in the userSetup.py
@@ -101,5 +99,3 @@ class BeforeAppLaunch(tank.Hook):
             if eachSysPath not in sys.path:
                 sys.path.append(eachSysPath)
 
-        for path in sys.path:
-            print(path)

@@ -237,7 +237,7 @@ if sys.platform == 'win32':
     SHOTGUN_PRIMARY_DRIVE = 'I:'
     SHOTGUN_SECONDARY_DRIVE = 'K:'
     ## Maya Specific
-    MAYA_APP_DIR_ROOT = 'T:'
+    MAYA_APP_DIR_ROOT = 'T:/'
 
     ## Animation publishing..
     ALEMBIC_BATCH_NAME = '{}_animCacheExport.bat'.format(getpass.getuser()) ## TODO get a date time in here
