@@ -1,18 +1,13 @@
-import tank
-from tank import Hook
-from tank import TankError
-import os
+import os, tank
 import maya.cmds as cmds
-import tank
 from tank import Hook
 from tank import TankError
-import configCONST as configCONST
+import config_constants as configCONST
 import shotgun.sg_shd_lib as shd
 import shotgun.sg_asset_lib as asset_lib
 import xml_export.renderGlobals_writeXML as writeXML
 import xml_export.light_writeXML as write_light_xml
-from logger import log
-reload(configCONST)## leave this alone if you want to update the config using the maya shotgun reload menu
+from apps.app_logger import log
 
 
 class PublishHook(Hook):
@@ -88,9 +83,9 @@ class PublishHook(Hook):
         shadingDone = False
 
         for task in tasks:
-            log(app = None, method = 'lightingSecPublish.execute', message = 'task: %s' % task, printToLog = False, verbose = configCONST.DEBUGGING)
+            log(app=None, method='lightingSecPublish.execute', message='task: {}'.format(task), outputToLogFile=False, verbose=configCONST.DEBUGGING)
             item = task["item"]
-            log(app = None, method = 'lightingSecPublish.execute', message = 'item: %s' % item, printToLog = False, verbose = configCONST.DEBUGGING)
+            log(app=None, method='lightingSecPublish.execute', message='item: {}'.format(item), outputToLogFile=False, verbose=configCONST.DEBUGGING)
             output = task["output"]
             errors = []
             # report progress:
@@ -102,14 +97,14 @@ class PublishHook(Hook):
                 ## If we do this for every item we're wasting serious time outputting the same thing over and over.
                 if not shadingDone: 
                     try:
-                        log(app = None, method = 'lightingSecPublish.execute', message = 'item: %s' % item, printToLog = False, verbose = configCONST.DEBUGGING)
+                        log(app=None, method='lightingSecPublish.execute', message='item: {}'.format(item), outputToLogFile=False, verbose=configCONST.DEBUGGING)
                         self._publish_shading_xml_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
                         ## Now fix the fileNodes back to a work folder structure not the publish folder structure
                         self.repathFileNodesForWork()
                         shadingDone =  True
-                        log(app = None, method = 'lightingSecPublish.execute', message = 'shadingDone: %s' % shadingDone, printToLog = False, verbose = configCONST.DEBUGGING)
-                    except Exception, e:
-                        errors.append("Publish failed - %s" % e)
+                        log(app=None, method='lightingSecPublish.execute', message='shadingDone: {}'.format(shadingDone), outputToLogFile=False, verbose=configCONST.DEBUGGING)
+                    except Exception as e:
+                        errors.append("Publish failed - {}".format(e))
                 else:
                     pass
             ### LIGHTS XML
@@ -119,31 +114,31 @@ class PublishHook(Hook):
                 ## Because we have only found in the scan scene just the LIGHTS_hrc group there should only be one light item to process...
                 try:
                     self._publish_lighting_xml_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
-                except Exception, e:
-                    errors.append("Publish failed - %s" % e)
+                except Exception as e:
+                    errors.append("Publish failed - {}".format(e))
             elif output["name"] == 'nukeCam':
                 progress_cb(0, "Publishing Nuke Cameras now...")
                 ## Because we have only found in the scan scene just the SHOTCAM_hrc group there should only be one camera item to process...
                 ## But there may be more cameras under that group so we process these during the _publish_nukeCamera_for_item
                 try:
                     self._publish_nukeCamera_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
-                except Exception, e:
-                    errors.append("Publish failed - %s" % e)
+                except Exception as e:
+                    errors.append("Publish failed - {}".format(e))
             elif output["name"] == 'fx_caches':
                 progress_cb(0, "Publishing FX now...")
                 ## Export the fx group found to an ma file.
                 try:
                     pass ## TO DO FX IF NECESSARY
-                except Exception, e:
-                    errors.append("Publish failed - %s" % e)
+                except Exception as e:
+                    errors.append("Publish failed - {}".format(e))
             elif output["name"] == 'renderglobals_xml':
                 progress_cb(0, "Publishing renderglobals_xml now...")
                 ## Export the renderglobals_xml
                 try:
-                    log(app = None, method = 'lightingSecPublish.execute.renderglobals_xml', message = 'item: %s' % item, printToLog = False, verbose = configCONST.DEBUGGING)
+                    log(app=None, method='lightingSecPublish.execute.renderglobals_xml', message='item: {}'.format(item), outputToLogFile=False, verbose=configCONST.DEBUGGING)
                     self._publish_renderglobals_xml_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
-                except Exception, e:
-                    errors.append("Publish failed - %s" % e)
+                except Exception as e:
+                    errors.append("Publish failed - {}".format(e))
             else:
                 # don't know how to publish this output types!
                 errors.append("Don't know how to publish this item!")
@@ -162,18 +157,18 @@ class PublishHook(Hook):
         Export an xml file for the specified item and publish it
         to Shotgun.
         """
-        group_name = '%s_LIGHTING_RENDERGLOBALS_XML' % ''.join(item["name"].strip("|").split('_hrc')[0].split('_'))
-        log(app = None, method = '_publish_renderglobals_xml_for_item', message = 'group_name: %s' % group_name, printToLog = False, verbose = configCONST.DEBUGGING)
+        group_name = '{}_LIGHTING_RENDERGLOBALS_XML'.format(''.join(item["name"].strip("|").split('_hrc')[0].split('_')))
+        log(app=None, method='_publish_renderglobals_xml_for_item', message='group_name: {}'.format(group_name), outputToLogFile=False, verbose=configCONST.DEBUGGING)
         
         tank_type = output["tank_type"]
-        log(app = None, method = '_publish_renderglobals_xml_for_item', message = 'tank_type: %s' % tank_type, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_renderglobals_xml_for_item', message='tank_type: {}'.format(tank_type), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         publish_template = output["publish_template"]
-        log(app = None, method = '_publish_renderglobals_xml_for_item', message = 'publish_template: %s' % publish_template, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_renderglobals_xml_for_item', message='publish_template: {}'.format(publish_template), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         # get the current scene path and extract fields from it
         # using the work template:
-        scene_path = os.path.abspath(cmds.file(query=True, sn= True))
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
         fields = work_template.get_fields(scene_path)
         publish_version = fields["version"]
 
@@ -183,20 +178,20 @@ class PublishHook(Hook):
         ## create the publish path by applying the fields 
         ## with the publish template:
         publish_path = publish_template.apply_fields(fields)
-        log(app = None, method = '_publish_renderglobals_xml_for_item', message = 'FINAL publish_path: %s' % publish_path, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_renderglobals_xml_for_item', message='FINAL publish_path: {}'.format(publish_path), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         try:
             self.parent.log_debug("Executing command: SHADING XML EXPORT PREP!")
-            print '====================='
-            print 'Exporting the renderglobals xml %s' % publish_path
+            print('=====================')
+            print('Exporting the renderglobals xml {}'.format(publish_path))
             
             if not os.path.isdir(os.path.dirname(publish_path)):
-                log(app = None, method = '_publish_renderglobals_xml_for_item', message = 'PATH NOT FOUND.. MAKING DIRS NOW...', printToLog = False, verbose = configCONST.DEBUGGING)
+                log(app=None, method='_publish_renderglobals_xml_for_item', message='PATH NOT FOUND.. MAKING DIRS NOW...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
                 os.makedirs(os.path.dirname(publish_path))
                 
             ## Now write to xml
-            log(app = None, method = '_publish_renderglobals_xml_for_item', message = 'writeXML now...', printToLog = False, verbose = configCONST.DEBUGGING)
-            writeXML.writeRenderGlobalData(pathToXML = publish_path)
+            log(app=None, method='_publish_renderglobals_xml_for_item', message='writeXML now...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+            writeXML.writeRenderGlobalData(pathToXML=publish_path)
             
             self._register_publish(publish_path, 
                                   group_name, 
@@ -206,9 +201,9 @@ class PublishHook(Hook):
                                   comment,
                                   thumbnail_path, 
                                   [primary_publish_path])
-            print 'Finished xml export...'
-            print '====================='
-        except Exception, e:
+            print('Finished xml export...')
+            print('=====================')
+        except Exception as e:
             raise TankError("Failed to export xml")
     
     def _publish_shading_xml_for_item(self, item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
@@ -216,18 +211,18 @@ class PublishHook(Hook):
         Export an xml file for the specified item and publish it
         to Shotgun.
         """
-        group_name = '%s_LIGHTING_SHD_XML' % ''.join(item["name"].strip("|").split('_hrc')[0].split('_'))
-        log(app = None, method = '_publish_lighting_xml_for_item', message = 'group_name: %s' % group_name, printToLog = False, verbose = configCONST.DEBUGGING)
+        group_name = '{}_LIGHTING_SHD_XML'.format(''.join(item["name"].strip("|").split('_hrc')[0].split('_')))
+        log(app=None, method='_publish_lighting_xml_for_item', message='group_name: {}'.format(group_name), outputToLogFile=False, verbose=configCONST.DEBUGGING)
         
         tank_type = output["tank_type"]
-        log(app = None, method = '_publish_shading_xml_for_item', message = 'tank_type: %s' % tank_type, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_shading_xml_for_item', message='tank_type: {}'.format(tank_type), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         publish_template = output["publish_template"]
-        log(app = None, method = '_publish_shading_xml_for_item', message = 'publish_template: %s' % publish_template, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_shading_xml_for_item', message='publish_template: {}'.format(publish_template), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         # get the current scene path and extract fields from it
         # using the work template:
-        scene_path = os.path.abspath(cmds.file(query=True, sn= True))
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
         fields = work_template.get_fields(scene_path)
         publish_version = fields["version"]
 
@@ -237,14 +232,14 @@ class PublishHook(Hook):
         ## create the publish path by applying the fields 
         ## with the publish template:
         publish_path = publish_template.apply_fields(fields)
-        log(app = None, method = '_publish_shading_xml_for_item', message = 'FINAL publish_path: %s' % publish_path, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_shading_xml_for_item', message='FINAL publish_path: {}'.format(publish_path), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         try:
             self.parent.log_debug("Executing command: SHADING XML EXPORT PREP!")
-            print '====================='
-            print 'Exporting the shading xml %s' % publish_path
+            print('=====================')
+            print('Exporting the shading xml {}'.format(publish_path))
             
-            shd.exportPrep(path = publish_path)
+            shd.exportPrep(path=publish_path)
             
             self._register_publish(publish_path, 
                                   group_name, 
@@ -254,9 +249,9 @@ class PublishHook(Hook):
                                   comment,
                                   thumbnail_path, 
                                   [primary_publish_path])
-            print 'Finished xml export...'
-            print '====================='
-        except Exception, e:
+            print('Finished xml export...')
+            print('=====================')
+        except Exception as e:
             raise TankError("Failed to export xml")
 
     def _publish_lighting_xml_for_item(self, item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
@@ -264,19 +259,19 @@ class PublishHook(Hook):
         Export an xml file for the specified item and publish it
         to Shotgun.
         """
-        group_name = '%s_LIGHTING_LIGHTS_XML' % ''.join(item["name"].strip("|").split('_hrc')[0].split('_'))
-        log(app = None, method = '_publish_lighting_xml_for_item', message = 'group_name: %s' % group_name, printToLog = False, verbose = configCONST.DEBUGGING)
+        group_name = '{}_LIGHTING_LIGHTS_XML'.format(''.join(item["name"].strip("|").split('_hrc')[0].split('_')))
+        log(app=None, method='_publish_lighting_xml_for_item', message='group_name: {}'.format(group_name), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         tank_type = output["tank_type"]
-        log(app = None, method = '_publish_lighting_xml_for_item', message = 'tank_type: %s' % tank_type, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_lighting_xml_for_item', message='tank_type: {}'.format(tank_type), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         publish_template = output["publish_template"]
-        log(app = None, method = '_publish_lighting_xml_for_item', message = 'publish_template: %s' % publish_template, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_lighting_xml_for_item', message='publish_template: {}'.format(publish_template), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         # get the current scene path and extract fields from it
         # using the work template:
-        scene_path          = os.path.abspath(cmds.file(query=True, sn= True))
-        fields              = work_template.get_fields(scene_path)
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
+        fields = work_template.get_fields(scene_path)
         publish_version = fields["version"]
 
         # update fields with the group name:
@@ -285,14 +280,14 @@ class PublishHook(Hook):
         ## create the publish path by applying the fields 
         ## with the publish template:
         publish_path = publish_template.apply_fields(fields)
-        log(app = None, method = '_publish_lighting_xml_for_item', message = 'FINAL publish_path: %s' % publish_path, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_lighting_xml_for_item', message='FINAL publish_path: {}'.format(publish_path), outputToLogFile=False, verbose=configCONST.DEBUGGING)
         try:
             self.parent.log_debug("Executing command: LIGHTING XML EXPORT PREP!")
-            print '====================='
-            print 'Exporting the lighting xml %s' % publish_path
+            print('=====================')
+            print('Exporting the lighting xml {}'.format(publish_path))
 
             if not os.path.isdir(os.path.dirname(publish_path)):
-                log(app = None, method = '_publish_renderglobals_xml_for_item', message = 'PATH NOT FOUND.. MAKING DIRS NOW...', printToLog = False, verbose = configCONST.DEBUGGING)
+                log(app=None, method='_publish_renderglobals_xml_for_item', message='PATH NOT FOUND.. MAKING DIRS NOW...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
                 os.makedirs(os.path.dirname(publish_path))
 
             write_light_xml.writeLightData(publish_path)
@@ -306,81 +301,81 @@ class PublishHook(Hook):
                                   comment,
                                   thumbnail_path, 
                                   [primary_publish_path])
-            print 'Finished xml export...'
-            print '====================='
-        except Exception, e:
+            print('Finished xml export...')
+            print('=====================')
+        except Exception as e:
             raise TankError("Failed to export xml")
 
     def _publish_nukeCamera_for_item(self, item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
         """
         Export an xml file for the specified item and publish it to Shotgun.
         """        
-        log(app = None, method = '_publish_nukeCamera_for_item', message = 'item["name"]: %s' % item["name"], printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_nukeCamera_for_item', message='item["name"]: {}'.format(item["name"]), outputToLogFile=False, verbose=configCONST.DEBUGGING)
         
         tank_type = output["tank_type"]
-        log(app = None, method = '_publish_nukeCamera_for_item', message = 'tank_type: %s' % tank_type, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_nukeCamera_for_item', message='tank_type: {}'.format(tank_type), outputToLogFile=False, verbose=configCONST.DEBUGGING)
         
         publish_template = output["publish_template"]
-        log(app = None, method = '_publish_nukeCamera_for_item', message = 'publish_template: %s' % publish_template, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_publish_nukeCamera_for_item', message='publish_template: {}'.format(publish_template), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         # get the current scene path and extract fields from it
         # using the work template:
-        scene_path = os.path.abspath(cmds.file(query=True, sn= True))
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
         fields = work_template.get_fields(scene_path)
         publish_version = fields["version"]
         
         ## create the publish path by applying the fields 
         ## with the publish template:            
         try:
-            print '====================='
-            print 'Exporting the nukeCamera'
-            startFrame = cmds.playbackOptions(query =True, animationStartTime = True) 
-            log(app = None, method = '_publish_nukeCamera_for_item', message = 'startFrame: %s' % startFrame, printToLog = False, verbose = configCONST.DEBUGGING)
+            print('=====================')
+            print('Exporting the nukeCamera')
+            startFrame = cmds.playbackOptions(query=True, animationStartTime=True)
+            log(app=None, method='_publish_nukeCamera_for_item', message='startFrame: {}'.format(startFrame), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
             endFrame = cmds.playbackOptions(query =True, animationEndTime= True)
-            log(app = None, method = '_publish_nukeCamera_for_item', message = 'endFrame: %s' % endFrame, printToLog = False, verbose = configCONST.DEBUGGING)          
+            log(app=None, method='_publish_nukeCamera_for_item', message='endFrame: {}'.format(endFrame), outputToLogFile=False, verbose=configCONST.DEBUGGING)
             
             asset_lib.turnOffModelEditors()
             
             shotCams = []
-            for eachCamera in cmds.listRelatives(item["name"], children = True):
-                if cmds.getAttr('%s.type' % eachCamera) == 'shotCam':
-                    log(app = None, method = '_publish_nukeCamera_for_item', message = 'eachCamera: %s' % eachCamera, printToLog = False, verbose = configCONST.DEBUGGING)
+            for eachCamera in cmds.listRelatives(item["name"], children=True):
+                if cmds.getAttr('{}.type'.format(eachCamera)) == 'shotCam':
+                    log(app=None, method='_publish_nukeCamera_for_item', message='eachCamera: {}'.format(eachCamera), outputToLogFile=False, verbose=configCONST.DEBUGGING)
                     shotCams.extend([eachCamera])
-            log(app = None, method = '_publish_nukeCamera_for_item', message = 'shotCams: %s' % shotCams, printToLog = False, verbose = configCONST.DEBUGGING)
+            log(app=None, method='_publish_nukeCamera_for_item', message='shotCams: {}'.format(shotCams), outputToLogFile=False, verbose=configCONST.DEBUGGING)
             
-            log(app = None, method = '_publish_nukeCamera_for_item', message = 'len(shotCams): %s' % len(shotCams), printToLog = False, verbose = configCONST.DEBUGGING)
+            log(app=None, method='_publish_nukeCamera_for_item', message='len(shotCams): {}'.format(len(shotCams)), outputToLogFile=False, verbose=configCONST.DEBUGGING)
             group_name = ''
             if len(shotCams) == 1:
                 # update fields with the group name:
-                group_name = '%s_NUKECAM' % shotCams[0]
+                group_name = '{}_NUKECAM'.format(shotCams[0])
                 fields["grp_name"] = group_name
-                log(app = None, method = '_publish_nukeCamera_for_item', message = 'grp_name: %s' % group_name, printToLog = False, verbose = configCONST.DEBUGGING)
+                log(app = None, method='_publish_nukeCamera_for_item', message='grp_name: {}'.format(group_name), outputToLogFile=False, verbose=configCONST.DEBUGGING)
                 
                 fields["cam_name"] = shotCams[0]
-                log(app = None, method = '_publish_nukeCamera_for_item', message = 'cam_name: %s' % shotCams[0], printToLog = False, verbose = configCONST.DEBUGGING)
+                log(app=None, method='_publish_nukeCamera_for_item', message='cam_name: {}'.format(shotCams[0]), outputToLogFile=False, verbose=configCONST.DEBUGGING)
     
                 publish_path = publish_template.apply_fields(fields)                 
-                log(app = None, method = '_publish_nukeCamera_for_item', message = 'FINAL publish_path: %s' % publish_path, printToLog = False, verbose = configCONST.DEBUGGING)
+                log(app=None, method='_publish_nukeCamera_for_item', message='FINAL publish_path: {}'.format(publish_path), outputToLogFile=False, verbose=configCONST.DEBUGGING)
                 
                 ## Make the directory now...
                 if not os.path.isdir(os.path.dirname(publish_path)):
-                    log(app = None, method = '_publish_nukeCamera_for_item', message = 'Building dir: %s' % os.path.dirname(publish_path), printToLog = False, verbose = configCONST.DEBUGGING)
+                    log(app=None, method='_publish_nukeCamera_for_item', message='Building dir: {}'.format(os.path.dirname(publish_path)), outputToLogFile=False, verbose=configCONST.DEBUGGING)
                     os.mkdir(os.path.dirname(publish_path))
 
-                frame_start = cmds.playbackOptions(query = True, animationStartTime = True)
-                frame_end = cmds.playbackOptions(query = True, animationEndTime = True)
+                frame_start = cmds.playbackOptions(query=True, animationStartTime=True)
+                frame_end = cmds.playbackOptions(query=True, animationEndTime=True)
     
                 cmds.select(shotCams[0], r = True)
                 #Switching to alembic output for camera.
                 rootList = ''
                 for eachRoot in cmds.ls(sl= True):
-                    rootList = '-root %s %s' % (str(cmds.ls(eachRoot, l = True)[0]), rootList)
+                    rootList = '-root {} {}'.format((str(cmds.ls(eachRoot, l=True)[0]), rootList))
                 
-                log(app = None, method = '_publish_nukeCamera_for_item', message = 'rootList: %s' % rootList, printToLog = False, verbose = configCONST.DEBUGGING)
-                abc_export_cmd = "preRollStartFrame -15 -ro -attr smoothed -attr mcAssArchive -wholeFrameGeo -worldSpace -writeVisibility -uvWrite -fr %d %d %s -file %s" % (frame_start, frame_end, rootList, publish_path)
-                cmds.AbcExport(verbose = False, j = abc_export_cmd)
-                log(app = None, method = '_publish_nukeCamera_for_item', message = 'Export Complete...', printToLog = False, verbose = configCONST.DEBUGGING)
+                log(app=None, method='_publish_nukeCamera_for_item', message='rootList: {}'.format(rootList), outputToLogFile=False, verbose=configCONST.DEBUGGING)
+                abc_export_cmd = "preRollStartFrame -15 -ro -attr smoothed -attr mcAssArchive -wholeFrameGeo -worldSpace -writeVisibility -uvWrite -fr %d %d {} -file {}".format((frame_start, frame_end, rootList, publish_path))
+                cmds.AbcExport(verbose=False, j=abc_export_cmd)
+                log(app=None, method='_publish_nukeCamera_for_item', message='Export Complete...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
     
                 ## Now register publish with shotgun
                 self._register_publish(publish_path,
@@ -391,14 +386,14 @@ class PublishHook(Hook):
                                       comment,
                                       thumbnail_path,
                                       [primary_publish_path])
-                log(app = None, method = '_publish_nukeCamera_for_item', message = '_register_publish complete for %s...' % shotCams[0], printToLog = False, verbose = configCONST.DEBUGGING)
-                print 'Finished camera export for %s...' % shotCams[0]
-                print '====================='
+                log(app=None, method='_publish_nukeCamera_for_item', message='_register_publish complete for {}...'.format(shotCams[0]), outputToLogFile=False, verbose=configCONST.DEBUGGING)
+                print('Finished camera export for {}...'.format(shotCams[0]))
+                print('=====================')
                 asset_lib.turnOnModelEditors()
             else:
                 cmds.warning('Found more than one shotCam, using the first in the list only!!')
                 pass
-        except Exception, e:
+        except Exception as e:
             raise TankError("Failed to export NukeCamera")
 
     def _register_publish(self, path, name, sg_task, publish_version, tank_type, comment, thumbnail_path, dependency_paths=None):
@@ -423,17 +418,17 @@ class PublishHook(Hook):
         # register publish;
         sg_data = tank.util.register_publish(**args)
         if dependency_paths:
-            print "================DEP===================="
-            print '%s dependencies: \n\t%s' % (path, dependency_paths[0])
-            print "========================================"
+            print("================DEP====================")
+            print('{} dependencies: \n\t{}'.format((path, dependency_paths[0])))
+            print("========================================")
         return sg_data
     
 ###########################################################################################################
 ########################## START SHADING XML EXPORT SCRIPTS ##############################################
 
     def _getMostRecentPublish(self):
-        self.workspace = cmds.workspace(query = True, fullName = True)
-        # self.publishPath = '%s/publish/maya' % self.workspace.split('work')[0]
+        self.workspace = cmds.workspace(query=True, fullName=True)
+        # self.publishPath = '{}/publish/maya'.format(self.workspace.split('work')[0]
         self.publishPath = os.path.join(self.workspace.split('work')[0], 'publish/maya').replace('\\', '/')
         self.getLatestPublish = max(os.listdir(self.publishPath))
         if self.getLatestPublish:
@@ -442,10 +437,10 @@ class PublishHook(Hook):
             return False, False
 
     def _getShotCam(self):
-        self.cams = cmds.ls(type = 'camera')
+        self.cams = cmds.ls(type='camera')
         for each in self.cams:
-            getParent = cmds.listRelatives(each, parent  = True)
+            getParent = cmds.listRelatives(each, parent=True)
             if getParent:
-                if cmds.objExists('%s.type' % getParent[0]):
-                    if cmds.getAttr('%s.type' % getParent[0]) == 'shotCam':
+                if cmds.objExists('{}.type'.format(getParent[0])):
+                    if cmds.getAttr('{}.type'.format(getParent[0])) == 'shotCam':
                         return each

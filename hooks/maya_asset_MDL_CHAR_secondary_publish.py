@@ -1,16 +1,10 @@
-import os, shutil
-import maya.cmds as cmds
-import maya.mel as mel
-import tank
+import os, shutil, tank
 from tank import Hook
 from tank import TankError
-from logger import log
-import shotgun.sg_adef_lib as adef_lib
-import tk_findhumanuserid as fhu
+import maya.cmds as cmds
+import server.tk_findhumanuserid as fhu
 import shotgun.sg_secondarypublishmessage as secpubmsg
-import configCONST as configCONST
-reload(adef_lib)
-
+import config_constants as configCONST
 # TODO register these as deps
 # TODO add ztl publishing
 # TODO ADD 2nd for ZBRUSH main ztl file, built from the os.listdir for the Zbrush folder in the modelling context
@@ -95,25 +89,25 @@ class PublishHook(Hook):
 
             if output["name"] == "GoZ_ma":
                 try:
-                    secpubmsg.publishmessage('GOZ EXPORT -ma %s' % item["name"], True)
+                    secpubmsg.publishmessage('GOZ EXPORT -ma {}'.format(item["name"], True))
                     self._publish_goZMaya_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
-                    secpubmsg.publishmessage('GOZ EXPORT -ma %s' % item["name"], False)
-                except Exception, e:
-                    errors.append("Publish failed - %s" % e)
+                    secpubmsg.publishmessage('GOZ EXPORT -ma {}'.format(item["name"], False))
+                except Exception as e:
+                    errors.append("Publish failed - {}".format(e))
             elif output["name"] == "GoZ_ztn":
                 try:
-                    secpubmsg.publishmessage('GOZ EXPORT -ztn %s' % item["name"], True)
+                    secpubmsg.publishmessage('GOZ EXPORT -ztn {}'.format(item["name"], True))
                     self._publish_goZ_archive_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
-                    secpubmsg.publishmessage('GOZ EXPORT -ztn %s' % item["name"], False)
-                except Exception, e:
-                    errors.append("Publish failed - %s" % e)
+                    secpubmsg.publishmessage('GOZ EXPORT -ztn {}'.format(item["name"], False))
+                except Exception as e:
+                    errors.append("Publish failed - {}".format(e))
             elif output["name"] == "zbrush_ztl":
                 try:
-                    secpubmsg.publishmessage('GOZ EXPORT zbrush ztl %s' % item["name"], True)
+                    secpubmsg.publishmessage('GOZ EXPORT zbrush ztl {}'.format(item["name"], True))
                     self._publish_zbrushZTL_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
-                    secpubmsg.publishmessage('GOZ EXPORT zbrush ztl %s' % item["name"], False)
-                except Exception, e:
-                    errors.append("Publish failed - %s" % e)
+                    secpubmsg.publishmessage('GOZ EXPORT zbrush ztl {}'.format(item["name"], False))
+                except Exception as e:
+                    errors.append("Publish failed - {}".format(e))
             else:
                 # don't know how to publish this output types!
                 errors.append("Don't know how to publish this item! Check your asset_step.yml??")
@@ -134,7 +128,7 @@ class PublishHook(Hook):
 
         # get the current scene path and extract fields from it
         # using the work template:
-        scene_path = os.path.abspath(cmds.file(query=True, sn= True))
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
         fields = work_template.get_fields(scene_path)
         publish_version = fields["version"]
 
@@ -144,7 +138,7 @@ class PublishHook(Hook):
 
         ## create the publish path by applying the fields 
         ## with the publish template:
-        publish_path        = publish_template.apply_fields(fields)
+        publish_path = publish_template.apply_fields(fields)
 
         ## The default path for Zbrush caches...
         goZPath = configCONST.GOZ_PUBLIC_CACHEPATH
@@ -154,12 +148,12 @@ class PublishHook(Hook):
             os.mkdir(publish_path)
 
         try:
-            fileSrcPath = os.path.join(goZPath, '%s.ma' % goZName)
-            fileDestPath = os.path.join(publish_path, '%s.ma' % goZName)
+            fileSrcPath = os.path.join(goZPath, '{}.ma'.format(goZName))
+            fileDestPath = os.path.join(publish_path, '{}.ma'.format(goZName))
             ## Now copy the file from the cache to the publish
             shutil.copyfile(fileSrcPath, fileDestPath)
-        except Exception, e:
-            raise TankError("Failed to export GoZ ma file %s" % goZName)
+        except Exception as e:
+            raise TankError("Failed to export GoZ ma file {}".format(goZName))
 
     def _publish_goZ_archive_for_item(self, item, output, work_template, sg_task, comment, thumbnail_path, progress_cb):
         """
@@ -169,7 +163,7 @@ class PublishHook(Hook):
 
         # get the current scene path and extract fields from it
         # using the work template:
-        scene_path = os.path.abspath(cmds.file(query=True, sn= True))
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
         fields = work_template.get_fields(scene_path)
         publish_version = fields["version"]
 
@@ -179,7 +173,7 @@ class PublishHook(Hook):
 
         ## create the publish path by applying the fields
         ## with the publish template:
-        publish_path        = publish_template.apply_fields(fields)
+        publish_path = publish_template.apply_fields(fields)
 
         ## The default path for Zbrush caches...
         goZPath = configCONST.GOZ_PUBLIC_CACHEPATH
@@ -190,27 +184,27 @@ class PublishHook(Hook):
 
         try:
             ## Do the ztn files first
-            fileSrcPath = os.path.join(goZPath, '%s.ztn' % goZName)
-            fileDestPath = os.path.join(publish_path, '%s.ztn' % goZName)
+            fileSrcPath = os.path.join(goZPath, '{}.ztn'.format(goZName))
+            fileDestPath = os.path.join(publish_path, '{}.ztn'.format(goZName))
             ## Now copy the file from the cache to the publish
             shutil.copyfile(fileSrcPath, fileDestPath)
-        except Exception, e:
-            cmds.warning('ZTN fileSrcPath: %s' % fileSrcPath)
-            cmds.warning('No ZTN for %s check script editor for details.' % goZName)
+        except Exception as e:
+            cmds.warning('ZTN fileSrcPath: {}'.format(fileSrcPath))
+            cmds.warning('No ZTN for {} check script editor for details.'.format(goZName))
 
 
         try:
             ## Now do the ZTL files
-            fileSrcPath = os.path.join(goZPath, '%s.ZTL' % goZName)
+            fileSrcPath = os.path.join(goZPath, '{}.ZTL'.format(goZName))
             if os.path.isfile(fileSrcPath):
-                fileDestPath = os.path.join(publish_path, '%s.ZTL' % goZName)
+                fileDestPath = os.path.join(publish_path, '{}.ZTL'.format(goZName))
                 ## Now copy the file from the cache to the publish
                 shutil.copyfile(fileSrcPath, fileDestPath)
             else:
-                cmds.warning('ZTL fileSrcPath: %s' % fileSrcPath)
-                cmds.warning('No ZTL for %s check script editor for details.' % goZName)
-        except Exception, e:
-            raise TankError("Failed to export GoZ ztl file %s" % goZName)
+                cmds.warning('ZTL fileSrcPath: {}'.format(fileSrcPath))
+                cmds.warning('No ZTL for {} check script editor for details.'.format(goZName))
+        except Exception as e:
+            raise TankError("Failed to export GoZ ztl file {}".format(goZName))
 
     def _publish_zbrushZTL_for_item(self, item, output, work_template, sg_task, comment, thumbnail_path, progress_cb):
         """
@@ -220,7 +214,7 @@ class PublishHook(Hook):
         publish_template = output["publish_template"]
         # get the current scene path and extract fields from it
         # using the work template:
-        scene_path = os.path.abspath(cmds.file(query=True, sn= True))
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
         fields = work_template.get_fields(scene_path)
         publish_version = fields["version"]
         # update fields with the group name:
@@ -228,21 +222,21 @@ class PublishHook(Hook):
         fields["grp_name"] = zbrushName
         ## create the publish path by applying the fields
         ## with the publish template:
-        publish_path        = publish_template.apply_fields(fields)
+        publish_path = publish_template.apply_fields(fields)
         ## If the publish dir doesn't exist make one now.
         if not os.path.isdir(publish_path):
             os.mkdir(publish_path)
         ## Scan the zbrush folder if it exists
-        zbrushdir       = os.path.join((scene_path.split("maya%s" % os.path.sep)[0]), 'zbrush')
-        fileSrcPath     = os.path.join(zbrushdir, zbrushName)
-        fileDestPath    = os.path.join(publish_path, zbrushName)
+        zbrushdir = os.path.join((scene_path.split("maya{}".format(os.path.sep)[0]), 'zbrush'))
+        fileSrcPath = os.path.join(zbrushdir, zbrushName)
+        fileDestPath = os.path.join(publish_path, zbrushName)
         try:
             ## Now copy the file from the cache to the publish
             shutil.copyfile(fileSrcPath, fileDestPath)
-        except Exception, e:
-            cmds.warning('ZTL source path %s' % fileSrcPath)
-            cmds.warning('ZTL dest path %s' % fileDestPath)
-            cmds.warning('No ZTL for %s check script editor for details' % zbrushName)
+        except Exception:
+            cmds.warning('ZTL source path {}'.format(fileSrcPath))
+            cmds.warning('ZTL dest path {}'.format(fileDestPath))
+            cmds.warning('No ZTL for {} check script editor for details'.format(zbrushName))
 
     def _register_publish(self, path, name, sg_task, publish_version, tank_type, comment, thumbnail_path, dependency_paths=None):
         """
@@ -271,7 +265,7 @@ class PublishHook(Hook):
         # register publish;
         sg_data = tank.util.register_publish(**args)
         if dependency_paths:
-            print "================DEP===================="
-            print '%s dependencies: \n\t%s' % (path, dependency_paths[0])
-            print "========================================"
+            print("================DEP====================")
+            print('{} dependencies: \n\t{}'.format(path, dependency_paths[0]))
+            print("========================================")
         return sg_data

@@ -11,8 +11,8 @@
 import os
 from tank import Hook
 from tank import TankError
-from logger import log
-import configCONST as configCONST
+from apps.app_logger import log
+import config_constants as configCONST
 
 
 class PrimaryPrePublishHook(Hook):
@@ -87,11 +87,11 @@ class PrimaryPrePublishHook(Hook):
         Do Maya primary pre-publish/scene validation
         """
         import maya.cmds as cmds
-        log(app = None, method = '_do_maya_pre_publish', message = 'Validating', printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='_do_maya_pre_publish', message='Validating', outputToLogFile=False, verbose=configCONST.DEBUGGING)
         progress_cb(0.0, "Validating current scene", task)
         
         # get the current scene file:
-        scene_file = cmds.file(query=True, sn= True)
+        scene_file = cmds.file(query=True, sn=True)
         if scene_file:
             scene_file = os.path.abspath(scene_file)
             

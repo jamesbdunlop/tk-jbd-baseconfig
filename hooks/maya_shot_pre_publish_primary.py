@@ -36,7 +36,7 @@ class PrimaryPrePublishHook(Hook):
         elif engine_name == "tk-photoshop":
             return self._do_photoshop_pre_publish(task, work_template, progress_cb)
         else:
-            raise TankError("Unable to perform pre-publish for unhandled engine %s" % engine_name)
+            raise TankError("Unable to perform pre-publish for unhandled engine {}".format(engine_name))
         
     def _do_maya_pre_publish(self, task, work_template, progress_cb):
         """
@@ -46,7 +46,7 @@ class PrimaryPrePublishHook(Hook):
         progress_cb(0.0, "Validating current scene", task)
 
         # get the current scene file:
-        scene_file = cmds.file(query=True, sn= True)
+        scene_file = cmds.file(query=True, sn=True)
         if scene_file:
             scene_file = os.path.abspath(scene_file)
             
@@ -68,7 +68,7 @@ class PrimaryPrePublishHook(Hook):
         errors = []
         
         if not work_template.validate(path):
-            raise TankError("File '%s' is not a valid work path, unable to publish!" % path)
+            raise TankError("File '{}' is not a valid work path, unable to publish!".format(path))
         
         progress_cb(50, "Validating publish path")
         
@@ -93,7 +93,7 @@ class PrimaryPrePublishHook(Hook):
                 # on an old version of the file. Warn them about upgrading.
                 errors.append("Your current work file is v%03d, however a more recent "
                        "version (v%03d) already exists. After publishing, your version "
-                       "will become v%03d, thereby shadowing some previous work. " % (curr_v_no, max_v_no, max_v_no + 1))
+                       "will become v%03d, thereby shadowing some previous work. ".format((curr_v_no, max_v_no, max_v_no + 1)))
         except:
             pass
         

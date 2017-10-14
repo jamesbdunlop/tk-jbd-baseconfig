@@ -12,8 +12,8 @@ import os
 import tank
 from tank import Hook
 from tank import TankError
-from logger import log
-import tk_findhumanuserid as fhu
+from apps.app_logger import log
+import server.tk_findhumanuserid as fhu
 
 
 class PrimaryPublishHook(Hook):
@@ -25,7 +25,8 @@ class PrimaryPublishHook(Hook):
         if engine_name == "tk-maya":
             return self._do_maya_publish(task, work_template, comment, thumbnail_path, sg_task, progress_cb)
         else:
-            raise TankError("Unable to perform publish for unhandled engine %s \n Check with your TD that the config is loading the right primary publish hook." % engine_name)
+            raise TankError("Unable to perform publish for unhandled engine {} \n \
+            Check with your TD that the config is loading the right primary publish hook.".format(engine_name))
        
     def _do_maya_publish(self, task, work_template, comment, thumbnail_path, sg_task, progress_cb):
         """
@@ -36,11 +37,11 @@ class PrimaryPublishHook(Hook):
         progress_cb(0.0, "Finding scene dependencies", task)
         dependencies = self._maya_find_additional_scene_dependencies()
         ## Get scene path
-        scene_path = os.path.abspath(cmds.file(query=True, sn= True))
-        log(None, method = 'init_app', message = 'scene_path: %s' % scene_path, verbose = True)
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
+        log(None, method='init_app', message='scene_path: {}'.format(scene_path, verbose=True))
         ## Test if it's a valid scene path
         if not work_template.validate(scene_path):
-            raise TankError("File '%s' is not a valid work path, unable to publish!" % scene_path)
+            raise TankError("File '{}' is not a valid work path, unable to publish!".format(scene_path))
         
         ## Use templates to convert to publish path:
         output = task["output"]
@@ -52,12 +53,12 @@ class PrimaryPublishHook(Hook):
                
         publish_template = output["publish_template"]
         publish_path = publish_template.apply_fields(fields)
-        log(None, method = 'init_app', message = 'publish_path: %s' % publish_path, verbose = True)
+        log(None, method='init_app', message='publish_path: {}'.format(publish_path, verbose=True))
         
         if os.path.exists(publish_path):
            ## If it already exists version up one. 
            ## We should never fail a publish just because a published asset already exists
-           cmds.warning('Found existing publish_path: %s' % publish_path)
+           cmds.warning('Found existing publish_path: {}'.format(publish_path))
            cmds.warning('Adjusting publish_path now...')
            path = '\\'.join(publish_path.split('\\')[0:-1])
            getfiles = os.listdir(path)
@@ -73,11 +74,11 @@ class PrimaryPublishHook(Hook):
            ## Get the max of the list
            highestVersFile = max(getfiles).split('.')[1].split('v')[-1]
            ## Update the fields with a new version number
-           fields["version"]  = int(highestVersFile) + 1
+           fields["version"] = int(highestVersFile) + 1
            ## Apply the fields to the templates paths..
            publish_path = publish_template.apply_fields(fields)
            ## Output the new publish path to the scripteditor
-           cmds.warning('NewPublishPath: %s' % publish_path)
+           cmds.warning('NewPublishPath: {}'.format(publish_path))
         
         ## Save the scene so we have a valid os.rename path
         progress_cb(10.0, "Saving the current working scene")
@@ -89,26 +90,26 @@ class PrimaryPublishHook(Hook):
             padding = '0'
         else:
             padding = ''
-        cmds.file(rename = '%s.v%s%s' % (publish_name, padding, fields['version']))
+        cmds.file(rename='{}.v{}{}'.format((publish_name, padding, fields['version'])))
         cmds.file(save=True, force= True)
-        print 'Saved scene to %s.v%s%s' % (publish_name, padding, fields['version'])
+        print('Saved scene to {}.v{}{}'.format((publish_name, padding, fields['version'])))
         progress_cb(50.0, "Publishing the file to publish area")
         
         try:
             publish_folder = os.path.dirname(publish_path)
             self.parent.ensure_folder_exists(publish_folder)
-            getCurrentScenePath = os.path.abspath(cmds.file(query=True, sn= True))
+            getCurrentScenePath = os.path.abspath(cmds.file(query=True, sn=True))
             os.rename(getCurrentScenePath, publish_path)
-            self.parent.log_debug("Publishing %s --> %s..." % (getCurrentScenePath, publish_path))
+            self.parent.log_debug("Publishing {} --> {}...".format((getCurrentScenePath, publish_path)))
             progress_cb(65.0, "Moved the publish")        
-        except Exception, e:
-            raise TankError("Failed to copy file: \n%s \nto\n%s\nError: %s" % (getCurrentScenePath, publish_path, e))
+        except Exception as e:
+            raise TankError("Failed to copy file: \n{} \nto\n{}\nError: {}".format((getCurrentScenePath, publish_path, e)))
         
         # finally, register the publish:
         progress_cb(75.0, "Registering the publish")
         if not 'SRFVar_' in scene_path:
             self._register_publish(publish_path, 
-                                   '%s_SHD_primaryPublish' % publish_name,
+                                   '{}_SHD_primaryPublish'.format(publish_name),
                                    sg_task, 
                                    fields["version"], 
                                    output["tank_type"],
@@ -116,9 +117,9 @@ class PrimaryPublishHook(Hook):
                                    thumbnail_path, 
                                    dependencies)
         else:
-            log(None, method = 'init_app', message = 'REGISTERING SURFACE VARIATION...', verbose = True)
+            log(None, method='init_app', message='REGISTERING SURFACE VARIATION...', verbose=True)
             self._register_publish(publish_path, 
-                                   '%s_primaryPublish_surfVar%s' % (publish_name,  scene_path.split('SRFVar_')[-1].split('\\')[0]),
+                                   '{}_primaryPublish_surfVar{}'.format((publish_name,  scene_path.split('SRFVar_')[-1].split('\\')[0])),
                                    sg_task, 
                                    fields["version"], 
                                    output["tank_type"],
@@ -161,7 +162,7 @@ class PrimaryPublishHook(Hook):
 
             # get path and make it platform dependent
             # (maya uses C:/style/paths)
-            texture_path = cmds.getAttr("%s.fileTextureName" % file_node).replace("/", os.path.sep)
+            texture_path = cmds.getAttr("{}.fileTextureName".format(file_node).replace("/", os.path.sep))
             if texture_path:
                 ref_paths.add(texture_path)
             
@@ -261,7 +262,7 @@ class PrimaryPublishHook(Hook):
             "published_file_type":tank_type,
         }
         
-        self.parent.log_debug("Register publish in shotgun: %s" % str(args))
+        self.parent.log_debug("Register publish in shotgun: {}".format(str(args)))
 
         getHumanUser = fhu._returnUserID()
         if getHumanUser:

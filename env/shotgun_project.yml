@@ -15,7 +15,7 @@ engines:
       tk-shotgun-launchsoftimage: '@launch_softimage'
     debug_logging: false
     location:
-      version: v0.5.2
+      version: v0.6.0
       type: app_store
       name: tk-shotgun
 frameworks:

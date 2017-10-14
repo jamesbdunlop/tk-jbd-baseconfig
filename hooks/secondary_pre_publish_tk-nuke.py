@@ -9,11 +9,9 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
 import os
-import nuke
-
-import tank
 from tank import Hook
 from tank import TankError
+
 
 class PrePublishHook(Hook):
     """
@@ -90,12 +88,12 @@ class PrePublishHook(Hook):
                 # validate that the write node has rendered images to publish:
                 # ...
                 if not write_node_app:
-                    errors.append("Unable to validate write node '%s' without tk-nuke-writenode app!" % item["name"])
+                    errors.append("Unable to validate write node '{}' without tk-nuke-writenode app!".format(item["name"]))
                 else:
                     # get write node:
                     write_node = item.get("other_params", dict()).get("node")
                     if not write_node:
-                        errors.append("Could not find nuke node for item '%s'!" % item["name"])
+                        errors.append("Could not find nuke node for item '{}'!".format(item["name"]))
                     else:
                         # do pre-publish:              
                         errors = self._nuke_pre_publish_write_node_render(write_node, write_node_app, progress_cb)
@@ -189,15 +187,12 @@ class PrePublishHook(Hook):
                         
                 if existing_files:
                     # one or more published files already exist!
-                    msg = "Published render file '%s'" % existing_files[0]
+                    msg = "Published render file '{}'".format(existing_files[0])
                     if len(existing_files) > 1:
-                        msg += " (+%d others)" % (len(existing_files)-1)
+                        msg += " (+{} others)".format((len(existing_files)-1))
                     msg += " already exists!"
                     errors.append(msg)
-        except Exception, e:
-            errors.append("Unhandled exception: %s" % e)
+        except Exception as e:
+            errors.append("Unhandled exception: {}".format(e))
 
         return errors
-    
-    
-    

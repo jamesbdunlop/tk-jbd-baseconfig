@@ -9,7 +9,7 @@ from tank import TankError
 from tank import Hook
 import tank
 import hooks.maya_ScenePublish as scnPub
-reload(scnPub)
+
 
 class PrimaryPublishHook(Hook):
     def execute(self, task, work_template, comment, thumbnail_path, sg_task, progress_cb, **kwargs):
@@ -19,4 +19,5 @@ class PrimaryPublishHook(Hook):
         if engine_name == "tk-maya":
             return scnPub._do_maya_publish(task, work_template, comment, thumbnail_path, sg_task, progress_cb, tank, self.parent)
         else:
-            raise TankError("Unable to perform publish for unhandled engine %s \n Check with your TD that the config is loading the right primary publish hook." % engine_name)
+            raise TankError("Unable to perform publish for unhandled engine {} \n \
+                Check with your TD that the config is loading the right primary publish hook.".format(engine_name))

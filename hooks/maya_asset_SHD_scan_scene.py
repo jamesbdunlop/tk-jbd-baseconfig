@@ -5,9 +5,7 @@
 # By accessing, using, copying or modifying this work you indicate your 
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
-import configCONST as configCONST
-import hooks.maya_SceneScan as shd
-reload(shd)
+import config_constants as configCONST
 from hooks.maya_SceneScan import shd_scan_Scene
 from tank import Hook
 

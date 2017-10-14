@@ -8,12 +8,10 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-import os
-import nuke
-
-import tank
+import os, nuke, tank
 from tank import Hook
 from tank import TankError
+
 
 class ScanSceneHook(Hook):
     """
@@ -77,10 +75,10 @@ class ScanSceneHook(Hook):
                 profile_name = app.get_node_profile_name(write_node)
                 is_disabled = write_node.knob("disable").value()
                 
-                items.append({"name":"Shotgun Write Node: %s" % name,
-                              "type":"write_node",
-                              "description":"Render Profile: %s" % profile_name,
-                              "selected":not is_disabled,
-                              "other_params":{"node":write_node}})
+                items.append({"name": "Shotgun Write Node: {}".format(name),
+                              "type": "write_node",
+                              "description": "Render Profile: {}".format(profile_name),
+                              "selected": not is_disabled,
+                              "other_params": {"node":write_node}})
                  
         return items

@@ -1,6 +1,6 @@
 about:
   location:
-    version: v0.2.1
+    version: v0.2.5
     type: app_store
     name: tk-multi-about
 frameworks:
@@ -8,7 +8,7 @@ frameworks:
     location: {name: tk-framework-qtwidgets, type: app_store, version: v1.0.3}
   tk-framework-qtwidgets_v2.x.x:
     location:
-      version: v2.5.12
+      version: v2.6.5
       type: app_store
       name: tk-framework-qtwidgets
   tk-framework-shotgunutils_v2.x.x:
@@ -28,9 +28,14 @@ frameworks:
     location: {name: tk-framework-widget, type: app_store, version: v0.1.24}
   tk-framework-widget_v0.2.x:
     location:
-      version: v0.2.4
+      version: v0.2.6
       type: app_store
       name: tk-framework-widget
+  tk-framework-shotgunutils_v5.x.x:
+    location:
+      version: v5.2.2
+      type: app_store
+      name: tk-framework-shotgunutils
 workfiles:
   allow_task_creation: true
   file_extensions: []

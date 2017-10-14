@@ -8,9 +8,6 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-import os, sys
-import maya.cmds as cmds
-import tank
 from tank import Hook
 from tank import TankError
 
@@ -65,11 +62,11 @@ class PostPublishHook(Hook):
         progress_cb(0, "Post Checking scene now...")
 
         ## Set model panel to show back to ALL after publish
-        modelPanels = cmds.getPanel(type = 'modelPanel')
+        modelPanels = cmds.getPanel(type='modelPanel')
         if modelPanels:
-            [cmds.modelEditor(mp, edit = True, allObjects = True) for mp in modelPanels]
+            [cmds.modelEditor(mp, edit=True, allObjects=True) for mp in modelPanels]
 
-        cmds.file(save = True, force = True)
+        cmds.file(save=True, force=True)
         progress_cb(100,"Post complete...")
 
     def _get_next_work_file_version(self, work_template, fields):

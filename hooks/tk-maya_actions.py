@@ -14,15 +14,15 @@ Hook that loads defines all the available actions, broken down by publish type.
 import sgtk, os
 import maya.cmds as cmds
 import maya.mel as mel
-from logger import log
-import configCONST as configCONST
+from apps.app_logger import log
+import config_constants as configCONST
 import shotgun.sg_shd_lib as shd_lib
 import shotgun.sg_asset_lib as asset_lib
 import shotgun.sg_adef_lib as adef_lib
 import xml_import.shd_readXML as shd_readxml
 from tank import TankError
 HookBaseClass = sgtk.get_hook_baseclass()
-reload(shd_readxml)
+
 
 class MayaActions(HookBaseClass):
     
@@ -67,8 +67,8 @@ class MayaActions(HookBaseClass):
         :returns List of dictionaries, each with keys name, params, caption and description
         """
         app = self.parent
-        app.log_debug("Generate actions called for UI element %s. "
-                      "Actions: %s. Publish Data: %s" % (ui_area, actions, sg_publish_data))
+        app.log_debug("Generate actions called for UI element {}. "
+                      "Actions: {}. Publish Data: {}".format(ui_area, actions, sg_publish_data))
         
         action_instances = []
 
@@ -151,8 +151,8 @@ class MayaActions(HookBaseClass):
         :returns: No return value expected.
         """
         app = self.parent
-        app.log_debug("Execute action called for action %s. "
-                      "Parameters: %s. Publish Data: %s" % (name, params, sg_publish_data))
+        app.log_debug("Execute action called for action {}. "
+                      "Parameters: {}. Publish Data: {}".format(name, params, sg_publish_data))
         
         # resolve path
         path = self.get_publish_path(sg_publish_data)
@@ -194,39 +194,15 @@ class MayaActions(HookBaseClass):
             self._fetchAssetXML(path, sg_publish_data)
 
     def _fetchLIBWORLD(self, path, sg_publish_data):
-        print 'STILL GOT SOME STUFF TO ADD IN HERE!!...such as;'
-        print 'Waterfall handling into render layers setup'
-        print 'BG Hills render layers setup'
-        
-        ## Do the import
         self._do_import(path, sg_publish_data)
-        
-        ## Check for the clouds import and setup those correctly
-        if 'cloud' in path:
-            self.setCloudsToCloudLayer()
-        ## Check for the waterfall import and setup those correctly
-        elif 'waterfall' in path:
-            pass
-        elif 'bghills' in path:
-            pass
-        else:
-            pass
-        
-        ## Now try to clean the duplicate cores that may exist
-        #self._cleanFnCores()
 
     def _fetchAssetXML(self, path, sg_publish_data):
-        #print path, sg_publish_data
-        ## I:\bubblebathbay\assets\Environment\BBB_JBDDUMMY_LND\SRF\publish\uvxml\BBBJBDDUMMYLND.xml 
-        ## {'version.Version.sg_status_list': None, 'task.Task.due_date': None, 'version_number': 53, 'code': 'BBBJBDDUMMYLND.xml', 'description': None, 'task.Task.sg_status_list': 'wtg', 'image': 'https://sg-media-usor-01.s3.amazonaws.com/ea241984334a6d66408726328553b1baecf5f5f9/49d59fec2908edc8a73bfe3eb0fc776de1058770/no_preview_t.jpg?AWSAccessKeyId=AKIAIFHY52V77FIVWKLQ&Expires=1401237658&Signature=lkCn8kdlHILUj16W%2FTqnagQWBQ4%3D', 'published_file_type': {'type': 'PublishedFileType', 'id': 1, 'name': 'Maya Scene'}, 'entity': {'type': 'Asset', 'id': 1768, 'name': 'BBB_JBDDUMMY_LND'}, 'task.Task.content': 'Surface', 'task': {'type': 'Task', 'id': 24841, 'name': 'Surface'}, 'version': None, 'path': {'local_path_windows': 'I:\\bubblebathbay\\assets\\Environment\\BBB_JBDDUMMY_LND\\SRF\\publish\\uvxml\\BBBJBDDUMMYLND.xml', 'name': 'BBBJBDDUMMYLND.xml', 'local_path_linux': None, 'url': 'file://I:\\bubblebathbay\\assets\\Environment\\BBB_JBDDUMMY_LND\\SRF\\publish\\uvxml\\BBBJBDDUMMYLND.xml', 'local_storage': {'type': 'LocalStorage', 'id': 1, 'name': 'primary'}, 'local_path': 'I:\\bubblebathbay\\assets\\Environment\\BBB_JBDDUMMY_LND\\SRF\\publish\\uvxml\\BBBJBDDUMMYLND.xml', 'content_type': None, 'local_path_mac': '/Volumes/bubblebathbay3D/bubblebathbay/assets/Environment/BBB_JBDDUMMY_LND/SRF/publish/uvxml/BBBJBDDUMMYLND.xml', 'type': 'Attachment', 'id': 46475, 'link_type': 'local'}, 'type': 'PublishedFile', 'id': 24964, 'name': 'BBBJBDDUMMYLNDXML'}
-        ## Find the assets parent group in the scene now..
-        parentGrp = cmds.listRelatives('%s_%s' % (sg_publish_data['entity']["name"], configCONST.GROUP_SUFFIX), p = True) or ''
-            
+        parentGrp = cmds.listRelatives('{}_{}'.format((sg_publish_data['entity']["name"]), configCONST.GROUP_SUFFIX), p = True) or ''
         if 'uvxml' in path:
             cmds.warning('This is not a valid SHD XML try again....')
         else:
-            shd_lib.createAll(XMLPath = path, parentGrp = parentGrp, Namespace = '', Root = 'MaterialNodes', selected = False, selectedOrigHrcName = '')
-            shd_lib.connectAll(XMLPath = path, parentGrp= parentGrp, Namespace = '', Root = 'MaterialNodes', selected = False, selectedOrigHrcName = '')             
+            shd_lib.createAll(XMLPath=path, parentGrp=parentGrp, Namespace='', Root='MaterialNodes', selected=False, selectedOrigHrcName='')
+            shd_lib.connectAll(XMLPath=path, parentGrp= parentGrp, Namespace='', Root='MaterialNodes', selected=False, selectedOrigHrcName='')
 
     def _openScene(self, path, sg_publish_data):
         """
@@ -237,9 +213,9 @@ class MayaActions(HookBaseClass):
         :param sg_publish_data: Shotgun data dictionary with all the standard publish fields.
         """
         if not os.path.exists(path):
-            raise Exception("File not found on disk - '%s'" % path)
+            raise Exception("File not found on disk - '{}'".format(path))
                 
-        cmds.file(path, o = True, f = True)
+        cmds.file(path, o=True, f=True)
 
     def _create_audio_node(self, path, sg_publish_data):
         """
@@ -255,23 +231,23 @@ class MayaActions(HookBaseClass):
                 # maya file - load it as a reference
                 getEntity = sg_publish_data.get('entity')
                 namespace = getEntity.get('name')
-                print 'Namespace: %s' % namespace
-                print 'Path: %s' % path
+                print('Namespace: {}'.format(namespace))
+                print('Path: {}'.format(path))
                 
                 if not cmds.objExists(namespace):
-                    cmds.file('%s.ma' % path, i = True, f = True)
+                    cmds.file('{}.ma'.format(path), i=True, f=True)
                     ## Clean out any imported namespaces
                     for eachNode in cmds.ls(ap= True):
                         if ':' in eachNode:
                             try:
-                                cmds.rename(eachNode, '%s' % eachNode.split(':')[-1])
+                                cmds.rename(eachNode, '{}'.format(eachNode.split(':')[-1]))
                             except RuntimeError:
                                 pass
                 else:
                     cmds.warning('Audio already exists in the scene. Use the scene breakdown to update your audio.')
                 
             else:
-                self.parent.log_error("Unsupported file extension for %s! Nothing will be loaded." % file_path)
+                self.parent.log_error("Unsupported file extension for {}! Nothing will be loaded.".format(path))
         else:
             cmds.warning('File not found! Please contact a co-ord to fix this for you now.')
 
@@ -283,19 +259,19 @@ class MayaActions(HookBaseClass):
         :param path: Path to file.
         :param sg_publish_data: Shotgun data dictionary with all the standard publish fields.
         """
-        print 'path: %s' % path
+        print('path: {}'.format(path))
         if not os.path.exists(path):
-            raise Exception("File not found on disk - '%s'" % path)
+            raise Exception("File not found on disk - '{}'".format(path))
         
         # make a name space out of entity name + publish name
         # e.g. bunny_upperbody                
-        #namespace = "%s %s" % (sg_publish_data.get("entity").get("name"), sg_publish_data.get("name"))
-        namespace = "%s_ADef_ARef" % sg_publish_data.get("entity").get("name").replace('_', '')
+        #namespace = "{} {}".format((sg_publish_data.get("entity").get("name"), sg_publish_data.get("name"))
+        namespace = "{}_ADef_ARef".format(sg_publish_data.get("entity").get("name").replace('_', ''))
 
         ## Check for the Assembly References group
-        assemblyRefGrp = 'ASSEMBLYREFS_%s' % configCONST.GROUP_SUFFIX
+        assemblyRefGrp = 'ASSEMBLYREFS_{}'.format(configCONST.GROUP_SUFFIX)
         if not cmds.objExists(assemblyRefGrp):
-            cmds.group(n = assemblyRefGrp, em = True)
+            cmds.group(n=assemblyRefGrp, em=True)
 
         ## Make sure the scene assembly plugins are loaded
         adef_lib.loadSceneAssemblyPlugins(TankError)
@@ -304,10 +280,10 @@ class MayaActions(HookBaseClass):
         assemblyDefPath = 'assemblyDef'.join(path.split('maya'))
 
         if not cmds.objExists(namespace):
-            cmds.container(type = 'assemblyReference', name = namespace)
-            cmds.setAttr('%s.definition' % namespace, assemblyDefPath, type = 'string')
+            cmds.container(type='assemblyReference', name=namespace)
+            cmds.setAttr('{}.definition'.format(namespace, assemblyDefPath, type='string'))
         else:
-            cmds.warning('Asset %s already exists in scene, try using the sceneBreakdown tool to update instead....' % namespace)     
+            cmds.warning('Asset {} already exists in scene, try using the sceneBreakdown tool to update instead....'.format(namespace))
 
         ## Now parent to the assembyRefs group
         try:
@@ -326,17 +302,17 @@ class MayaActions(HookBaseClass):
         import pymel.core as pm
 
         if not os.path.exists(path):
-            raise Exception("File not found on disk - '%s'" % path)
+            raise Exception("File not found on disk - '{}'".format(path))
         
         # make a name space out of entity name + publish name
         # e.g. bunny_upperbody                
-        namespace = "%s" % (sg_publish_data.get("name"))
+        namespace = "{}".format(sg_publish_data.get("name"))
         namespace = namespace.replace(" ", "_")
         if '_primaryPublish' in namespace:
             namespace = namespace.replace('_primaryPublish', '')
 
         pm.system.createReference(path, 
-                                  loadReferenceDepth= "all", 
+                                  loadReferenceDepth="all",
                                   mergeNamespacesOnClash=False, 
                                   namespace=namespace)
     
@@ -347,11 +323,11 @@ class MayaActions(HookBaseClass):
         """
 
         if not os.path.exists(path):
-            raise Exception("File not found on disk - '%s'" % path)
+            raise Exception("File not found on disk - '{}'".format(path))
                 
         # make a name space out of entity name + publish name
         # e.g. bunny_upperbody                
-        namespace = "%s %s" % (sg_publish_data.get("entity").get("name"), sg_publish_data.get("name"))
+        namespace = "{} {}".format(sg_publish_data.get("entity").get("name"), sg_publish_data.get("name"))
         namespace = namespace.replace(" ", "_")
         
         # perform a more or less standard maya import, putting all nodes brought in into a specific namespace
@@ -362,11 +338,11 @@ class MayaActions(HookBaseClass):
         self._removeCoreGrps()
         
         ## Clean general namespaces from the import ignoring the core archive names...
-        getAllNameSpaces = cmds.namespaceInfo(listOnlyNamespaces = True)
+        getAllNameSpaces = cmds.namespaceInfo(listOnlyNamespaces=True)
         for eachNS in getAllNameSpaces:
             if namespace in eachNS and 'CORE' not in eachNS:
                 try:
-                    cmds.namespace(removeNamespace = eachNS, mergeNamespaceWithRoot = True)
+                    cmds.namespace(removeNamespace=eachNS, mergeNamespaceWithRoot=True)
                 except RuntimeError:
                     pass
                     
@@ -381,11 +357,11 @@ class MayaActions(HookBaseClass):
         :param sg_publish_data: Shotgun data dictionary with all the standard publish fields.
         """
         if not os.path.exists(path):
-            raise Exception("File not found on disk - '%s'" % path)
+            raise Exception("File not found on disk - '{}'".format(path))
                 
         # make a name space out of entity name + publish name
         # e.g. bunny_upperbody                
-        namespace = "%s %s" % (sg_publish_data.get("entity").get("name"), sg_publish_data.get("name"))
+        namespace = "{} {}".format(sg_publish_data.get("entity").get("name"), sg_publish_data.get("name"))
         namespace = namespace.replace(" ", "_")
         
         # perform a more or less standard maya import, putting all nodes brought in into a specific namespace
@@ -400,9 +376,9 @@ class MayaActions(HookBaseClass):
         :param sg_publish_data: Shotgun data dictionary with all the standard publish fields.
         """
         x = cmds.shadingNode('file', asTexture=True)
-        cmds.setAttr("%s.fileTextureName" % x, path, type="string" )
+        cmds.setAttr("{}.fileTextureName".format(x, path, type="string" ))
                     
-    def _importAssetToMaya(self, path, sg_publish_data, group = True, env = False):
+    def _importAssetToMaya(self, path, sg_publish_data, group=True, env=False):
         """
         Import asset file into Maya
         """
@@ -411,21 +387,21 @@ class MayaActions(HookBaseClass):
 
         file_path = path.replace(os.path.sep, "/")
         (path, ext) = os.path.splitext(file_path)
-        namespace = "%s %s" % (sg_publish_data.get("entity").get("name"), sg_publish_data.get("name"))
+        namespace = "{} {}".format(sg_publish_data.get("entity").get("name"), sg_publish_data.get("name"))
         namespace = namespace.replace(" ", "_")
         if ext in [".ma", ".mb"]:
-            assetName = '%s_%s' % (file_path.split('.')[0].split('/')[-1], configCONST.GROUP_SUFFIX)
+            assetName = '{}_{}'.format(file_path.split('.')[0].split('/')[-1], configCONST.GROUP_SUFFIX)
             if myConfirmBox == 'Yes':
-                groupName = '%s_%s' % (assetName, configCONST.IMPORT_SUFFIX)
+                groupName = '{}_{}'.format(assetName, configCONST.IMPORT_SUFFIX)
                 ## Now do the import
-                cmds.file(file_path, i =True, gr = group, gn = groupName, loadReferenceDepth="all", preserveReferences=True)
+                cmds.file(file_path, i =True, gr=group, gn=groupName, loadReferenceDepth="all", preserveReferences=True)
             else:
                 ## Now do the import
                 cmds.file(file_path, i =True, loadReferenceDepth="all", preserveReferences=True)
 
             self._stripNamespaces(namespace)
         else:
-            raise Exception("Unsupported file extension for %s! Nothing will be loaded." % file_path)
+            raise Exception("Unsupported file extension for {}! Nothing will be loaded.".format(file_path))
 
     def _importDGSHD(self, path, sg_publish_data):
         """
@@ -439,44 +415,44 @@ class MayaActions(HookBaseClass):
         if ext in [".xml"]:
             if not cmds.objExists('dgSHD'):
                 cmds.scriptNode(n ='dgSHD')
-            log(None, method = 'add_file_to_maya', message = 'Cleaning shaders...', printToLog = False, verbose = configCONST.DEBUGGING)
+            log(None, method='add_file_to_maya', message='Cleaning shaders...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
             asset_lib.cleanUpShaders()
 
-            log(None, method = 'add_file_to_maya', message = 'Creating shaders...', printToLog = False, verbose = configCONST.DEBUGGING)
-            shd_readxml.createAll(XMLPath = file_path, Namespace = '', Root = 'MaterialNodes')
+            log(None, method='add_file_to_maya', message='Creating shaders...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+            shd_readxml.createAll(XMLPath=file_path, Namespace='', Root='MaterialNodes')
 
-            log(None, method = 'add_file_to_maya', message = 'Connect all shaders...', printToLog = False, verbose = configCONST.DEBUGGING)
-            shd_readxml.connectAll(XMLPath = file_path, Namespace = '', Root = 'MaterialNodes')
+            log(None, method='add_file_to_maya', message='Connect all shaders...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+            shd_readxml.connectAll(XMLPath=file_path, Namespace='', Root='MaterialNodes')
 
-            log(None, method = 'add_file_to_maya', message = 'Downgrading shaders now...', printToLog = False, verbose = configCONST.DEBUGGING)
+            log(None, method='add_file_to_maya', message='Downgrading shaders now...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
             shd_lib.downgradeShaders()
 
-            log(None, method = 'add_file_to_maya', message = 'Downgrade complete!', printToLog = False, verbose = configCONST.DEBUGGING)
+            log(None, method='add_file_to_maya', message='Downgrade complete!', outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
             ####TAG geo_hrc with DGSHD XML VERSION NUMBER
             ##################
             versionNumber = file_path.split('.')[-2]
-            if not cmds.objExists('%s_%s.version' % (configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX)):
-                cmds.addAttr('%s_%s' % (configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX), ln = 'version', dt = 'string')
-                cmds.setAttr('%s_%s.version' % (configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX), versionNumber, type = 'string')
+            if not cmds.objExists('{}_{}.version'.format(configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX)):
+                cmds.addAttr('{}_{}'.format(configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX), ln='version', dt='string')
+                cmds.setAttr('{}_{}.version'.format(configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX), versionNumber, type='string')
 
     def _loadSurfVar(self, path, sg_publish_data):
         """
         Load file into Maya as an assembly reference
         """
-        scene_path = os.path.abspath(cmds.file(query=True, sn= True))
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
 
         # get the slashes right
         file_path = path.replace(os.path.sep, "/")
 
         (path, ext) = os.path.splitext(file_path)
-        log(None, method = 'add_surfVarfile_to_maya', message = 'Creating shaders for surface variation...', printToLog = False, verbose = configCONST.DEBUGGING)
+        log(None, method='add_surfVarfile_to_maya', message='Creating shaders for surface variation...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
-        curSel = cmds.ls(sl = True)
+        curSel = cmds.ls(sl=True)
         if curSel:
             ## Cleanup shaders on selected
-            for each in cmds.ls(sl = True):
-                cmds.sets(each, e = True, forceElement = 'initialShadingGroup')
+            for each in cmds.ls(sl=True):
+                cmds.sets(each, e=True, forceElement='initialShadingGroup')
             mel.eval("MLdeleteUnused();")
 
             ## Now process the xml
@@ -506,28 +482,28 @@ class MayaActions(HookBaseClass):
                     'name': 'jbddummyBLDXML_SurfVar01'
                     }
                     """
-                    log(None, method = 'add_surfVarfile_to_maya', message = 'Create all shaders for surface variation for lighting step...', printToLog = False, verbose = configCONST.DEBUGGING)
+                    log(None, method='add_surfVarfile_to_maya', message='Create all shaders for surface variation for lighting step...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
                     for each in curSel:
-                        shd_lib.createAll(XMLPath = file_path, Namespace = '', Root = 'MaterialNodes', selected = True, selectedOrigHrcName = each)
+                        shd_lib.createAll(XMLPath=file_path, Namespace='', Root='MaterialNodes', selected=True, selectedOrigHrcName=each)
 
                         ## Find the parent group
                         #sg_publish_data.get("entity").get("name")
-                        entity      = sg_publish_data.get("entity")
-                        assetName   = '%s_%s' % (entity.get("name"), configCONST.GROUP_SUFFIX)
-                        getParent   = '|%s' % cmds.listRelatives(assetName, parent  = True)[0]
-                        log(None, method = 'add_surfVarfile_to_maya', message = 'getParent: %s' % getParent, printToLog = False, verbose = configCONST.DEBUGGING)
+                        entity = sg_publish_data.get("entity")
+                        assetName = '{}_{}'.format(entity.get("name"), configCONST.GROUP_SUFFIX)
+                        getParent = '|{}'.format(cmds.listRelatives(assetName, parent=True)[0])
+                        log(None, method='add_surfVarfile_to_maya', message='getParent: {}'.format(getParent), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
-                        shd_lib.connectAll(XMLPath = file_path, parentGrp = getParent, Namespace = '', Root = 'MaterialNodes', selected = True, selectedOrigHrcName = each)
+                        shd_lib.connectAll(XMLPath=file_path, parentGrp=getParent, Namespace='', Root='MaterialNodes', selected=True, selectedOrigHrcName=each)
                 else:
                     for each in curSel:
-                        log(None, method = 'add_surfVarfile_to_maya', message = 'Create all shaders for surface variation outside lighting step...', printToLog = False, verbose = configCONST.DEBUGGING)
-                        shd_lib.createAll(XMLPath = file_path, Namespace = '', Root = 'MaterialNodes', selected = True, selectedOrigHrcName = each)
+                        log(None, method='add_surfVarfile_to_maya', message='Create all shaders for surface variation outside lighting step...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+                        shd_lib.createAll(XMLPath=file_path, Namespace='', Root='MaterialNodes', selected=True, selectedOrigHrcName=each)
 
-                        log(None, method = 'add_surfVarfile_to_maya', message = 'Connect all shaders for surface variation outside lighting step...', printToLog = False, verbose = configCONST.DEBUGGING)
-                        shd_lib.connectAll(XMLPath = file_path, parentGrp = '', Namespace = '', Root = 'MaterialNodes', selected = True, selectedOrigHrcName = each)
+                        log(None, method='add_surfVarfile_to_maya', message='Connect all shaders for surface variation outside lighting step...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+                        shd_lib.connectAll(XMLPath=file_path, parentGrp='', Namespace='', Root='MaterialNodes', selected=True, selectedOrigHrcName=each)
             else:
-                self.parent.log_error("Unsupported file extension for %s! Nothing will be loaded." % file_path)
+                self.parent.log_error("Unsupported file extension for {}! Nothing will be loaded.".format(file_path))
         else:
             cmds.warning('You must have a valid selection to assign the surfVar to!!!')
 
@@ -540,18 +516,18 @@ class MayaActions(HookBaseClass):
         """
         # get the slashes right
         file_path = path.replace(os.path.sep, "/")
-        log(app = None, method = 'add_file_to_maya', message = 'file_path: %s' % file_path, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='add_file_to_maya', message='file_path: {}'.format(file_path), outputToLogFile=False, verbose=configCONST.DEBUGGING)
         #file_path: I:/bubblebathbay/episodes/eptst/eptst_sh2000/Anm/publish/maya/eptstsh2000.v002.mb
 
 
         file_version = int(file_path.split('.')[1].split('v')[-1])
-        log(app = None, method = 'add_file_to_maya', message = 'file_version: %s' % file_version, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='add_file_to_maya', message='file_version: {}'.format(file_version), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         (path, ext) = os.path.splitext(file_path)
 
         if ext in [".ma", ".mb"]:
             ## Open the blocking file
-            cmds.file(file_path, o = True, f = True)
+            cmds.file(file_path, o=True, f=True)
 
             ## Cleanup unknown nodes to make sure we can save from mb back to ma
             for each in cmds.ls():
@@ -561,16 +537,16 @@ class MayaActions(HookBaseClass):
             ## Build the script node for the FX app.py to use as the current version number of the oceanPreset
             if not cmds.objExists('fxNugget'):
                 cmds.scriptNode(n ='fxNugget')
-                cmds.addAttr('fxNugget', ln = 'animVersion', at = 'long')
+                cmds.addAttr('fxNugget', ln='animVersion', at='long')
                 cmds.setAttr('fxNugget.animVersion', file_version)
             ## Save the animation file as the next working file in the FX folder
-            tk              = sgtk.sgtk_from_path("T:/software/bubblebathbay")
-            getEntity       = sg_publish_data.get("entity")
-            shotName        = getEntity.get("name")
-            work_template   = tk.templates['shot_work_area_maya']
-            pathToWorking   = r'%s' % tk.paths_from_template(work_template, {"Shot" : shotName, "Step":'FX'})[0]
+            tk = sgtk.sgtk_from_path("T:/software/bubblebathbay")
+            getEntity = sg_publish_data.get("entity")
+            shotName  = getEntity.get("name")
+            work_template = tk.templates['shot_work_area_maya']
+            pathToWorking = r'{}'.format(tk.paths_from_template(work_template, {"Shot" : shotName, "Step":'FX'})[0])
             pathToWorking.replace('\\\\', '\\')
-            log(app = None, method = 'add_file_to_maya', message = 'pathToWorking: %s' % pathToWorking, printToLog = False, verbose = configCONST.DEBUGGING)
+            log(app=None, method='add_file_to_maya', message='pathToWorking: {}'.format(pathToWorking), outputToLogFile=False, verbose=configCONST.DEBUGGING)
             ## Scan the folder and find the highest version number
             fileShotName = "".join(shotName.split('_'))
             padding = ''
@@ -593,9 +569,9 @@ class MayaActions(HookBaseClass):
 
                if finalFiles:
                    highestVersFile = max(finalFiles)
-                   versionNumber  = int(highestVersFile.split('.')[1].split('v')[1]) + 1
+                   versionNumber = int(highestVersFile.split('.')[1].split('v')[1]) + 1
                else:
-                   versionNumber  = 1
+                   versionNumber = 1
 
                ## Now pad the version number
                if versionNumber < 10:
@@ -606,17 +582,17 @@ class MayaActions(HookBaseClass):
                    padding = ''
 
             ## Rename the file
-            #print 'FinalFilePath: %s\%s.v%s%s' % (pathToWorking, fileShotName, padding, versionNumber)
-            renameTo = '%s\%s.v%s%s' % (pathToWorking, fileShotName, padding, versionNumber)
+            #print('FinalFilePath: {}\{}.v{}{}'.format((pathToWorking, fileShotName, padding, versionNumber)
+            renameTo = '{}\{}.v{}{}'.format(pathToWorking, fileShotName, padding, versionNumber)
             ## Now rename the file
-            cmds.file(rename = renameTo)
+            cmds.file(rename=renameTo)
             ## Now save this as a working version in the animation working folder
-            cmds.file(save = True, force = True, type = 'mayaAscii')
-            cmds.workspace(pathToWorking, openWorkspace = True)
+            cmds.file(save=True, force=True, type='mayaAscii')
+            cmds.workspace(pathToWorking, openWorkspace=True)
             asset_lib.turnOnModelEditors()
 
         else:
-            self.parent.log_error("Unsupported file extension for %s! Nothing will be loaded." % file_path)
+            self.parent.log_error("Unsupported file extension for {}! Nothing will be loaded.".format(file_path))
     
     def _loadLayoutScene_ForANIM(self, path, sg_publish_data):
         """
@@ -627,17 +603,17 @@ class MayaActions(HookBaseClass):
         """
         # get the slashes right
         file_path = path.replace(os.path.sep, "/")
-        log(app = None, method = 'add_file_to_maya', message = 'file_path: %s' % file_path, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='add_file_to_maya', message='file_path: {}'.format(file_path), outputToLogFile=False, verbose=configCONST.DEBUGGING)
         #file_path: I:/bubblebathbay/episodes/eptst/eptst_sh2000/Anm/publish/maya/eptstsh2000.v002.mb
 
         file_version = int(file_path.split('.')[1].split('v')[-1])
-        log(app = None, method = 'add_file_to_maya', message = 'file_version: %s' % file_version, printToLog = False, verbose = configCONST.DEBUGGING)
+        log(app=None, method='add_file_to_maya', message='file_version: {}'.format(file_version), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
         (path, ext) = os.path.splitext(file_path)
 
         if ext in [".ma", ".mb"]:
             ## Open the blocking file
-            cmds.file(file_path, o = True, f = True)
+            cmds.file(file_path, o=True, f=True)
 
             ## Cleanup unknown nodes to make sure we can save from mb back to ma
             for each in cmds.ls():
@@ -649,9 +625,9 @@ class MayaActions(HookBaseClass):
             getEntity = sg_publish_data.get("entity")
             shotName = getEntity.get("name")
             work_template = tk.templates['shot_work_area_maya']
-            pathToWorking = r'%s' % tk.paths_from_template(work_template, {"Shot" : shotName, "Step":'Anm'})[0]
+            pathToWorking = r'{}'.format(tk.paths_from_template(work_template, {"Shot" : shotName, "Step":'Anm'})[0])
             pathToWorking.replace('\\\\', '\\')
-            log(app = None, method = 'add_file_to_maya', message = 'pathToWorking: %s' % pathToWorking, printToLog = False, verbose = configCONST.DEBUGGING)
+            log(app=None, method='add_file_to_maya', message='pathToWorking: {}'.format(pathToWorking), outputToLogFile=False, verbose=configCONST.DEBUGGING)
             ## Scan the folder and find the highest version number
             fileShotName = "".join(shotName.split('_'))
             padding = ''
@@ -674,9 +650,9 @@ class MayaActions(HookBaseClass):
 
                if finalFiles:
                    highestVersFile = max(finalFiles)
-                   versionNumber  = int(highestVersFile.split('.')[1].split('v')[1]) + 1
+                   versionNumber = int(highestVersFile.split('.')[1].split('v')[1]) + 1
                else:
-                   versionNumber  = 1
+                   versionNumber = 1
 
                ## Now pad the version number
                if versionNumber < 10:
@@ -687,29 +663,26 @@ class MayaActions(HookBaseClass):
                    padding = ''
 
             ## Rename the file
-            #print 'FinalFilePath: %s\%s.v%s%s' % (pathToWorking, fileShotName, padding, versionNumber)
-            renameTo = '%s\%s.v%s%s' % (pathToWorking, fileShotName, padding, versionNumber)
+            #print('FinalFilePath: {}\{}.v{}{}'.format((pathToWorking, fileShotName, padding, versionNumber)
+            renameTo = '{}\{}.v{}{}'.format(pathToWorking, fileShotName, padding, versionNumber)
             ## Now rename the file
-            cmds.file(rename = renameTo)
+            cmds.file(rename=renameTo)
             ## Now save this as a working version in the animation working folder
-            cmds.file(save = True, force = True, type = 'mayaAscii')
-            cmds.workspace(pathToWorking, openWorkspace = True)
+            cmds.file(save=True, force=True, type='mayaAscii')
+            cmds.workspace(pathToWorking, openWorkspace=True)
             asset_lib.turnOnModelEditors()
 
         else:
-            self.parent.log_error("Unsupported file extension for %s! Nothing will be loaded." % file_path)
-
-
+            self.parent.log_error("Unsupported file extension for {}! Nothing will be loaded.".format(file_path))
 
 #######################################################################
 ## HELPERS
 #######################################################################
-
     def _stripNamespaces(self, namespace):
-        getAllNameSpaces = cmds.namespaceInfo(listOnlyNamespaces = True)
+        getAllNameSpaces = cmds.namespaceInfo(listOnlyNamespaces=True)
         for eachNS in getAllNameSpaces:
             if namespace in eachNS:
                 try:
-                    cmds.namespace(removeNamespace = eachNS, mergeNamespaceWithRoot = True)
+                    cmds.namespace(removeNamespace=eachNS, mergeNamespaceWithRoot=True)
                 except RuntimeError:
                     pass

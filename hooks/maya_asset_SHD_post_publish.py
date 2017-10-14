@@ -49,15 +49,14 @@ class PostPublishHook(Hook):
         """        
         import maya.cmds as cmds
         progress_cb(0, "Post Checking scene now...")
-        
-        
+
         ## Set working files back to /work not /publish
         shd_lib.repathFileNodesForWork()
         
         ## Now save the scene again so it's in it's `original' state before publish
-        cmds.file(save= True)
+        cmds.file(save=True)
         
-        progress_cb(100,"Post complete...")
+        progress_cb(100, "Post complete...")
         
     def _get_next_work_file_version(self, work_template, fields):
         """

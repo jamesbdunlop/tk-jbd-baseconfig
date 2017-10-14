@@ -5,9 +5,9 @@
 # By accessing, using, copying or modifying this work you indicate your 
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
-import configCONST as configCONST
 from hooks.maya_SceneScan import mdl_scan_scene
 from tank import Hook
+import config_constants as configCONST
 
 class ScanSceneHook(Hook):
     def execute(self, **kwargs):

@@ -8,13 +8,10 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
-import os
 import maya.cmds as cmds
-import configCONST as configCONST
-reload(configCONST)## leave this alone if you want to update the config using the maya shotgun reload menu
-import tank
+import config_constants as configCONST
 from tank import Hook
-from tank import TankError
+
 
 class PrePublishHook(Hook):
     """
@@ -93,7 +90,8 @@ class PrePublishHook(Hook):
                 pass
             else:
                 # don't know how to publish this output types!
-                errors.append("Don't know how to publish this item! \nPlease contact your supervisor..." % output["name"])
+                errors.append("Don't know how to publish this item! \n\
+                               Please contact your supervisor...{}".format(output["name"]))
             # if there is anything to report then add to result
             if len(errors) > 0:
                 # add result:
@@ -112,10 +110,10 @@ class PrePublishHook(Hook):
         ## FINAL CHECKS PRE PUBLISH JUST TO MAKE SURE NOTHING ODD HAS HAPPENED IN THE SCENE BEFORE CLICKING THE PUBLISH BUTTON
         # check that the group still exists:
         try:
-            [cam for cam in cmds.ls(type = 'camera')  if '%s_bake' % configCONST.SHOTCAM_SUFFIX in cam][0].replace('Shape', '')
+            [cam for cam in cmds.ls(type='camera') if '{}_bake'.format(configCONST.SHOTCAM_SUFFIX) in cam][0].replace('Shape', '')
         except:
             errors.append("ShotCamera couldn't be found in the scene!")
         if not cmds.objExists(item["name"]):
-            errors.append("%s couldn't be found in the scene!" % item["name"])
+            errors.append("{} couldn't be found in the scene!".format(item["name"]))
         # finally return any errors
         return errors

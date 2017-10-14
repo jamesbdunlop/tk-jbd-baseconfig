@@ -9,8 +9,7 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 import os
 import maya.cmds as cmds
-import configCONST as configCONST
-reload(configCONST)## leave this alone if you want to update the config using the maya shotgun reload menu
+import config_constants as configCONST
 from tank import Hook
 from tank import TankError
 
@@ -19,7 +18,7 @@ class ScanSceneHook(Hook):
         items = []
         
         # get the main scene:
-        scene_name = cmds.file(query=True, sn= True)
+        scene_name = cmds.file(query=True, sn=True)
         if not scene_name:
             raise TankError("Please Save your file before Publishing")
       
@@ -35,31 +34,31 @@ class ScanSceneHook(Hook):
         items.append({"type": "work_file", "name": name})
       
         ## Make sure all definitions are at FULL RES for alembic exporting.
-        for grp in cmds.ls(assemblies = True, long = True):
-            if 'BAKE_CAM_%s' % configCONST.GROUP_SUFFIX in grp:
+        for grp in cmds.ls(assemblies=True, long=True):
+            if 'BAKE_CAM_{}'.format(configCONST.GROUP_SUFFIX) in grp:
                 ## Finds the shotCam group
                 items.append({"type": "cam_grp", "name": grp.split('|')[-1]})
                 ## returns the grp
-            if '%s_%s' % (configCONST.ANIM_CACHE.upper(), configCONST.GROUP_SUFFIX) in grp:
-                for eachChild in cmds.listRelatives(grp, children = True):
+            if '{}_{}'.format((configCONST.ANIM_CACHE.upper(), configCONST.GROUP_SUFFIX)) in grp:
+                for eachChild in cmds.listRelatives(grp, children=True):
                      if cmds.ls(eachChild, dag=True, type="mesh"):
                          items.append({"type": "mesh_grp", "name" :eachChild})
                  ## returns each child in the grp                
-            if '%s_%s' % (configCONST.STATIC_CACHE.upper(), configCONST.GROUP_SUFFIX) in grp:
-                for eachChild in cmds.listRelatives(grp, children = True):
+            if '{}_{}'.format((configCONST.STATIC_CACHE.upper(), configCONST.GROUP_SUFFIX)) in grp:
+                for eachChild in cmds.listRelatives(grp, children=True):
                      if cmds.ls(eachChild, dag=True, type="mesh"):
                          items.append({"type": "mesh_grp", "name": eachChild})
                  ## returns each child in the grp
-            if '%s_%s' % (configCONST.FX_CACHE.upper(), configCONST.GROUP_SUFFIX) in grp:
+            if '{}_{}'.format((configCONST.FX_CACHE.upper(), configCONST.GROUP_SUFFIX)) in grp:
                 items.append({"type": "fx_grp", "name": grp.split('|')[-1]})
                 ## returns the grp
         
         # Finding the Cameras in the scene and Making sure that 'shotCam_bake' is renderable.
-        for eachCam in cmds.ls(type = 'camera'):
-            if '%s_bake' % configCONST.SHOTCAM_SUFFIX in eachCam:
-                cmds.setAttr('%s.renderable' % eachCam,1)
+        for eachCam in cmds.ls(type='camera'):
+            if '{}_bake'.format(configCONST.SHOTCAM_SUFFIX) in eachCam:
+                cmds.setAttr('{}.renderable'.format(eachCam,1))
             else:
-                cmds.setAttr('%s.renderable' % eachCam,0)
+                cmds.setAttr('{}.renderable'.format(eachCam,0))
         
         #Making Sure the it make layers for each layers
         cmds.setAttr('defaultRenderGlobals.imageFilePrefix','<RenderLayer>/<Scene>',type='string') 

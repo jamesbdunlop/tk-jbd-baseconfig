@@ -21,12 +21,12 @@ CONFIG_NAME = 'genericconfig'
 ## FINISH EDITING HERE
 ##################################################################
 ## Now add the config root to the sys.path so we can source the base configCONST file
-CONFIG_ROOT = '%s/%s/config/const' % (SOFTWARE_ROOT, CONFIG_NAME)
+CONFIG_ROOT = os.path.join(SOFTWARE_ROOT, CONFIG_NAME)
 if CONFIG_ROOT not in sys.path:
     sys.path.append(CONFIG_ROOT)
 ## Now import the base configs configCONST file
-import configCONST as configCONST
-print 'IMPORTED configCONST successfully!'
+import config_constants as configCONST
+print('IMPORTED config successfully!')
 ##################################################################
 
 def _setup_env(envName, envPath):
@@ -40,10 +40,10 @@ def _setup_env(envName, envPath):
     if listEnv:
         if envPath not in listEnv:
             os.environ[envName] = '%s%s%s' % (listEnv, ';', envPath)
-            print 'Added %s to env %s' % (envPath, envName)
+            print('Added %s to env %s' % (envPath, envName))
     else:
         os.environ[envName] = '%s%s%s' % (listEnv, ';', envPath)
-        print 'Added %s to env %s' % (envPath, envName)
+        print('Added %s to env %s' % (envPath, envName))
 
 ##################################################################
 ## START USER SETUP NOW
@@ -70,27 +70,6 @@ for eachPath in configCONST.MAYA_SCRIPT_PATHS:
     _setup_env('MAYA_SCRIPT_PATH', eachPath)
 
 ##############################################################################
-## BULLDOG ENV STUFF
-##############################################################################
-if configCONST.USE_BULLDOG_UI:
-    ## MAYA_SCRIPT_PATH
-    for eachPath in configCONST.BULLDOG_SCRIPT_PATHS:
-        _setup_env('MAYA_SCRIPT_PATH', eachPath)
-
-    ## SYS.PATH
-    for eachSysPath in configCONST.BULLDOG_SYS_PATHS:
-        if eachSysPath not in sys.path:
-            sys.path.append(eachSysPath)
-
-    ## XBM.PATH
-    for eachPath in configCONST.BULLDOG_XBM_PATHS:
-        _setup_env('XBMLANGPATH', eachPath)
-
-    ## PLUGIN PATHS
-    for eachPath in configCONST.BULLDOG_PLUGIN_PATHS:
-        _setup_env('MAYA_PLUGIN_PATH', eachPath)
-
-##############################################################################
 ## XBMLANGPATH
 ##############################################################################
 for eachPath in configCONST.MAYA_XBM_PATHS:
@@ -110,47 +89,6 @@ if MENTALCORE:
     ## ---- MENTALCORE STARTUP
     try:
         mu.executeDeferred('mentalcore.startup()')
-        print 'mentalcore.startup() forced to load successfully...'
+        print('mentalcore.startup() forced to load successfully...')
     except NameError:
-        print 'No Mentalcore found... skipping load...'
-##################################################################
-#### IS THE BULLDOG UI BEING USED BY THIS CONFIG?
-if configCONST.USE_BULLDOG_UI:
-    ## Now load the plugins from the bulldDog directory
-    def loadPlugins():
-        for eachPluginPath in configCONST.BULLDOG_PLUGIN_PATHS:
-            listDir = os.listdir(eachPluginPath)
-            if listDir:
-                for eachPlugin in listDir:
-                    ## MLL LOAD
-                    if eachPlugin.endswith('.mll'):
-                        try:
-                            print 'Loading %s/%s... ' % (eachPluginPath, eachPlugin)
-                            cmds.loadPlugin('%s/%s' % (eachPluginPath, eachPlugin))
-                        except RuntimeError:
-                            cmds.warning('%s plugin failed to load...' % eachPlugin)
-                    ## PY LOAD
-                    elif eachPlugin.endswith('.py'):
-                        try:
-                            print 'Loading %s/%s... ' % (eachPluginPath, eachPlugin)
-                            cmds.loadPlugin('%s/%s.py' % (eachPluginPath, eachPlugin))
-                        except RuntimeError:
-                            cmds.warning('%s failed to load...' % eachPlugin)
-                    else:
-                        pass
-
-    ## LOAD PLUGINS NOW
-    try:
-        loadPlugins()
-    except WindowsError:
-        print 'Path to plugins folder not found... skipping plugin load from the bulldog UI'
-
-    #############################################################
-    ## LOAD MAYA 2017 DEFAULT MEL SCRIPTS NOW FROM THE UI FOLDERS
-    DEFAULT_MEL_SCRIPTS = []
-    for eachMel in DEFAULT_MEL_SCRIPTS:
-        try:
-            mel.eval("source \"%s/%s\"" % (configCONST.BULLDOG_SCRIPT_PATHS[1], eachMel))
-            print 'source \"%s/%s\"' % (configCONST.BULLDOG_SCRIPT_PATHS[1], eachMel)
-        except RuntimeError:
-            print 'MEL LOAD FAILED: %s failed to load...' % eachMel
+        print('No Mentalcore found... skipping load...')

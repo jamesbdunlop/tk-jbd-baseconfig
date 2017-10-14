@@ -15,7 +15,7 @@ Before App Launch Hook
 This hook is executed prior to application launch and is useful if you need
 to set environment variables or run scripts as part of the app initialization.
 """
-import os, sys, shutil
+import os, sys, shutil, tank
 from tank.platform.qt import QtCore, QtGui
 ##################################################################
 ## EDIT BELOW TO MATCH YOUR SHOTGUN VOLUME SETUP
@@ -35,18 +35,19 @@ CONFIG_NAME = 'genericconfig'
 ## FINISH EDITING HERE
 ##################################################################
 ## Now add the config root to the sys.path so we can source the base configCONST file
-CONFIG_ROOT = '%s/%s/config/const' % (SOFTWARE_ROOT, CONFIG_NAME)
+CONFIG_ROOT = '{}/{}/config/const'.format((SOFTWARE_ROOT, CONFIG_NAME))
 if CONFIG_ROOT not in sys.path:
     sys.path.append(CONFIG_ROOT)
 
 ## Now import the base configs configCONST file
 try:
-    import configCONST as configCONST
-    print 'configCONST imported successfully...'
+    import config_constants as configCONST
+    print('configCONST imported successfully...')
 except ImportError:
-    print 'configCONST NOT FOUND! Please make sure the CONFIG_NAME and the CONFIG_ROOT constants in the maya_before_app_launch.py are set correctly!'
+    print('configCONST NOT FOUND! Please make sure the CONFIG_NAME and the CONFIG_ROOT constants in the \
+          maya_before_app_launch.py are set correctly!')
 sys.path.append(configCONST.TANKCORE_PYTHON_PATH)
-import tank
+
 
 
 class BeforeAppLaunch(tank.Hook):
@@ -58,7 +59,7 @@ class BeforeAppLaunch(tank.Hook):
         The execute function of the hook will be called to start the required application        
         """
         ## Remove the log for the debug module if it exists.
-        pathToLog = "%s/%s" % (configCONST.TEMP_FOLDER, configCONST.LOGFILE_NAME)
+        pathToLog = "{}/{}".format((configCONST.TEMP_FOLDER, configCONST.LOGFILE_NAME))
         if os.path.isfile(pathToLog):
             os.remove(pathToLog)
 
@@ -106,4 +107,4 @@ class BeforeAppLaunch(tank.Hook):
                 sys.path.append(eachSysPath)
 
         for path in sys.path:
-            print path
+            print(path)

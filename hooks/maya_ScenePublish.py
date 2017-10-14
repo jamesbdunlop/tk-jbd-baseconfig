@@ -1,37 +1,23 @@
-import logging
-logger = logging.getLogger(__name__)
-
-import os, tank, time
-from tank import TankError
-import configCONST as configCONST
-reload(configCONST)
-import shotgun.sg_asset_lib as asset_lib
-reload(asset_lib)
-import shotgun.sg_shd_lib as shd_lib
-reload(shd_lib)
+import os, tank, logging
 import maya.cmds as cmds
-import maya.mel as mel
-import os, sys
-import uuid
-import tempfile
-import tank
-from tank import Hook
 from tank import TankError
+import config_constants as configCONST
 import shotgun.sg_asset_lib as asset_lib
+logger = logging.getLogger(__name__)
 
 def _do_maya_publish(task, work_template, comment, thumbnail_path, sg_task, progress_cb, tank, parent):
     """
     Publish the main Maya scene
     """
     ## Save the current working file just in case
-    cmds.file(save=True, force= True)
+    cmds.file(save=True, force=True)
     logger.info('Scene Saved.')
     ## Get scene path
-    scene_path = os.path.abspath(cmds.file(query=True, sn= True))
-    logger.info('Scene Path: %s' % scene_path)
+    scene_path = os.path.abspath(cmds.file(query=True, sn=True))
+    logger.info('Scene Path: {}'.format(scene_path))
     ## Test if it's a valid scene path
     if not work_template.validate(scene_path):
-        raise TankError("File '%s' is not a valid work path, unable to publish!" % scene_path)
+        raise TankError("File {} is not a valid work path, unable to publish!".format(scene_path))
     ## Turn off the model editors for the new bake
     asset_lib.turnOffModelEditors()
     ## Use templates to convert to publish path:
@@ -43,7 +29,7 @@ def _do_maya_publish(task, work_template, comment, thumbnail_path, sg_task, prog
     publish_template = output["publish_template"]
     publish_path = publish_template.apply_fields(fields)
 
-    logger.info('publish_path: %s' % publish_path)
+    logger.info('publish_path: {}'.format(publish_path))
     logger.info('publishing Maya scene file now..')
     publishMayaSceneFile(task, publish_path, publish_template, output, fields, progress_cb, tank, comment, thumbnail_path, sg_task, parent)
     return publish_path
@@ -56,17 +42,17 @@ def publishMayaSceneFile(task, publish_path, publish_template, output, fields, p
 
     logger.info('Version finished. Getting publish name')
     publish_name = _get_publish_name(publish_path, publish_template, fields)
-    logger.info('publish_name: %s' % publish_name)
+    logger.info('publish_name: {}'.format(publish_name))
 
     ## Now rename and save the working file with the new version number for the publish
     ## Change the file type to mb for publish
     progress_cb(50.0, "Publishing the file to publish area")
     try:
         ## Now rename the file to the correct name and version number...
-        cmds.file(rename = '%s.v%s%s.mb' % (publish_name, _padding(fields), fields['version']))
+        cmds.file(rename='{}.v{}{}.mb'.format((publish_name, _padding(fields), fields['version'])))
         logger.info('Successfully renamed scenefile.')
         ## Now save the file
-        cmds.file(save=True, force = True, type = 'mayaBinary')
+        cmds.file(save=True, force=True, type='mayaBinary')
         logger.info('Successfully saved scenefile.')
         ## Now put the published file into the publish folder
         publish_folder = os.path.dirname(publish_path)
@@ -74,23 +60,23 @@ def publishMayaSceneFile(task, publish_path, publish_template, output, fields, p
         parent.ensure_folder_exists(publish_folder)
 
         ## Find current scene path and rename the saved file using os.rename to move it into the publish folder
-        getCurrentScenePath = os.path.abspath(cmds.file(query=True, sn= True))
+        getCurrentScenePath = os.path.abspath(cmds.file(query=True, sn=True))
         os.rename(getCurrentScenePath, publish_path)
 
-        parent.log_debug("Publishing %s --> %s..." % (getCurrentScenePath, publish_path))
+        parent.log_debug("Publishing {} --> {}...".format((getCurrentScenePath, publish_path)))
         progress_cb(65.0, "Moved the publish")
-    except Exception, e:
-        raise TankError("Failed to working file to publish folder.... please contact a TD about this: " %  e)
+    except Exception as e:
+        raise TankError("Failed to working file to publish folder.... please contact a TD about this: {}".format(e))
 
     progress_cb(100)
     ## Now put it back to Ascii
-    cmds.file(rename = '%s.v%s%s.ma' % (publish_name, _padding(fields), fields['version']))
-    cmds.file(save=True, force=True, type = 'mayaAscii')
+    cmds.file(rename='{}.v{}{}.ma'.format((publish_name, _padding(fields), fields['version'])))
+    cmds.file(save=True, force=True, type='mayaAscii')
 
     # finally, register the publish:
     progress_cb(75.0, "Registering the publish")
 
-    publish_name = '%s_%s' % (publish_name, configCONST.ANIM_SHORTNAME)
+    publish_name = '{}_{}'.format((publish_name, configCONST.ANIM_SHORTNAME))
 
     _register_publish(publish_path,
                        publish_name,
@@ -107,21 +93,21 @@ def publishMayaSceneFile(task, publish_path, publish_template, output, fields, p
 def _padding(fields):
     ##Padding because fields is a single int without padding
     version = fields['version']
-    logger.info('version: %s' % version)
+    logger.info('version: {}'.format(version))
     if version < 10:
         padding = '00'
     elif version < 100:
         padding = '0'
     else:
         padding = ''
-    logger.info('padding: %s' % padding)
+    logger.info('padding: {}'.format(padding))
     return padding
 
 def _versionFile(publish_path, publish_template, fields, progress_cb, parent):
     if os.path.exists(publish_path):
         ## If it already exists version up one.
         ## We should never fail a publish just because a published asset already exists
-        logger.info('Found existing publish_path: %s' % publish_path)
+        logger.info('Found existing publish_path: {}'.format(publish_path))
         logger.info('Adjusting publish_path now...')
         path = '\\'.join(publish_path.split('\\')[0:-1])
         getfiles = os.listdir(path)
@@ -132,11 +118,11 @@ def _versionFile(publish_path, publish_template, fields, progress_cb, parent):
         highestVersFile = max(getfiles).split('.')[1].split('v')[-1]
         newVersNum = int(highestVersFile) + 1
 
-        fields["version"]  = newVersNum
+        fields["version"] = newVersNum
         ## Apply the fields to the templates paths..
         publish_path = publish_template.apply_fields(fields)
         ## Output the new publish path to the scripteditor
-        logger.info('NewPublishPath: %s' % publish_path)
+        logger.info('NewPublishPath: {}'.format(publish_path))
         return publish_path
     else:
         return publish_path
@@ -151,32 +137,32 @@ def _maya_find_additional_scene_dependencies(parent):
     ref_paths = set()
 
     # first let's look at maya references
-    ref_nodes = cmds.ls(references= True)
+    ref_nodes = cmds.ls(references=True)
     for ref_node in ref_nodes:
-        print 'Checking ref node %s' % ref_node
+        print('Checking ref node {}'.format(ref_node))
         try:
-            ref_path = cmds.referenceQuery(ref_node, filename= True)
+            ref_path = cmds.referenceQuery(ref_node, filename=True)
             # make it platform dependent
             # (maya uses C:/style/paths)
             ref_path = ref_path.replace("/", os.path.sep)
             if ref_path:
                 ref_paths.add(ref_path)
         except RuntimeError:
-            cmds.warning('This file is broken removing: %s' % ref_node)
-            cmds.lockNode(ref_node, lock = False)
+            cmds.warning('This file is broken removing: {}'.format(ref_node))
+            cmds.lockNode(ref_node, lock=False)
             cmds.delete(ref_node)
 
     # now look at file texture nodes
     for file_node in cmds.ls(l=True, type="file"):
         # ensure this is actually part of this scene and not referenced
-        if cmds.referenceQuery(file_node, isNodeReferenced= True):
+        if cmds.referenceQuery(file_node, isNodeReferenced=True):
             # this is embedded in another reference, so don't include it in the
             # breakdown
             continue
 
         # get path and make it platform dependent
         # (maya uses C:/style/paths)
-        texture_path = cmds.getAttr("%s.fileTextureName" % file_node).replace("/", os.path.sep)
+        texture_path = cmds.getAttr("{}.fileTextureName".format(file_node).replace("/", os.path.sep))
         if texture_path:
             ref_paths.add(texture_path)
 
@@ -254,7 +240,7 @@ def _get_publish_name(path, template, fields=None):
                 zero_version_str = version_key.str_from_value(0)
                 new_version_str = "#" * len(zero_version_str)
                 name = name.replace(dummy_version_str, new_version_str)
-    logger.info('name: %s' % name)
+    logger.info('name: {}'.format(name))
     return name
 
 def _register_publish(path, name, sg_task, publish_version, tank_type, comment, thumbnail_path, dependency_paths, parent):
@@ -276,7 +262,7 @@ def _register_publish(path, name, sg_task, publish_version, tank_type, comment, 
         "published_file_type":tank_type,
     }
 
-    parent.log_debug("Register publish in shotgun: %s" % str(args))
+    parent.log_debug("Register publish in shotgun: {}".format(str(args)))
 
     # register publish;
     sg_data = tank.util.register_publish(**args)

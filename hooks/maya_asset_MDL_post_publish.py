@@ -47,9 +47,10 @@ class PostPublishHook(Hook):
         """        
         import maya.cmds as cmds
         progress_cb(0, "Post Checking scene now...")
+
         ## Do a resave of the working file as ascii
-        cmds.file(save=True, force=True, type = 'mayaAscii')
-        progress_cb(100,"Post complete...")
+        cmds.file(save=True, force=True, type='mayaAscii')
+        progress_cb(100, "Post complete...")
 
     def _get_next_work_file_version(self, work_template, fields):
         """

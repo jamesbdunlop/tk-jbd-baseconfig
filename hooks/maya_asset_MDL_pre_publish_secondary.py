@@ -8,10 +8,11 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
 
+import os
 import maya.cmds as cmds
 from tank import Hook
-import configCONST as configCONST
-import os
+import config_constants as configCONST
+
 
 class PrePublishHook(Hook):
     """
@@ -108,7 +109,7 @@ class PrePublishHook(Hook):
                 pass
             else:
                 # don't know how to publish this output types!
-                errors.append("We're good but we just don't know how to publish this item! \nWhat the heck is %s anyway?" % output["name"])     
+                errors.append("We're good but we just don't know how to publish this item! \nWhat the heck is {} anyway?".format(output["name"])   )
 
             # if there is anything to report then add to result
             if len(errors) > 0:
@@ -128,29 +129,29 @@ class PrePublishHook(Hook):
         ## FINAL CHECKS PRE PUBLISH JUST TO MAKE SURE NOTHING ODD HAS HAPPENED IN THE SCENE BEFORE CLICKING THE PUBLISH BUTTON
         # check that the group still exists:
         if not cmds.objExists(item["name"]):
-            errors.append("%s couldn't be found in the scene!" % item["name"])
+            errors.append("{} couldn't be found in the scene!".format(item["name"]))
 
         ## Now check the group ends in hrc
-        if '_%s' % configCONST.GROUP_SUFFIX not in item["name"]:
-            errors.append("%s does not end in correct _hrc suffix!" % item["name"])
+        if '_{}'.format(configCONST.GROUP_SUFFIX not in item["name"]):
+            errors.append("{} does not end in correct _hrc suffix!".format(item["name"]))
 
         # finally return any errors
         return errors
 
     def _validate_goZ_ma_item_for_publish(self, item):
-        goZFolder           = configCONST.GOZ_PUBLIC_CACHEPATH
-        getFolderContents   = os.listdir(goZFolder)
-        errors              = []
+        goZFolder = configCONST.GOZ_PUBLIC_CACHEPATH
+        getFolderContents = os.listdir(goZFolder)
+        errors = []
         ## make sure the cache file exists in the default goZ folder !
-        if '%s.ma' % item["name"] not in getFolderContents:
-            errors.append('Can not find a goZ ma cache file in %s' % goZFolder)
+        if '{}.ma'.format(item["name"]) not in getFolderContents:
+            errors.append('Can not find a goZ ma cache file in {}'.format(goZFolder))
         return errors
 
     def _validate_goZ_ztl_item_for_publish(self, item):
-        goZFolder           = configCONST.GOZ_PUBLIC_CACHEPATH
-        getFolderContents   = os.listdir(goZFolder)
-        errors              = []
+        goZFolder = configCONST.GOZ_PUBLIC_CACHEPATH
+        getFolderContents = os.listdir(goZFolder)
+        errors = []
         ## make sure the cache file exists in the default goZ folder !
-        if '%s.ztn' % item["name"] not in getFolderContents:
-            errors.append('Can not find a goZ ztn cache file in %s' % goZFolder)
+        if '{}.ztn'.format(item["name"]) not in getFolderContents:
+            errors.append('Can not find a goZ ztn cache file in {}'.format(goZFolder))
         return errors

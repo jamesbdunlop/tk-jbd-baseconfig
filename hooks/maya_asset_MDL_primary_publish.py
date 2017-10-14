@@ -12,9 +12,9 @@ import os
 import tank
 from tank import Hook
 from tank import TankError
-import checkMayaVersNum as versNum
-import configCONST as configCONST
-import tk_findhumanuserid as fhu
+import apps.maya.checkMayaVersNum as versNum
+import config_constants as configCONST
+import server.tk_findhumanuserid as fhu
 
 class PrimaryPublishHook(Hook):
     """
@@ -79,7 +79,7 @@ class PrimaryPublishHook(Hook):
         if engine_name == "tk-maya":
             return self._do_maya_publish(task, work_template, comment, thumbnail_path, sg_task, progress_cb)
         else:
-            raise TankError("Unable to perform publish for unhandled engine %s \n Check with your TD that the config is loading the right primary publish hook." % engine_name)
+            raise TankError("Unable to perform publish for unhandled engine {} \n Check with your TD that the config is loading the right primary publish hook.".format(engine_name))
        
     def _do_maya_publish(self, task, work_template, comment, thumbnail_path, sg_task, progress_cb):
         """
@@ -91,11 +91,11 @@ class PrimaryPublishHook(Hook):
         dependencies = self._maya_find_additional_scene_dependencies()
 
         ## Get scene path
-        scene_path = os.path.abspath(cmds.file(query=True, sn= True))
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
 
         ## Test if it's a valid scene path
         if not work_template.validate(scene_path):
-            raise TankError("File '%s' is not a valid work path, unable to publish!" % scene_path)
+            raise TankError("File '{}' is not a valid work path, unable to publish!".format(scene_path))
 
         ## Use templates to convert to publish path:
         output = task["output"]
@@ -112,13 +112,13 @@ class PrimaryPublishHook(Hook):
             newVersNum = versNum.updateVersNum(publish_path)
 
             ## Update the fields with a new version number
-            fields["version"]  = newVersNum
+            fields["version"] = newVersNum
 
             ## Apply the fields to the templates paths..
             publish_path = publish_template.apply_fields(fields)
 
             ## Output the new publish path to the scripteditor
-            cmds.warning('NewPublishPath: %s' % publish_path)
+            cmds.warning('NewPublishPath: {}'.format(publish_path))
 
         ## If the config.CONST is set to save the working file pre publish...
         if configCONST.SAVEWRK_PREPRIMARY_PUBLISH:
@@ -139,10 +139,10 @@ class PrimaryPublishHook(Hook):
                 padding = ''
             publish_name = self._get_publish_name(publish_path, publish_template, fields)
             ## Now rename the file to the correct name and version number...
-            cmds.file(rename = '%s.v%s%s.mb' % (publish_name, padding, fields['version']))
+            cmds.file(rename='{}.v{}{}.mb'.format((publish_name, padding, fields['version'])))
 
             ## Now save the file
-            cmds.file(save=True, force = True, type = 'mayaBinary')
+            cmds.file(save=True, force=True, type='mayaBinary')
 
             ## Now put the published file into the publish folder
             publish_folder = os.path.dirname(publish_path)
@@ -151,28 +151,28 @@ class PrimaryPublishHook(Hook):
 
             ## Find current scene path and rename the saved file using os.rename to move it into the publish folder
             progress_cb(60.0, "Moving file now...")
-            getCurrentScenePath = os.path.abspath(cmds.file(query=True, sn= True))
+            getCurrentScenePath = os.path.abspath(cmds.file(query=True, sn=True))
             os.rename(getCurrentScenePath, publish_path)
             progress_cb(65.0, "Moved the publish")
 
             # Now finally, register the publish:
             progress_cb(75.0, "Registering primary publish to sg db now...")
             self._register_publish(publish_path,
-                                   '%s_MDL_primaryPublish' % publish_name,
+                                   '{}_MDL_primaryPublish'.format(publish_name),
                                    sg_task,
                                    fields["version"],
                                    output["tank_type"],
                                    comment,
                                    thumbnail_path,
                                    dependencies)
-        except Exception, e:
+        except Exception as e:
             progress_cb(100.0, "Publish failed....")
-            raise TankError("Failed to copy file: \n%s \nto\n%s\nError: %s" % (getCurrentScenePath, publish_path, e))
+            raise TankError("Failed to copy file: \n{} \nto\n{}\nError: {}".format((getCurrentScenePath, publish_path, e)))
 
         ## Now put it back to Ascii for 2ndry publishes to work properly off the work_template path
         progress_cb(85.0, "Reverting to ma for secondary publish and saving working file again.")
-        cmds.file(rename = '%s.v%s%s.ma' % (publish_name, padding, fields['version']))
-        cmds.file(save=True, force=True, type = 'mayaAscii')
+        cmds.file(rename='{}.v{}{}.ma'.format((publish_name, padding, fields['version'])))
+        cmds.file(save=True, force=True, type='mayaAscii')
         progress_cb(100)
 
         return publish_path
@@ -209,7 +209,7 @@ class PrimaryPublishHook(Hook):
 
             # get path and make it platform dependent
             # (maya uses C:/style/paths)
-            texture_path = cmds.getAttr("%s.fileTextureName" % file_node).replace("/", os.path.sep)
+            texture_path = cmds.getAttr("{}.fileTextureName".format(file_node).replace("/", os.path.sep))
             if texture_path:
                 ref_paths.add(texture_path)
             
@@ -314,7 +314,7 @@ class PrimaryPublishHook(Hook):
             args['created_by'] = {'type': 'HumanUser', 'id': getHumanUser}
             args['updated_by'] = {'type': 'HumanUser', 'id': getHumanUser}
 
-        self.parent.log_debug("Register publish in shotgun: %s" % str(args))
+        self.parent.log_debug("Register publish in shotgun: {}".format(str(args)))
         
         # register publish;
         sg_data = tank.util.register_publish(**args)

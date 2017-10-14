@@ -17,7 +17,7 @@ hook can detect, a piece of upgrade logic should be provided in this file.
 
 from tank import Hook
 import maya.cmds as cmds
-import pymel.core as pm
+import pymel.core as pm # TODO get rid of this crap
 
 
 class MayaBreakdownUpdate(Hook):
@@ -27,13 +27,12 @@ class MayaBreakdownUpdate(Hook):
         # items is a list of dicts. Each dict has items node_type, node_name and path
 
         for i in items:
-            print i
             node = i["node_name"]
             node_type = i["node_type"]
             new_path = i["path"]
         
             engine = self.parent.engine
-            engine.log_debug("%s: Updating reference to version %s" % (node, new_path))
+            engine.log_debug("{}: Updating reference to version {}".format((node, new_path)))
     
             if node_type == "reference":
                 # maya reference            
@@ -42,12 +41,12 @@ class MayaBreakdownUpdate(Hook):
                 
             elif node_type == "file":
                 # file texture node
-                file_name = cmds.getAttr("%s.fileTextureName" % node)
-                cmds.setAttr("%s.fileTextureName" % node, new_path, type="string")
+                #file_name = cmds.getAttr("{}.fileTextureName".format(node))
+                cmds.setAttr("{}.fileTextureName".format(node, new_path), type="string")
 
             elif node_type == "assemblyReference":
-                cmds.setAttr("%s.definition" % node, new_path, type="string")
+                cmds.setAttr("{}.definition".format(node, new_path), type="string")
 
             else:
-                raise Exception("Unknown node type %s" % node_type)
+                raise Exception("Unknown node type {}".format(node_type))
 

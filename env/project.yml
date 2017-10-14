@@ -16,7 +16,7 @@ engines:
     groups: []
     hook_launch_python: default
     location:
-      version: v2.0.23
+      version: v2.3.10
       type: app_store
       name: tk-desktop
     show_recents: true
@@ -37,7 +37,7 @@ engines:
         hook_update_version_data: default
         hook_upload_thumbnail: default
         location:
-          version: v0.3.32
+          version: v0.4.3
           type: app_store
           name: tk-hiero-export
         nuke_script_published_file_type: Nuke Script
@@ -52,7 +52,7 @@ engines:
         template_version: hiero_version
       tk-hiero-openinshotgun:
         location:
-          version: v0.3.3
+          version: v0.3.4
           type: app_store
           name: tk-hiero-openinshotgun
       tk-multi-about: '@about'
@@ -69,7 +69,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.9.6
+          version: v0.10.7
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the selected Hiero project
@@ -84,7 +84,10 @@ engines:
         hook_copy_file: default
         hook_scene_operation: default
         hook_thumbnail: default
-        location: {name: tk-multi-snapshot, type: app_store, version: v0.6.1}
+        location:
+          version: v0.7.3
+          type: app_store
+          name: tk-multi-snapshot
         template_snapshot: hiero_project_snapshot
         template_work: hiero_project_work
       tk-multi-workfiles:
@@ -138,7 +141,7 @@ engines:
     compatibility_dialog_min_version: 2015
     debug_logging: false
     location:
-      version: v0.7.9
+      version: v0.8.3
       type: app_store
       name: tk-maya
     menu_favourites:
@@ -153,7 +156,7 @@ engines:
     debug_logging: false
     favourite_directories: []
     location:
-      version: v0.6.11
+      version: v0.8.5
       type: app_store
       name: tk-nuke
     menu_favourites:
@@ -175,7 +178,7 @@ engines:
       tk-multi-launchmaya: '@launch_maya', tk-multi-launchnuke: '@launch_nuke', tk-shotgun-launchphotoshop: '@launch_photoshop'}
     debug_logging: false
     location:
-      version: v0.5.1
+      version: v0.5.4
       type: app_store
       name: tk-shell
   tk-softimage:
@@ -202,4 +205,9 @@ frameworks:
     location: {name: tk-framework-widget, type: app_store, version: v0.1.18}
   tk-framework-widget_v0.1.19:
     location: {name: tk-framework-widget, type: app_store, version: v0.1.19}
+  tk-framework-desktopserver_v1.x.x:
+    location:
+      version: v1.2.2
+      type: app_store
+      name: tk-framework-desktopserver
 includes: [./includes/app_launchers.yml, ./includes/common_apps.yml]
