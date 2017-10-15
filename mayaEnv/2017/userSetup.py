@@ -1,11 +1,10 @@
 import sys, os
-import maya.cmds as cmds
 import maya.utils as mu
-import maya.mel as mel
 
 ##################################################################
 ## EDIT BELOW TO MATCH YOUR SHOTGUN VOLUME SETUP
 ##################################################################
+CONFIG_NAME = 'genericconfig'
 ## Windows
 if sys.platform == 'win32':
     SOFTWARE_ROOT = "T:/software"
@@ -15,13 +14,11 @@ elif sys.platform == 'darwin':
 ## Linux
 else:
     SOFTWARE_ROOT = '/development'
-
-CONFIG_NAME = 'genericconfig'
 ##################################################################
 ## FINISH EDITING HERE
 ##################################################################
-## Now add the config root to the sys.path so we can source the base configCONST file
-CONFIG_ROOT = os.path.join(SOFTWARE_ROOT, CONFIG_NAME)
+## Now add the config root to the sys.path so we can source the base config_constants file
+CONFIG_ROOT = os.path.join(SOFTWARE_ROOT, CONFIG_NAME, 'config')
 if CONFIG_ROOT not in sys.path:
     sys.path.append(CONFIG_ROOT)
 ## Now import the base configs configCONST file

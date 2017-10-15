@@ -76,6 +76,7 @@ class BeforeAppLaunch(tank.Hook):
                     os.makedirs(eachPath)
 
             ## Copy userSetup.py
+            print("Copying userSetup.py from: {}".format(configCONST.MAYA_DEFAULT_USERSETUPPY))
             shutil.copy(configCONST.MAYA_DEFAULT_USERSETUPPY, configCONST.MAYA_CONFIG_SCRIPT_PATH)
         else:
             ## Check the sub dirs if they exist or not

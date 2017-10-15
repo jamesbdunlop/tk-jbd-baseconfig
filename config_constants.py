@@ -234,8 +234,8 @@ if sys.platform == 'win32':
 
     ## Shotgun specific
     SHOTGUN_SOFTWARE_ROOT = 'T:/software'
-    SHOTGUN_PRIMARY_DRIVE = 'I:'
-    SHOTGUN_SECONDARY_DRIVE = 'K:'
+    SHOTGUN_PRIMARY_DRIVE = 'I:/'
+    SHOTGUN_SECONDARY_DRIVE = 'K:/'
     ## Maya Specific
     MAYA_APP_DIR_ROOT = 'T:/'
 
@@ -294,18 +294,18 @@ MAYA_SCRIPT_PATHS = []
 
 #######################
 ## BASE SYS PATHS CONSTANTS
-SYS_PATHS =   [
-              os.path.join(MAYA_DEFAULT_ENV, 'site-packages'),
-              os.path.join(SHOTGUN_SOFTWARE_ROOT, 'MSide'),
-              os.path.join(SHOTGUN_SOFTWARE_ROOT, 'Nebula'),
-              os.path.join(SHOTGUN_SOFTWARE_ROOT, 'mscreen'),
-              SHOTGUN_LIBRARY_PATH,
-              TANKCORE_PYTHON_PATH,
-              SGTK_PYTHON_PATH,
-              MAYA_PYTHON_LIB,
-              SHOTGUN_CONFIG_ROOT,
-              "C:/Program Files (x86)/Epic Games/4.14/Engine/Extras/Maya_AnimationRiggingTools/MayaTools/General/Scripts",
-              ]
+SYS_PATHS = [
+          os.path.join(MAYA_DEFAULT_ENV, 'site-packages'),
+          os.path.join(SHOTGUN_SOFTWARE_ROOT, 'MSide'),
+          os.path.join(SHOTGUN_SOFTWARE_ROOT, 'Nebula'),
+          os.path.join(SHOTGUN_SOFTWARE_ROOT, 'mscreen'),
+          SHOTGUN_LIBRARY_PATH,
+          TANKCORE_PYTHON_PATH,
+          SGTK_PYTHON_PATH,
+          MAYA_PYTHON_LIB,
+          SHOTGUN_CONFIG_ROOT,
+          "C:/Program Files (x86)/Epic Games/4.14/Engine/Extras/Maya_AnimationRiggingTools/MayaTools/General/Scripts",
+          ]
 MAYA_XBM_PATHS = []
 MAYA_PLUGIN_PATHS = []
 
