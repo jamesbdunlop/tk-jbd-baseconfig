@@ -129,8 +129,8 @@ class PrimaryPublishHook(Hook):
 
         ## Now rename and save the working file with the new version number for the publish
         ## Change the file type to mb for publish
+        progress_cb(50.0, "Publishing the file now....")
         try:
-            progress_cb(50.0, "Publishing the file now....")
             ## Process the padding now...
             if fields['version'] < 10:
                 padding = '00'
@@ -158,14 +158,14 @@ class PrimaryPublishHook(Hook):
 
             # Now finally, register the publish:
             progress_cb(75.0, "Registering primary publish to sg db now...")
-            self._register_publish(publish_path,
-                                   '{}_RIG_primaryPublish'.format(publish_name),
-                                   sg_task,
-                                   fields["version"],
-                                   output["tank_type"],
-                                   comment,
-                                   thumbnail_path,
-                                   dependencies)
+            self._register_publish(path=publish_path,
+                                   name='{}_RIG_primaryPublish'.format(publish_name),
+                                   sg_task=sg_task,
+                                   publish_version=fields["version"],
+                                   tank_type=output["tank_type"],
+                                   comment=comment,
+                                   thumbnail_path=thumbnail_path,
+                                   dependency_paths=dependencies)
         except Exception as e:
             progress_cb(100.0, "Publish failed....")
             raise TankError("Failed to copy file: \n{} \nto\n{}\nError: {}".format(getCurrentScenePath, publish_path, e))
@@ -307,7 +307,7 @@ class PrimaryPublishHook(Hook):
             "thumbnail_path": thumbnail_path,
             "task": sg_task,
             "dependency_paths": dependency_paths,
-            "published_file_type":tank_type,
+            "published_file_type": tank_type,
         }
 
         getHumanUser = fhu._returnUserID()

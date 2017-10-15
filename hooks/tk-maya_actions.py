@@ -409,25 +409,31 @@ class MayaActions(HookBaseClass):
         """
         # get the slashes right
         file_path = path.replace(os.path.sep, "/")
-
         (path, ext) = os.path.splitext(file_path)
+        log(None, method='add_file_to_maya', message='file_path: {}'.format(file_path), outputToLogFile=False,
+            verbose=configCONST.DEBUGGING)
 
         if ext in [".xml"]:
             if not cmds.objExists('dgSHD'):
                 cmds.scriptNode(n ='dgSHD')
-            log(None, method='add_file_to_maya', message='Cleaning shaders...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+            log(None, method='add_file_to_maya', message='Cleaning shaders...', outputToLogFile=False,
+                verbose=configCONST.DEBUGGING)
             asset_lib.cleanUpShaders()
 
-            log(None, method='add_file_to_maya', message='Creating shaders...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+            log(None, method='add_file_to_maya', message='Creating shaders...', outputToLogFile=False,
+                verbose=configCONST.DEBUGGING)
             shd_readxml.createAll(XMLPath=file_path, Namespace='', Root='MaterialNodes')
 
-            log(None, method='add_file_to_maya', message='Connect all shaders...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+            log(None, method='add_file_to_maya', message='Connect all shaders...', outputToLogFile=False,
+                verbose=configCONST.DEBUGGING)
             shd_readxml.connectAll(XMLPath=file_path, Namespace='', Root='MaterialNodes')
 
-            log(None, method='add_file_to_maya', message='Downgrading shaders now...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+            log(None, method='add_file_to_maya', message='Downgrading shaders now...', outputToLogFile=False,
+                verbose=configCONST.DEBUGGING)
             shd_lib.downgradeShaders()
 
-            log(None, method='add_file_to_maya', message='Downgrade complete!', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+            log(None, method='add_file_to_maya', message='Downgrade complete!', outputToLogFile=False,
+                verbose=configCONST.DEBUGGING)
 
             ####TAG geo_hrc with DGSHD XML VERSION NUMBER
             ##################
@@ -678,6 +684,7 @@ class MayaActions(HookBaseClass):
 #######################################################################
 ## HELPERS
 #######################################################################
+
     def _stripNamespaces(self, namespace):
         getAllNameSpaces = cmds.namespaceInfo(listOnlyNamespaces=True)
         for eachNS in getAllNameSpaces:
