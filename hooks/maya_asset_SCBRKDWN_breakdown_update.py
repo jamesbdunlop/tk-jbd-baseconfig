@@ -32,7 +32,7 @@ class MayaBreakdownUpdate(Hook):
             new_path = i["path"]
         
             engine = self.parent.engine
-            engine.log_debug("{}: Updating reference to version {}".format((node, new_path)))
+            engine.log_debug("{}: Updating reference to version {}".format(node, new_path))
     
             if node_type == "reference":
                 # maya reference            

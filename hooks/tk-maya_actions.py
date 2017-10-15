@@ -197,7 +197,7 @@ class MayaActions(HookBaseClass):
         self._do_import(path, sg_publish_data)
 
     def _fetchAssetXML(self, path, sg_publish_data):
-        parentGrp = cmds.listRelatives('{}_{}'.format((sg_publish_data['entity']["name"]), configCONST.GROUP_SUFFIX), p = True) or ''
+        parentGrp = cmds.listRelatives('{}_{}'.format(sg_publish_data['entity']["name"], configCONST.GROUP_SUFFIX), p=True) or ''
         if 'uvxml' in path:
             cmds.warning('This is not a valid SHD XML try again....')
         else:

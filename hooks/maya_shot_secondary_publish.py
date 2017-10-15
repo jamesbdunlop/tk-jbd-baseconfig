@@ -230,7 +230,7 @@ class PublishHook(Hook):
 
         tempFolder = configCONST.TEMP_FOLDER
         logger.info('tempFolder: {}'.format(tempFolder))
-        tempFilePath = '{}\\{}'.format(( tempFolder, publish_path.replace(':', '')))
+        tempFilePath = '{}\\{}'.format(tempFolder, publish_path.replace(':', ''))
 
         pathToVersionDir = '\\'.join(publish_path.split('\\')[0:-1])
         ## build and execute the Alembic export command for this item:
@@ -245,7 +245,7 @@ class PublishHook(Hook):
         ## Do this now by setting up a string and processing the selection into that string.
         rootList = ''
         for eachRoot in cmds.ls(sl=True):
-            rootList = '-root {} {}'.format((str(cmds.ls(eachRoot, l=True)[0]), rootList))
+            rootList = '-root {} {}'.format(str(cmds.ls(eachRoot, l=True)[0]), rootList)
 
         ## If the publish dir doesn't exist make one now.
         if not os.path.isdir(pathToVersionDir):

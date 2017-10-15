@@ -93,7 +93,7 @@ class PrimaryPrePublishHook(Hook):
                 # on an old version of the file. Warn them about upgrading.
                 errors.append("Your current work file is v%03d, however a more recent "
                        "version (v%03d) already exists. After publishing, your version "
-                       "will become v%03d, thereby shadowing some previous work. ".format((curr_v_no, max_v_no, max_v_no + 1)))
+                       "will become v%03d, thereby shadowing some previous work. ".format(curr_v_no, max_v_no, max_v_no + 1))
         except:
             pass
         

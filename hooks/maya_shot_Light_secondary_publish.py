@@ -370,10 +370,10 @@ class PublishHook(Hook):
                 #Switching to alembic output for camera.
                 rootList = ''
                 for eachRoot in cmds.ls(sl= True):
-                    rootList = '-root {} {}'.format((str(cmds.ls(eachRoot, l=True)[0]), rootList))
+                    rootList = '-root {} {}'.format(str(cmds.ls(eachRoot, l=True)[0]), rootList)
                 
                 log(app=None, method='_publish_nukeCamera_for_item', message='rootList: {}'.format(rootList), outputToLogFile=False, verbose=configCONST.DEBUGGING)
-                abc_export_cmd = "preRollStartFrame -15 -ro -attr smoothed -attr mcAssArchive -wholeFrameGeo -worldSpace -writeVisibility -uvWrite -fr %d %d {} -file {}".format((frame_start, frame_end, rootList, publish_path))
+                abc_export_cmd = "preRollStartFrame -15 -ro -attr smoothed -attr mcAssArchive -wholeFrameGeo -worldSpace -writeVisibility -uvWrite -fr %d %d {} -file {}".format(frame_start, frame_end, rootList, publish_path)
                 cmds.AbcExport(verbose=False, j=abc_export_cmd)
                 log(app=None, method='_publish_nukeCamera_for_item', message='Export Complete...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
     
@@ -419,7 +419,7 @@ class PublishHook(Hook):
         sg_data = tank.util.register_publish(**args)
         if dependency_paths:
             print("================DEP====================")
-            print('{} dependencies: \n\t{}'.format((path, dependency_paths[0])))
+            print('{} dependencies: \n\t{}'.format(path, dependency_paths[0]))
             print("========================================")
         return sg_data
     

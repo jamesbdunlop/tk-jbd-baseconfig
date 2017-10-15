@@ -49,7 +49,7 @@ def publishMayaSceneFile(task, publish_path, publish_template, output, fields, p
     progress_cb(50.0, "Publishing the file to publish area")
     try:
         ## Now rename the file to the correct name and version number...
-        cmds.file(rename='{}.v{}{}.mb'.format((publish_name, _padding(fields), fields['version'])))
+        cmds.file(rename='{}.v{}{}.mb'.format(publish_name, _padding(fields), fields['version']))
         logger.info('Successfully renamed scenefile.')
         ## Now save the file
         cmds.file(save=True, force=True, type='mayaBinary')
@@ -63,20 +63,20 @@ def publishMayaSceneFile(task, publish_path, publish_template, output, fields, p
         getCurrentScenePath = os.path.abspath(cmds.file(query=True, sn=True))
         os.rename(getCurrentScenePath, publish_path)
 
-        parent.log_debug("Publishing {} --> {}...".format((getCurrentScenePath, publish_path)))
+        parent.log_debug("Publishing {} --> {}...".format(getCurrentScenePath, publish_path))
         progress_cb(65.0, "Moved the publish")
     except Exception as e:
         raise TankError("Failed to working file to publish folder.... please contact a TD about this: {}".format(e))
 
     progress_cb(100)
     ## Now put it back to Ascii
-    cmds.file(rename='{}.v{}{}.ma'.format((publish_name, _padding(fields), fields['version'])))
+    cmds.file(rename='{}.v{}{}.ma'.format(publish_name, _padding(fields), fields['version']))
     cmds.file(save=True, force=True, type='mayaAscii')
 
     # finally, register the publish:
     progress_cb(75.0, "Registering the publish")
 
-    publish_name = '{}_{}'.format((publish_name, configCONST.ANIM_SHORTNAME))
+    publish_name = '{}_{}'.format(publish_name, configCONST.ANIM_SHORTNAME)
 
     _register_publish(publish_path,
                        publish_name,

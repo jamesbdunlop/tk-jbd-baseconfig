@@ -66,8 +66,8 @@ def mdl_scan_scene(env='', sanityChecks=None):
                     getAdef = cmds.listConnections(eachNaughty)
                     if getAdef:
                         if '_ADEF' in getAdef[0]:
-                            print('Renamed {} to {}'.format((eachNaughty, '{}_{}'.format((getAdef[0], each)))))
-                            cmds.rename(eachNaughty, '{}_{}'.format((getAdef[0], each)))
+                            print('Renamed {} to {}'.format(eachNaughty, '{}_{}'.format(getAdef[0], each)))
+                            cmds.rename(eachNaughty, '{}_{}'.format(getAdef[0], each))
                 except TypeError:
                     pass
     return items
@@ -158,14 +158,14 @@ def shd_scan_Scene(sanityChecks=None):
     ## Now do the smartConn
     start = time.time()
     shd_lib.smartConn()
-    logger.info('Total time to {}: {}'.format(('shd_lib.smartConn()', time.time()-start)))
+    logger.info('Total time to {}: {}'.format('shd_lib.smartConn()', time.time()-start))
 
     ## Fix remap and ramps color entry plugs and any incorrect ordering
     ## Leads to bad plugs being inserted when the XML recreates all the values. Querying also creates which makes black colour entry plugs.
     start = time.time()
     shd_lib.fixRamps(cmds.ls(type='remapValue'))
     shd_lib.fixRamps(cmds.ls(type='ramp'))
-    logger.info('Total time to {}: {}'.format(('shd_lib.fixRamps()', time.time()-start)))
+    logger.info('Total time to {}: {}'.format('shd_lib.fixRamps()', time.time()-start))
 
     ## Removed duplicate dgSHD nodes...
     shd_lib.deleteDGSHD()
@@ -173,7 +173,7 @@ def shd_scan_Scene(sanityChecks=None):
     ## Delete empty UV Sets
     start = time.time()
     asset_lib.deleteEmptyUVSets()
-    logger.info('Total time to {}: {}'.format(('asset_lib.deleteEmptyUVSets()', time.time() - start)))
+    logger.info('Total time to {}: {}'.format('asset_lib.deleteEmptyUVSets()', time.time() - start))
     return items
 
 ########################################################################################################################
@@ -214,7 +214,7 @@ def findGoZItems(items):
             if getZbrushFiles:
                 for eachZbrushFile in os.listdir(zbrushdir):
                     if eachZbrushFile.endswith('.ZTL'):
-                        timeStamp = os.path.getmtime('{}/{}'.format((zbrushdir, eachZbrushFile)))
+                        timeStamp = os.path.getmtime('{}/{}'.format(zbrushdir, eachZbrushFile))
                         ZBrushFiles.append([eachZbrushFile, timeStamp])
         if ZBrushFiles:
             ZBrushFiles = sorted(ZBrushFiles[-3:])
@@ -246,8 +246,8 @@ def mdl_genericHardFails(items):
     if not asset_lib.duplicateNameCheck():
         raise TankError("Duplicate names found please fix before publishing.\nCheck the outliner for the duplicate name set.")
 
-    if not cmds.objExists('{}_{}'.format((configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX))):
-        raise TankError("Please Group all your geo under a {}_{} group UNDER the root _{} node.".format((configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX, configCONST.GROUP_SUFFIX)))
+    if not cmds.objExists('{}_{}'.format(configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX)):
+        raise TankError("Please Group all your geo under a {}_{} group UNDER the root _{} node.".format(configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX, configCONST.GROUP_SUFFIX))
 
     ## Incorrect Suffix check
     checkSceneGeo = asset_lib._geoSuffixCheck(items)
@@ -257,7 +257,7 @@ def mdl_genericHardFails(items):
     ## Incorrect root name
     if not asset_lib.checkRoot_hrc_Naming(items):
         assetName = cmds.file(query=True, sn=True).split('/')[4]
-        raise TankError("YOUR ASSET IS NAMED INCORRECTLY! Remember it is CASE SENSITIVE!\nIt should be {}_{}".format((assetName, configCONST.GROUP_SUFFIX)))
+        raise TankError("YOUR ASSET IS NAMED INCORRECTLY! Remember it is CASE SENSITIVE!\nIt should be {}_{}".format(assetName, configCONST.GROUP_SUFFIX))
 
 def doSanityChecks(sanityChecks, items):
     asset_lib.sanityChecks(

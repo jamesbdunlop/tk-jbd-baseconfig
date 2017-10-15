@@ -39,17 +39,17 @@ class ScanSceneHook(Hook):
                 ## Finds the shotCam group
                 items.append({"type": "cam_grp", "name": grp.split('|')[-1]})
                 ## returns the grp
-            if '{}_{}'.format((configCONST.ANIM_CACHE.upper(), configCONST.GROUP_SUFFIX)) in grp:
+            if '{}_{}'.format(configCONST.ANIM_CACHE.upper(), configCONST.GROUP_SUFFIX) in grp:
                 for eachChild in cmds.listRelatives(grp, children=True):
                      if cmds.ls(eachChild, dag=True, type="mesh"):
                          items.append({"type": "mesh_grp", "name" :eachChild})
                  ## returns each child in the grp                
-            if '{}_{}'.format((configCONST.STATIC_CACHE.upper(), configCONST.GROUP_SUFFIX)) in grp:
+            if '{}_{}'.format(configCONST.STATIC_CACHE.upper(), configCONST.GROUP_SUFFIX) in grp:
                 for eachChild in cmds.listRelatives(grp, children=True):
                      if cmds.ls(eachChild, dag=True, type="mesh"):
                          items.append({"type": "mesh_grp", "name": eachChild})
                  ## returns each child in the grp
-            if '{}_{}'.format((configCONST.FX_CACHE.upper(), configCONST.GROUP_SUFFIX)) in grp:
+            if '{}_{}'.format(configCONST.FX_CACHE.upper(), configCONST.GROUP_SUFFIX) in grp:
                 items.append({"type": "fx_grp", "name": grp.split('|')[-1]})
                 ## returns the grp
         

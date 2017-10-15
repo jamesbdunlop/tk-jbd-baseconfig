@@ -69,7 +69,7 @@ class ScanScene(Hook):
 
                     if getFiles:
                         getLatestRigFile  = max(getFiles)
-                        latestgetmt = os.path.getmtime('{}/{}'.format((rigDir, getLatestRigFile)))
+                        latestgetmt = os.path.getmtime('{}/{}'.format(rigDir, getLatestRigFile))
                         lastRigModified = datetime.datetime.fromtimestamp(latestgetmt)
                         log(app=None, method='ScanScene.execute', message='lastRigModified: {}'.format(lastRigModified, outputToLogFile=False, verbose=configCONST.DEBUGGING))
 

@@ -116,7 +116,7 @@ class PublishHook(Hook):
         if not 'SRFVar_' in scene_path:
             group_name = '{}_UV_XML'.format(''.join(item["name"].strip("|").split('_hrc')[0].split('_')))
         else:
-            group_name = '{}_UV_XML_SurfVar{}'.format((''.join(item["name"].strip("|").split('_hrc')[0].split('_')), scene_path.split('SRFVar_')[-1].split('\\')[0]))
+            group_name = '{}_UV_XML_SurfVar{}'.format(''.join(item["name"].strip("|").split('_hrc')[0].split('_'), scene_path.split('SRFVar_')[-1].split('\\')[0]))
         fields = work_template.get_fields(scene_path)
         publish_version = fields["version"]
 
@@ -133,7 +133,7 @@ class PublishHook(Hook):
             
             start = time.time()
             secpubmsg.publishmessage('UV XML', True)
-            getGeohrc = [eachChild for eachChild in cmds.listRelatives(assetName, children = True) if eachChild == '{}_{}'.format((configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX))]
+            getGeohrc = [eachChild for eachChild in cmds.listRelatives(assetName, children = True) if eachChild == '{}_{}'.format(configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX)]
             try:
                 geoList = [eachChild for eachChild in cmds.listRelatives(getGeohrc, children = True, ad = True) if 'Shape' not in eachChild and cmds.listRelatives(eachChild, shapes = True)]
             except:
@@ -149,7 +149,7 @@ class PublishHook(Hook):
 
                 log(None, method = '_publish_xml_for_item', message = 'Writing UV xml information to disk now...', outputToLogFile = False, verbose = configCONST.DEBUGGING)
                 uvwrite.writeUVData(assetName, allGeoUVData, publish_path)
-                print('TIME: {}'.format((time.time()-start)))
+                print('TIME: {}'.format(time.time()-start))
                 secpubmsg.publishmessage('UV XML', False)
                 ## Now register with shotgun
                 self._register_publish(publish_path,
@@ -184,9 +184,9 @@ class PublishHook(Hook):
         logger.info('scene_path: {}'.format(scene_path))
 
         if not 'SRFVar_' in scene_path:
-            group_name = '{}_{}_XML'.format((item["name"].strip("|").replace('_{}'.format(configCONST.GROUP_SUFFIX, '').replace('_', '')), configCONST.SURFACE_SHORTNAME))
+            group_name = '{}_{}_XML'.format(item["name"].strip("|").replace('_{}'.format(configCONST.GROUP_SUFFIX, '').replace('_', ''), configCONST.SURFACE_SHORTNAME))
         else:
-            group_name = '{}_SHD_XML_SurfVar{}'.format((item["name"].strip("|").replace('_{}'.format(configCONST.GROUP_SUFFIX, '')).replace('_', ''), configCONST.SURFACE_SHORTNAME, scene_path.split('SRFVar_')[-1].split('\\')[0]))
+            group_name = '{}_SHD_XML_SurfVar{}'.format(item["name"].strip("|").replace('_{}'.format(configCONST.GROUP_SUFFIX, '').replace('_', ''), configCONST.SURFACE_SHORTNAME, scene_path.split('SRFVar_')[-1].split('\\')[0]))
         logger.info('group_name: {}'.format(group_name))
 
         fields = work_template.get_fields(scene_path)
@@ -299,6 +299,6 @@ class PublishHook(Hook):
         sg_data = tank.util.register_publish(**args)
         if dependency_paths:
             print("================DEP====================")
-            print('{} dependencies: \n\t{}'.format((path, dependency_paths[0])))
+            print('{} dependencies: \n\t{}'.format(path, dependency_paths[0]))
             print("========================================")
         return sg_data

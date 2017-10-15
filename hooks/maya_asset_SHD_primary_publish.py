@@ -90,9 +90,9 @@ class PrimaryPublishHook(Hook):
             padding = '0'
         else:
             padding = ''
-        cmds.file(rename='{}.v{}{}'.format((publish_name, padding, fields['version'])))
+        cmds.file(rename='{}.v{}{}'.format(publish_name, padding, fields['version']))
         cmds.file(save=True, force= True)
-        print('Saved scene to {}.v{}{}'.format((publish_name, padding, fields['version'])))
+        print('Saved scene to {}.v{}{}'.format(publish_name, padding, fields['version']))
         progress_cb(50.0, "Publishing the file to publish area")
         
         try:
@@ -100,10 +100,10 @@ class PrimaryPublishHook(Hook):
             self.parent.ensure_folder_exists(publish_folder)
             getCurrentScenePath = os.path.abspath(cmds.file(query=True, sn=True))
             os.rename(getCurrentScenePath, publish_path)
-            self.parent.log_debug("Publishing {} --> {}...".format((getCurrentScenePath, publish_path)))
+            self.parent.log_debug("Publishing {} --> {}...".format(getCurrentScenePath, publish_path))
             progress_cb(65.0, "Moved the publish")        
         except Exception as e:
-            raise TankError("Failed to copy file: \n{} \nto\n{}\nError: {}".format((getCurrentScenePath, publish_path, e)))
+            raise TankError("Failed to copy file: \n{} \nto\n{}\nError: {}".format(getCurrentScenePath, publish_path, e))
         
         # finally, register the publish:
         progress_cb(75.0, "Registering the publish")
@@ -119,7 +119,7 @@ class PrimaryPublishHook(Hook):
         else:
             log(None, method='init_app', message='REGISTERING SURFACE VARIATION...', verbose=True)
             self._register_publish(publish_path, 
-                                   '{}_primaryPublish_surfVar{}'.format((publish_name,  scene_path.split('SRFVar_')[-1].split('\\')[0])),
+                                   '{}_primaryPublish_surfVar{}'.format(publish_name,  scene_path.split('SRFVar_')[-1].split('\\')[0]),
                                    sg_task, 
                                    fields["version"], 
                                    output["tank_type"],

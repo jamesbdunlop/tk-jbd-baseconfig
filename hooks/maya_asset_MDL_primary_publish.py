@@ -139,7 +139,7 @@ class PrimaryPublishHook(Hook):
                 padding = ''
             publish_name = self._get_publish_name(publish_path, publish_template, fields)
             ## Now rename the file to the correct name and version number...
-            cmds.file(rename='{}.v{}{}.mb'.format((publish_name, padding, fields['version'])))
+            cmds.file(rename='{}.v{}{}.mb'.format(publish_name, padding, fields['version']))
 
             ## Now save the file
             cmds.file(save=True, force=True, type='mayaBinary')
@@ -167,11 +167,11 @@ class PrimaryPublishHook(Hook):
                                    dependencies)
         except Exception as e:
             progress_cb(100.0, "Publish failed....")
-            raise TankError("Failed to copy file: \n{} \nto\n{}\nError: {}".format((getCurrentScenePath, publish_path, e)))
+            raise TankError("Failed to copy file: \n{} \nto\n{}\nError: {}".format(getCurrentScenePath, publish_path, e))
 
         ## Now put it back to Ascii for 2ndry publishes to work properly off the work_template path
         progress_cb(85.0, "Reverting to ma for secondary publish and saving working file again.")
-        cmds.file(rename='{}.v{}{}.ma'.format((publish_name, padding, fields['version'])))
+        cmds.file(rename='{}.v{}{}.ma'.format(publish_name, padding, fields['version']))
         cmds.file(save=True, force=True, type='mayaAscii')
         progress_cb(100)
 
