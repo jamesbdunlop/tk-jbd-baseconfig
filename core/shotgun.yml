@@ -1,9 +1,0 @@
-# Shotgun Pipeline Toolkit configuration file
-# this file was automatically created
-
-host: https://framespersecond.shotgunstudio.com
-api_script: Toolkit
-api_key: 724eea86a7f9fe4816278f2188382eacf42834a2b5cb85f814f125e96078a3b3
-http_proxy: null
-
-# End of file.
