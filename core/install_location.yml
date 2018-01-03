@@ -3,8 +3,8 @@
 # This file reflects the paths in the primary pipeline
 # configuration defined for this project.
 
-Windows: 'T:\software\genericconfig'
-Darwin: '/volumes/genericconfig'
-Linux: '/genericconfig'
+Windows: 'T:\software\baseconfig'
+Darwin: '/volumes/baseconfig'
+Linux: '/baseconfig'
 
 # End of file.
