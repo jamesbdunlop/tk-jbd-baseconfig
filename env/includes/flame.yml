@@ -35,7 +35,7 @@ std_flame_flare:
     #
     tk-flame-export:
       location:
-        version: v1.7.9
+        version: v1.7.10
         type: app_store
         name: tk-flame-export
       shot_parent_entity_type: Sequence
@@ -78,7 +78,7 @@ std_flame_flare:
     #
     tk-multi-shotgunpanel:
       location:
-        version: v1.4.8
+        version: v1.4.9
         type: app_store
         name: tk-multi-shotgunpanel
       shotgun_fields_hook: '{self}/shotgun_fields.py'
@@ -114,3 +114,14 @@ std_flame_flare:
   run_at_startup: []
   backburner_manager: ''
   context_menu: []
+frameworks:
+  tk-framework-shotgunutils_v5.x.x:
+    location:
+      version: v5.2.4
+      type: app_store
+      name: tk-framework-shotgunutils
+  tk-framework-qtwidgets_v2.x.x:
+    location:
+      version: v2.6.6
+      type: app_store
+      name: tk-framework-qtwidgets

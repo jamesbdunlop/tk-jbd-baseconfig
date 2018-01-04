@@ -132,7 +132,7 @@ class PrePublishHook(Hook):
             errors.append("{} couldn't be found in the scene!".format(item["name"]))
 
         ## Now check the group ends in hrc
-        if '_{}'.format(configCONST.GROUP_SUFFIX not in item["name"]):
+        if not item["name"].endswith(configCONST.GROUP_SUFFIX):
             errors.append("{} does not end in correct _hrc suffix!".format(item["name"]))
 
         # finally return any errors

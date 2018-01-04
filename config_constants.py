@@ -132,7 +132,7 @@ DEBUGGING = True
 
 ## SETUP BASE CONSTANTS FOR THE CONFIG
 USER_NAME = getpass.getuser()
-MAYA_VERSION = '2017'
+MAYA_VERSION = '2018'
 LOGFILE_NAME = 'tankLog'
 ## SHOT GUN BASE CONSTANTS
 SHOTGUN_CONFIG_NAME = 'baseconfig'
@@ -277,7 +277,7 @@ else:
 SHOTGUN_CONFIG_PATH = os.path.join(SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME)
 SHOTGUN_CONFIG_ROOT = os.path.join(SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME, 'config')
 SHOTGUN_ICON_PATH = os.path.join(SHOTGUN_SOFTWARE_ROOT, SHOTGUN_CONFIG_NAME, *('config', 'icons'))
-TANKCORE_PYTHON_PATH = os.path.join(SHOTGUN_SOFTWARE_ROOT, *('studio', 'install', 'MSCore', 'python'))
+TANKCORE_PYTHON_PATH = os.path.join(SHOTGUN_SOFTWARE_ROOT, *('studio', 'install', 'core', 'python'))
 SGTK_PYTHON_PATH = os.path.join(SHOTGUN_SOFTWARE_ROOT, 'python-api')
 SHOTGUN_LIBRARY_PATH = os.path.join(SHOTGUN_SOFTWARE_ROOT, 'defaultShotgunLibrary')
 SHOTGUN_DEVAPPS_PATH = os.path.join(SHOTGUN_CONFIG_PATH, *('install', 'apps'))
