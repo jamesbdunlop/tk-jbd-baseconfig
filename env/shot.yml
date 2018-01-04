@@ -81,7 +81,7 @@ engines:
     compatibility_dialog_min_version: 2015
     debug_logging: false
     location:
-      version: v0.9.1
+      version: v0.9.2
       type: app_store
       name: tk-maya
     menu_favourites:
@@ -147,7 +147,7 @@ engines:
     - {app_instance: tk-multi-workfiles2, name: File Save...}
     debug_logging: false
     location:
-      version: v1.2.1
+      version: v1.3.0
       type: app_store
       name: tk-photoshopcc
   #

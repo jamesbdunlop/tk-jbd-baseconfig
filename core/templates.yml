@@ -122,6 +122,22 @@ keys:
         default: ma
         alias: extension
 
+    ## SPECIALS
+    cam_name:
+        type: str
+    grp_name:
+        type: str
+    shd_model:
+        type: str
+    presetName:
+        type: str
+        filter_by: alphanumeric
+    textureName:
+        type: str
+        filter_by: alphanumeric
+    projectName:
+        type: str
+        filter_by: alphanumeric
 #
 # The paths section contains all the the key locations where files are to be stored
 # by Sgtk Apps. Each path is made up of several keys (like {version} or {shot}) and
@@ -150,7 +166,6 @@ paths:
     asset_root: assets/{sg_asset_type}/{Asset}/{Step}
     sequence_root: sequences/{Sequence}
     nukeRendersRoot: sequences/{Sequence}/{Shot}/
-
 
     ## MY CONIFG BASED TEMPLATES
     ## DEFAULT ASSEMBLY DEFINITION SECONDARY PATHS
@@ -206,7 +221,55 @@ paths:
     maya_shot_anim_atom:
         definition: '@shot_root/publish/atom/v{version}/{name}.v{version}.atom'
         root_name: 'primary'
-
+    ## SHOT SECONDARY OUTPUT PATHS
+    maya_shot_static_alembic:
+        definition:  '@shot_root/publish/alembic_static/v{version}/{name}_{grp_name}.v{version}.abc'
+        root_name: 'primary'
+    maya_shot_static_alembic_versionFolder:
+        definition: '@shot_root/publish/alembic_static/v{version}/'
+        root_name: 'primary'
+    maya_shot_anim_alembic:
+        definition:  '@shot_root/publish/alembic_anim/v{version}/{name}_{grp_name}.v{version}.abc'
+        root_name: 'primary'
+    maya_shot_anim_alembic_versionFolder:
+        definition:  '@shot_root/publish/alembic_anim/v{version}/'
+        root_name: 'primary'
+    maya_shot_gpu:
+        definition:  '@shot_root/publish/gpu/v{version}/{name}_{grp_name}.v{version}.abc'
+        root_name: 'primary'
+    maya_shot_gpu_versionFolder:
+        definition:  '@shot_root/publish/gpu/v{version}/'
+        root_name: 'primary'
+    maya_shot_cam:
+        definition: '@shot_root/publish/cam/v{version}/{cam_name}.v{version}.ma'
+        root_name: 'primary'
+    maya_shot_cam_versionFolder:
+        definition: '@shot_root/publish/cam/v{version}/'
+        root_name: 'primary'
+    maya_shot_nukecam:
+        definition: '@shot_root/publish/nuke/v{version}/{cam_name}.v{version}.abc'
+        root_name: 'primary'
+    maya_shot_lights:
+        definition: '@shot_root/publish/lightxml/v{version}/{name}.v{version}.xml'
+        root_name: 'primary'
+    maya_shot_renderglobals:
+        definition: '@shot_root/publish/rglobxml/v{version}/{name}.v{version}.xml'
+        root_name: 'primary'
+    maya_shot_SHD_XML:
+        definition: '@shot_root/publish/shd_xml/v{version}/{name}.v{version}.xml'
+        root_name: 'primary'
+    maya_shot_lightingRenderPreview:
+        definition: '@nukeRendersRoot/RenderLayers/R{version}_preview/'
+        root_name: 'primary'
+    maya_shot_lightingRenderFinal:
+        definition: '@nukeRendersRoot/RenderLayers/R{version}'
+        root_name: 'primary'
+    maya_shot_fxRenderFinal:
+        definition: '@nukeRendersRoot/FxLayers/R{version}'
+        root_name: 'primary'
+    maya_shot_anim_atom:
+        definition: '@shot_root/publish/atom/v{version}/{name}.v{version}.atom'
+        root_name: 'primary'
     ## CUSTOM APPLICATION TEMPLATES
     ## tk-submit-mayaplayblast TEMPLATES
     maya_shot_playblast:

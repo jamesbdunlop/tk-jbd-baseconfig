@@ -80,7 +80,7 @@ engines:
       name: Finishing Tools
     hook_launch_python: default
     location:
-      version: v2.4.0
+      version: v2.4.2
       type: app_store
       name: tk-desktop
     show_recents: true
@@ -149,7 +149,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.10.8
+          version: v0.10.9
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the selected Hiero project
@@ -186,7 +186,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         location:
-          version: v0.9.8
+          version: v0.10.0
           type: app_store
           name: tk-multi-workfiles2
         my_tasks_extra_display_fields: []
@@ -293,7 +293,7 @@ engines:
     compatibility_dialog_min_version: 2015
     debug_logging: false
     location:
-      version: v0.9.1
+      version: v0.9.2
       type: app_store
       name: tk-maya
     menu_favourites:
@@ -398,7 +398,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.10.8
+          version: v0.10.9
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the selected Hiero project
@@ -435,7 +435,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         location:
-          version: v0.9.8
+          version: v0.10.0
           type: app_store
           name: tk-multi-workfiles2
         my_tasks_extra_display_fields: []
@@ -449,7 +449,7 @@ engines:
         version_compare_ignore_fields: []
       tk-multi-shotgunpanel:
         location:
-          version: v1.4.8
+          version: v1.4.9
           type: app_store
           name: tk-multi-shotgunpanel
         shotgun_fields_hook: '{self}/shotgun_fields.py'
@@ -517,7 +517,7 @@ engines:
     - {app_instance: tk-multi-workfiles2, name: File Save...}
     debug_logging: false
     location:
-      version: v1.2.1
+      version: v1.3.0
       type: app_store
       name: tk-photoshopcc
   #

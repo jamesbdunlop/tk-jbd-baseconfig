@@ -59,7 +59,7 @@ engines:
           publish_filters: []
         filter_publishes_hook: '{self}/filter_publishes.py'
         location:
-          version: v1.18.0
+          version: v1.18.1
           type: app_store
           name: tk-multi-loader2
         menu_name: Load
@@ -78,7 +78,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.10.8
+          version: v0.10.9
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the current 3ds Max scene
@@ -129,7 +129,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         location:
-          version: v0.9.8
+          version: v0.10.0
           type: app_store
           name: tk-multi-workfiles2
         my_tasks_extra_display_fields: []
@@ -143,7 +143,7 @@ engines:
         version_compare_ignore_fields: []
       tk-multi-shotgunpanel:
         location:
-          version: v1.4.8
+          version: v1.4.9
           type: app_store
           name: tk-multi-shotgunpanel
         shotgun_fields_hook: '{self}/shotgun_fields.py'
@@ -190,7 +190,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.10.8
+          version: v0.10.9
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the current scene
@@ -265,7 +265,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         location:
-          version: v0.9.8
+          version: v0.10.0
           type: app_store
           name: tk-multi-workfiles2
         my_tasks_extra_display_fields: []
@@ -279,7 +279,7 @@ engines:
         version_compare_ignore_fields: []
       tk-multi-shotgunpanel:
         location:
-          version: v1.4.8
+          version: v1.4.9
           type: app_store
           name: tk-multi-shotgunpanel
         action_mappings:
@@ -350,7 +350,7 @@ engines:
           hierarchy: [entity, content]
         filter_publishes_hook: '{self}/filter_publishes.py'
         location:
-          version: v1.18.0
+          version: v1.18.1
           type: app_store
           name: tk-multi-loader2
         menu_name: Load
@@ -380,6 +380,229 @@ engines:
   # -------------------------------------------------
   tk-maya:
     apps:
+      tk-submit-maya-shotPlayblast:
+        location:                   {"type": "manual", "name": "tk-jbd-submit-mayaplayblast", "version": "v0.0.1"}
+        display_name:               .Publish Anim Review...
+        showOptions:                true
+        isAsset:                    false
+        allowAssetTurnTableBuild:   false
+        movie_width:                1280
+        movie_height:               720
+        movie_path_template:        maya_asset_playblast
+        movie_workpath_template:    maya_assetwork_playblast
+        new_version_status:         rev
+        sg_in_frame_field:          sg_cut_in
+        sg_out_frame_field:         sg_cut_out
+        store_on_disk:              true
+        template_work:              maya_asset_work
+        upload_to_shotgun:          true
+        version_number_padding:     3
+      tk-Fetch-ShotBased-Related-Assets:
+        camera_publish_template: maya_shot_cam
+        display_name: Animation Tools.../Get All Pub Shot Assets
+        location: {name: tk-jbd-anim-fetchshotassets, type: manual, version: v0.0.1}
+        sg_AssetTemplate: maya_asset_publish
+      tk-Lighting-fetch-published-animation-caches:
+        anim_alembic_publish_template: maya_shot_anim_alembic_versionFolder
+        camera_publish_template: maya_shot_cam_versionFolder
+        display_name: Lighting Tools.../Fetch Animation Caches...
+        location: {name: tk-jbd-lighting-fetchcaches, type: manual, version: v0.0.1}
+        shotStep: Animation
+        shot_gpu_publish_template: maya_shot_gpu_versionFolder
+        static_alembic_publish_template: maya_shot_static_alembic_versionFolder
+      tk-Lighting-rebuild-surfacing-from-XML-publishes:
+        display_name: Lighting Tools.../Get All Pub Shaders
+        location: {name: tk-jbd-lighting-rebuildSurfacing, type: manual, version: v0.0.1}
+        maya_SHD_XML_template: maya_asset_SHD_XML
+        maya_asset_presetRoot: asset_root
+        maya_textures_template: maya_asset_textures
+      tk-changeworkspace:
+        display_name: Change Workspace
+        location: {name: tk-jbd-changeworkspace, type: manual, version: v0.0.1}
+      tk-createShotCam:
+        display_name: Camera Tools.../Create shotCamera
+        fps: 25
+        gateImagePath: I:/baseConfig/templates/ImageGate_1920_1080.png
+        location: {name: tk-jbd-anim-createShotCam, type: manual, version: v0.0.1}
+        suffix: shotCam
+      tk-maya-envReporter:
+        cfgCONST: true
+        display_name: Development/1. Export Env Data
+        location: {disabled: 'true', name: tk-jbd-envReporter, type: manual, version: v0.0.1}
+        mayaEnvs: true
+        printToFile: true
+        syspath: true
+      tk-multi-loader-PUBLISH_LOADER:
+        action_mappings:
+          Maya Scene: [open, reference, import, audio, assemblyReference, texture_node,
+            importENV, loadSurfVar, coreArchive]
+          Photoshop Image: [texture_node]
+          Rendered Image: [texture_node]
+        actions_hook: '{config}/multi_publish/maya/tk-maya_actions.py'
+        download_thumbnails: true
+        entities:
+        - caption: ANIM PUBLISHES
+          entity_type: Shot
+          filters:
+          - [project, is, '{context.project}']
+          hierarchy: [sg_sequence, code]
+          publish_filters:
+          - [name, contains, ANIM]
+        - caption: RIGS
+          entity_type: Asset
+          filters:
+          - [project, is, '{context.project}']
+          - [sg_asset_type, is_not, Environment]
+          - [sg_asset_type, is_not, LibraryAsset]
+          hierarchy: [sg_asset_type, code]
+          publish_filters:
+          - [name, contains, RIG]
+          - [name, not_contains, XML]
+          - [name, not_contains, ADEF]
+          - [name, not_contains, BBOX]
+          - [name, not_contains, _hrc]
+          - [task, name_contains, Rig]
+        - caption: LAYOUT
+          entity_type: Shot
+          filters:
+          - [project, is, '{context.project}']
+          hierarchy: [sg_sequence, code]
+          publish_filters:
+          - [name, contains, LAYOUT]
+        - caption: My Tasks
+          entity_type: Task
+          filters:
+          - [task_assignees, is, '{context.user}']
+          - [project, is, '{context.project}']
+          hierarchy: [entity, content]
+        filter_publishes_hook: '{self}/filter_publishes.py'
+        location:
+          version: v1.18.1
+          type: app_store
+          name: tk-multi-loader2
+        menu_name: Publish Loaders...
+        publish_filters: []
+        title_name: File Loader 2.0
+      tk-multi-publish-Layout:
+        allow_taskless_publishes: true
+        display_name: Publish Layout...
+        expand_single_items: false
+        hook_copy_file: default
+        hook_post_publish: multi_publish\maya\maya_shot_post_publish
+        hook_primary_pre_publish: default
+        hook_primary_publish: multi_publish\maya\maya_shot_primary_publish
+        hook_scan_scene: multi_publish\maya\maya_shot_scan_scene
+        hook_secondary_pre_publish: multi_publish\maya\maya_shot_pre_publish_secondary
+        hook_secondary_publish: multi_publish\maya\maya_shot_secondary_publish
+        hook_thumbnail: default
+        location:
+          version: v0.10.9
+          type: app_store
+          name: tk-multi-publish
+        primary_description: Publish and version up the current Maya scene
+        primary_display_name: Maya Publish
+        primary_icon: icons/publish_maya_main.png
+        primary_publish_template: maya_shot_publish
+        primary_scene_item_type: work_file
+        primary_tank_type: Maya Scene
+        secondary_outputs:
+        - {description: Publish Camera, display_group: Cameras, display_name: Cameras,
+          icon: icons/cam_icon.png, name: camera, publish_template: maya_shot_cam,
+          required: false, scene_item_type: camera, selected: true, tank_type: Maya
+            Scene Cache}
+        - {description: Publish GPU Caches, display_group: GPU Caches, display_name: GPUCaches,
+          icon: icons/cache.png, name: gpu_caches, publish_template: maya_shot_gpu,
+          required: false, scene_item_type: gpu_caches, selected: true, tank_type: Alembic
+            Cache}
+        - {description: Publish Static Caches, display_group: Static Alembic Caches,
+          display_name: StaticCaches, icon: icons/cache.png, name: static_caches,
+          publish_template: maya_shot_static_alembic, required: false, scene_item_type: static_caches,
+          selected: true, tank_type: Alembic Cache}
+        - {description: Publish Anim Caches, display_group: Anim Alembic Caches, display_name: AnimatedCaches,
+          icon: icons/animCache_icon.png, name: anim_caches, publish_template: maya_shot_anim_alembic,
+          required: false, scene_item_type: anim_caches, selected: true, tank_type: Alembic
+            Cache}
+        template_work: maya_shot_work
+      tk-multi-publish-animation:
+        allow_taskless_publishes: true
+        display_name: Publish Animation...
+        expand_single_items: false
+        hook_copy_file: default
+        hook_post_publish: multi_publish\maya\maya_shot_post_publish
+        hook_primary_pre_publish: multi_publish\maya\maya_shot_pre_publish_primary
+        hook_primary_publish: multi_publish\maya\maya_shot_primary_publish
+        hook_scan_scene: multi_publish\maya\maya_shot_scan_scene
+        hook_secondary_pre_publish: multi_publish\maya\maya_shot_pre_publish_secondary
+        hook_secondary_publish: multi_publish\maya\maya_shot_secondary_publish
+        hook_thumbnail: default
+        location:
+          version: v0.10.9
+          type: app_store
+          name: tk-multi-publish
+        primary_description: Publish and version up the current Maya scene
+        primary_display_name: Maya Publish
+        primary_icon: icons/publish_maya_main.png
+        primary_publish_template: maya_shot_publish
+        primary_scene_item_type: work_file
+        primary_tank_type: Maya Scene
+        secondary_outputs:
+        - {description: Publish Camera, display_group: Cameras, display_name: Cameras,
+          icon: icons/cam_icon.png, name: CameraCaches, publish_template: maya_shot_cam,
+          required: false, scene_item_type: CameraCaches, selected: true, tank_type: Maya
+            Scene Cache}
+        - {description: Publish GPU Caches, display_group: GPU Caches, display_name: GPUCaches,
+          icon: icons/cache.png, name: GpuCaches, publish_template: maya_shot_gpu,
+          required: false, scene_item_type: GpuCaches, selected: true, tank_type: Alembic
+            Cache}
+        - {description: Publish Static Caches, display_group: Static Alembic Caches,
+          display_name: StaticCaches, icon: icons/cache.png, name: StaticCaches, publish_template: maya_shot_static_alembic,
+          required: false, scene_item_type: StaticCaches, selected: true, tank_type: Alembic
+            Cache}
+        - {description: Publish Anim Caches, display_group: Anim Alembic Caches, display_name: AnimatedCaches,
+          icon: icons/animCache_icon.png, name: AnimationCaches, publish_template: maya_shot_anim_alembic,
+          required: false, scene_item_type: AnimationCaches, selected: true, tank_type: Alembic
+            Cache}
+        template_work: maya_shot_work
+      tk-multi-publish-lighting:
+        allow_taskless_publishes: true
+        display_name: Publish Lighting...
+        expand_single_items: false
+        hook_copy_file: default
+        hook_post_publish: default
+        hook_primary_pre_publish: default
+        hook_primary_publish: default
+        hook_scan_scene: multi_publish\maya\maya_shot_Light_scan_scene
+        hook_secondary_pre_publish: multi_publish\maya\maya_shot_Light_pre_publish_secondary
+        hook_secondary_publish: multi_publish\maya\maya_shot_Light_secondary_publish
+        hook_thumbnail: default
+        location:
+          version: v0.10.9
+          type: app_store
+          name: tk-multi-publish
+        primary_description: Publish and version up the current Maya scene
+        primary_display_name: Lighting Maya Publish
+        primary_icon: icons/publish_maya_main.png
+        primary_publish_template: maya_shot_publish
+        primary_scene_item_type: work_file
+        primary_tank_type: Maya Scene
+        secondary_outputs:
+        - {description: Publish Shading XML, display_group: XML, display_name: Export
+            Shading XML, icon: icons/Xml_tool_icon.png, name: shd_xml, publish_template: maya_shot_SHD_XML,
+          required: false, scene_item_type: mesh_grp, selected: true, tank_type: Maya
+            Scene}
+        - {description: Publish RenderGlobals RenderPasses XML, display_group: XML,
+          display_name: Export Globals XML, icon: icons/Xml_tool_icon.png, name: renderglobals_xml,
+          publish_template: maya_shot_renderglobals, required: false, scene_item_type: xml_grp,
+          selected: true, tank_type: Maya Scene}
+        - {description: Export Light XML, display_group: XML, display_name: Export
+            Light XML, icon: icons/Xml_tool_icon.png, name: lights_xml, publish_template: maya_shot_lights,
+          required: false, scene_item_type: light_grp, selected: true, tank_type: Maya
+            Scene}
+        - {description: Export shotCam to Nuke, display_group: Cameras, display_name: Nuke
+            Camera, icon: icons/cam_icon.png, name: nukeCam, publish_template: maya_shot_nukecam,
+          required: false, scene_item_type: cam_grp, selected: true, tank_type: Maya
+            Scene}
+        template_work: maya_shot_work
       tk-multi-about: '@about'
       tk-multi-breakdown:
         hook_scene_operations: '{self}/tk-maya_scene_operations.py'
@@ -413,7 +636,7 @@ engines:
           hierarchy: [entity, content]
         filter_publishes_hook: '{self}/filter_publishes.py'
         location:
-          version: v1.18.0
+          version: v1.18.1
           type: app_store
           name: tk-multi-loader2
         menu_name: Load
@@ -432,7 +655,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.10.8
+          version: v0.10.9
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the current Maya scene
@@ -467,7 +690,7 @@ engines:
             filters: {}
         actions_hook: '{self}/general_actions.py:{self}/tk-maya_actions.py'
         location:
-          version: v1.4.8
+          version: v1.4.9
           type: app_store
           name: tk-multi-shotgunpanel
         shotgun_fields_hook: '{self}/shotgun_fields.py'
@@ -503,7 +726,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         location:
-          version: v0.9.8
+          version: v0.10.0
           type: app_store
           name: tk-multi-workfiles2
         my_tasks_extra_display_fields: []
@@ -518,7 +741,7 @@ engines:
     compatibility_dialog_min_version: 2015
     debug_logging: false
     location:
-      version: v0.9.1
+      version: v0.9.2
       type: app_store
       name: tk-maya
     menu_favourites:
@@ -560,7 +783,7 @@ engines:
           hierarchy: [entity, content]
         filter_publishes_hook: '{self}/filter_publishes.py'
         location:
-          version: v1.18.0
+          version: v1.18.1
           type: app_store
           name: tk-multi-loader2
         menu_name: Load
@@ -579,7 +802,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.10.8
+          version: v0.10.9
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the current work file
@@ -630,7 +853,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         location:
-          version: v0.9.8
+          version: v0.10.0
           type: app_store
           name: tk-multi-workfiles2
         my_tasks_extra_display_fields: []
@@ -644,7 +867,7 @@ engines:
         version_compare_ignore_fields: []
       tk-multi-shotgunpanel:
         location:
-          version: v1.4.8
+          version: v1.4.9
           type: app_store
           name: tk-multi-shotgunpanel
         shotgun_fields_hook: '{self}/shotgun_fields.py'
@@ -717,7 +940,7 @@ engines:
           hierarchy: [entity, content]
         filter_publishes_hook: '{self}/filter_publishes.py'
         location:
-          version: v1.18.0
+          version: v1.18.1
           type: app_store
           name: tk-multi-loader2
         menu_name: Load
@@ -736,7 +959,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.10.8
+          version: v0.10.9
           type: app_store
           name: tk-multi-publish
         primary_description: Publishes and versions up the current Nuke script.
@@ -811,7 +1034,7 @@ engines:
             filters: {}
         actions_hook: '{self}/general_actions.py:{self}/tk-nuke_actions.py'
         location:
-          version: v1.4.8
+          version: v1.4.9
           type: app_store
           name: tk-multi-shotgunpanel
         shotgun_fields_hook: '{self}/shotgun_fields.py'
@@ -847,7 +1070,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         location:
-          version: v0.9.8
+          version: v0.10.0
           type: app_store
           name: tk-multi-workfiles2
         my_tasks_extra_display_fields: []
@@ -949,7 +1172,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.10.8
+          version: v0.10.9
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the selected Hiero project
@@ -986,7 +1209,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         location:
-          version: v0.9.8
+          version: v0.10.0
           type: app_store
           name: tk-multi-workfiles2
         my_tasks_extra_display_fields: []
@@ -1104,7 +1327,7 @@ engines:
           hierarchy: [entity, content]
         filter_publishes_hook: '{self}/filter_publishes.py'
         location:
-          version: v1.18.0
+          version: v1.18.1
           type: app_store
           name: tk-multi-loader2
         menu_name: Load
@@ -1127,7 +1350,7 @@ engines:
             filters: {}
         actions_hook: '{self}/general_actions.py:{self}/tk-nuke_actions.py'
         location:
-          version: v1.4.8
+          version: v1.4.9
           type: app_store
           name: tk-multi-shotgunpanel
         shotgun_fields_hook: '{self}/shotgun_fields.py'
@@ -1184,7 +1407,7 @@ engines:
           hierarchy: [entity, content]
         filter_publishes_hook: '{self}/filter_publishes.py'
         location:
-          version: v1.18.0
+          version: v1.18.1
           type: app_store
           name: tk-multi-loader2
         menu_name: Load
@@ -1203,7 +1426,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.10.8
+          version: v0.10.9
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the current Photoshop scene
@@ -1247,7 +1470,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         location:
-          version: v0.9.8
+          version: v0.10.0
           type: app_store
           name: tk-multi-workfiles2
         my_tasks_extra_display_fields: []
@@ -1261,7 +1484,7 @@ engines:
         version_compare_ignore_fields: []
       tk-multi-shotgunpanel:
         location:
-          version: v1.4.8
+          version: v1.4.9
           type: app_store
           name: tk-multi-shotgunpanel
         shotgun_fields_hook: '{self}/shotgun_fields.py'
@@ -1288,7 +1511,7 @@ engines:
     - {app_instance: tk-multi-publish, name: Publish...}
     debug_logging: false
     location:
-      version: v1.2.1
+      version: v1.3.0
       type: app_store
       name: tk-photoshopcc
   #
@@ -1330,7 +1553,7 @@ engines:
         hook_secondary_publish: default
         hook_thumbnail: default
         location:
-          version: v0.10.8
+          version: v0.10.9
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the current Softimage scene
@@ -1381,7 +1604,7 @@ engines:
         hook_scene_operation: default
         launch_at_startup: false
         location:
-          version: v0.9.8
+          version: v0.10.0
           type: app_store
           name: tk-multi-workfiles2
         my_tasks_extra_display_fields: []
@@ -1395,7 +1618,7 @@ engines:
         version_compare_ignore_fields: []
       tk-multi-shotgunpanel:
         location:
-          version: v1.4.8
+          version: v1.4.9
           type: app_store
           name: tk-multi-shotgunpanel
         shotgun_fields_hook: '{self}/shotgun_fields.py'
