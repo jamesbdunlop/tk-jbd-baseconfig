@@ -6,7 +6,7 @@ from tank import TankError
 import config_constants as configCONST
 import shotgun.sg_adef_lib as adef_lib
 import shotgun.sg_cam_lib as cam_lib
-import hooks.maya_RegisterPublish as regPub
+import hooks.multi_publish.maya.maya_RegisterPublish as regPub
 logger = logging.getLogger(__name__)
 
 

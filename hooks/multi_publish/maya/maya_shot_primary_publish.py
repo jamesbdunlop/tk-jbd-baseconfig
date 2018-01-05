@@ -8,7 +8,7 @@
 from tank import TankError
 from tank import Hook
 import tank
-import hooks.maya_ScenePublish as scnPub
+import hooks.multi_publish.maya.maya_ScenePublish as scnPub
 
 
 class PrimaryPublishHook(Hook):
