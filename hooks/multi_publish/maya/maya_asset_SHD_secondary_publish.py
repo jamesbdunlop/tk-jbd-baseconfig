@@ -1,11 +1,11 @@
 import os, tank, time, logging
 import maya.cmds as cmds
+import config_constants as configCONST
 from tank import Hook
 from tank import TankError
 from apps.app_logger import log
-import config_constants as configCONST
-import shotgun.sg_shd_lib as shd_lib
-import xml_export.shd_writeXML as shd_writexml
+from shotgun import sg_shd_lib
+from yaml_export import shd_writeYAML as shd_write
 import xml_export.uv_writeXML as uvwrite
 import xml_export.uv_getUVs as getUvs
 import shotgun.sg_secondarypublishmessage as secpubmsg
@@ -28,14 +28,14 @@ class PublishHook(Hook):
             # report progress:
             progress_cb(0, "Publishing", task)
 
-            ### SHD XML
-            if output["name"] == 'shd_xml':
+            ### SHD YAML
+            if output["name"] == 'shd_yaml':
                 """
-                Main xml exporter for lighting tools for reconnecting shaders to the alembics etc
+                Main yaml exporter for lighting tools for reconnecting shaders to the alembics etc
                 """
                 try:
-                    self._publish_shd_xml_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
-                    shd_lib.repathFileNodesForWork()
+                    self._publish_shd_yaml_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
+                    sg_shd_lib.repathFileNodesForWork()
 
                 except Exception as e:
                     errors.append("Publish failed - {}".format(e))
@@ -66,10 +66,10 @@ class PublishHook(Hook):
         
         ##################################################################
         ## Now iter again to force the thumbs to be done after the shaders
+        errors = []
         for task in tasks:
             item = task["item"]
             output = task["output"]
-            errors = []
 
             # report progress:
             progress_cb(0, "Publishing", task)
@@ -82,7 +82,7 @@ class PublishHook(Hook):
                     self._publish_dg_texture_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
                 except Exception as e:
                     errors.append("Publish failed - {}".format(e))
-            elif output["name"] == 'shd_xml':
+            elif output["name"] == 'shd_yaml':
                 pass
             elif output["name"] == 'copyHiRes':
                 pass
@@ -165,15 +165,12 @@ class PublishHook(Hook):
         except Exception as e:
             raise TankError("Failed to export uv_xml")
 
-    def _publish_shd_xml_for_item(self, item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
-        """
-        Export an Alembic cache for the specified item and publish it
-        to Shotgun.
-        """
-        logger.info('Doing _publish_shd_xml_for_item')
+
+    def _publish_shd_yaml_for_item(self, item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
+        logger.info('Doing _publish_shd_yaml_for_item: {}'.format(item))
 
         tank_type = output["tank_type"]
-        publish_template  = output["publish_template"]
+        publish_template = output["publish_template"]
 
         logger.info('tank_type: {}'.format(tank_type))
         logger.info('publish_template: {}'.format(publish_template))
@@ -182,11 +179,9 @@ class PublishHook(Hook):
         # using the work template:
         scene_path = os.path.abspath(cmds.file(query=True, sn=True))
         logger.info('scene_path: {}'.format(scene_path))
-
-        if not 'SRFVar_' in scene_path:
-            group_name = '{}_{}_XML'.format(item["name"].strip("|").replace('_{}'.format(configCONST.GROUP_SUFFIX, '').replace('_', ''), configCONST.SURFACE_SHORTNAME))
-        else:
-            group_name = '{}_SHD_XML_SurfVar{}'.format(item["name"].strip("|").replace('_{}'.format(configCONST.GROUP_SUFFIX, '').replace('_', ''), configCONST.SURFACE_SHORTNAME, scene_path.split('SRFVar_')[-1].split('\\')[0]))
+        name = item["name"]
+        replaceString = '_{}'.format(configCONST.GROUP_SUFFIX)
+        group_name = '{}_{}_YAML'.format(name[1:].replace(replaceString, '').replace('_', ''), configCONST.SURFACE_SHORTNAME)
         logger.info('group_name: {}'.format(group_name))
 
         fields = work_template.get_fields(scene_path)
@@ -200,10 +195,10 @@ class PublishHook(Hook):
         logger.info('publish_path: {}'.format(publish_path))
 
         try:
-            secpubmsg.publishmessage('Writing Shading XML', True)
-            shd_writexml.exportPrep(path = publish_path)
+            secpubmsg.publishmessage('Writing Shading YAML', True)
+            shd_write.exportPrep(filePath=publish_path)
 
-            secpubmsg.publishmessage('Writing Shading XML', False)
+            secpubmsg.publishmessage('Writing Shading YAML', False)
             ## Now register with shotgun
             self._register_publish(publish_path, 
                                   group_name, 
@@ -214,7 +209,7 @@ class PublishHook(Hook):
                                   thumbnail_path, 
                                   [primary_publish_path])
         except Exception as e:
-            raise TankError("Failed to export xml")
+            raise TankError("Failed to export shd_yaml")
 
     def _publish_copyHiRes_for_item(self, item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
         """
@@ -240,7 +235,7 @@ class PublishHook(Hook):
         try:
             self.parent.log_debug("Executing command: XML EXPORT PREP!")
             secpubmsg.publishmessage('Copying hi res textures to publish path...', True)
-            shd_lib.copyHiRes(destFolder = publish_path)
+            sg_shd_lib.copyHiRes(destFolder = publish_path)
             secpubmsg.publishmessage('Copying hi res textures to publish path...', False)
         except Exception as e:
             raise TankError("Failed to copy textures")
@@ -270,7 +265,7 @@ class PublishHook(Hook):
         try:
             self.parent.log_debug("Executing command: XML EXPORT PREP!")
             secpubmsg.publishmessage('Making Downgraded Textures now...', True)
-            if not shd_lib.doThumbs(path = publish_path):
+            if not sg_shd_lib.doThumbs(path=publish_path):
                 raise TankError("Failed to down grade shaders")
             secpubmsg.publishmessage('Making Downgraded Textures now...', False)
         except Exception as e:

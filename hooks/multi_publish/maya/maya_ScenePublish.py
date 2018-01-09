@@ -2,7 +2,7 @@ import os, tank, logging
 import maya.cmds as cmds
 from tank import TankError
 import config_constants as configCONST
-import shotgun.sg_asset_lib as asset_lib
+from shotgun import sg_asset_lib
 logger = logging.getLogger(__name__)
 
 def _do_maya_publish(task, work_template, comment, thumbnail_path, sg_task, progress_cb, tank, parent):
@@ -19,7 +19,7 @@ def _do_maya_publish(task, work_template, comment, thumbnail_path, sg_task, prog
     if not work_template.validate(scene_path):
         raise TankError("File {} is not a valid work path, unable to publish!".format(scene_path))
     ## Turn off the model editors for the new bake
-    asset_lib.turnOffModelEditors()
+    sg_asset_lib.turnOffModelEditors()
     ## Use templates to convert to publish path:
     output = task["output"]
     fields = work_template.get_fields(scene_path)

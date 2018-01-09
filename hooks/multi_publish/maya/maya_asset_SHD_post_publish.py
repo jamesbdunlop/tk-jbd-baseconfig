@@ -10,7 +10,7 @@
 
 from tank import Hook
 from tank import TankError
-import shotgun.sg_shd_lib as shd_lib
+from shotgun import sg_shd_lib
 
 
 class PostPublishHook(Hook):
@@ -51,7 +51,7 @@ class PostPublishHook(Hook):
         progress_cb(0, "Post Checking scene now...")
 
         ## Set working files back to /work not /publish
-        shd_lib.repathFileNodesForWork()
+        sg_shd_lib.repathFileNodesForWork()
         
         ## Now save the scene again so it's in it's `original' state before publish
         cmds.file(save=True)

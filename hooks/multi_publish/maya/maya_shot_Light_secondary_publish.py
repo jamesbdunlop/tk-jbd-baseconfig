@@ -3,10 +3,11 @@ import maya.cmds as cmds
 from tank import Hook
 from tank import TankError
 import config_constants as configCONST
-import shotgun.sg_shd_lib as shd
-import shotgun.sg_asset_lib as asset_lib
+from shotgun import sg_asset_lib
+from yaml_export import shd_writeYAML as shd_write
 import xml_export.renderGlobals_writeXML as writeXML
 import xml_export.light_writeXML as write_light_xml
+
 from apps.app_logger import log
 
 
@@ -90,18 +91,18 @@ class PublishHook(Hook):
             errors = []
             # report progress:
             ### SHD XML
-            if output["name"] == 'shd_xml':
-                progress_cb(0, "Publishing SHD xml now...")
+            if output["name"] == 'shd_yaml':
+                progress_cb(0, "Publishing SHD yaml now...")
                 # type: mesh_grp
                 ## Because shading exports from the shaders and not the actual groups we can just run this step ONCE!
                 ## If we do this for every item we're wasting serious time outputting the same thing over and over.
                 if not shadingDone: 
                     try:
                         log(app=None, method='lightingSecPublish.execute', message='item: {}'.format(item), outputToLogFile=False, verbose=configCONST.DEBUGGING)
-                        self._publish_shading_xml_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
+                        self._publish_shading_yaml_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
                         ## Now fix the fileNodes back to a work folder structure not the publish folder structure
                         self.repathFileNodesForWork()
-                        shadingDone =  True
+                        shadingDone = True
                         log(app=None, method='lightingSecPublish.execute', message='shadingDone: {}'.format(shadingDone), outputToLogFile=False, verbose=configCONST.DEBUGGING)
                     except Exception as e:
                         errors.append("Publish failed - {}".format(e))
@@ -206,12 +207,12 @@ class PublishHook(Hook):
         except Exception as e:
             raise TankError("Failed to export xml")
     
-    def _publish_shading_xml_for_item(self, item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
+    def _publish_shading_yaml_for_item(self, item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
         """
         Export an xml file for the specified item and publish it
         to Shotgun.
         """
-        group_name = '{}_LIGHTING_SHD_XML'.format(''.join(item["name"].strip("|").split('_hrc')[0].split('_')))
+        group_name = '{}_LIGHTING_SHD_YAML'.format(''.join(item["name"].strip("|").split('_hrc')[0].split('_')))
         log(app=None, method='_publish_lighting_xml_for_item', message='group_name: {}'.format(group_name), outputToLogFile=False, verbose=configCONST.DEBUGGING)
         
         tank_type = output["tank_type"]
@@ -238,8 +239,8 @@ class PublishHook(Hook):
             self.parent.log_debug("Executing command: SHADING XML EXPORT PREP!")
             print('=====================')
             print('Exporting the shading xml {}'.format(publish_path))
-            
-            shd.exportPrep(path=publish_path)
+
+            shd_write.exportPrep(filePath=publish_path)
             
             self._register_publish(publish_path, 
                                   group_name, 
@@ -335,7 +336,7 @@ class PublishHook(Hook):
             endFrame = cmds.playbackOptions(query =True, animationEndTime= True)
             log(app=None, method='_publish_nukeCamera_for_item', message='endFrame: {}'.format(endFrame), outputToLogFile=False, verbose=configCONST.DEBUGGING)
             
-            asset_lib.turnOffModelEditors()
+            sg_asset_lib.turnOffModelEditors()
             
             shotCams = []
             for eachCamera in cmds.listRelatives(item["name"], children=True):
@@ -389,7 +390,7 @@ class PublishHook(Hook):
                 log(app=None, method='_publish_nukeCamera_for_item', message='_register_publish complete for {}...'.format(shotCams[0]), outputToLogFile=False, verbose=configCONST.DEBUGGING)
                 print('Finished camera export for {}...'.format(shotCams[0]))
                 print('=====================')
-                asset_lib.turnOnModelEditors()
+                sg_asset_lib.turnOnModelEditors()
             else:
                 cmds.warning('Found more than one shotCam, using the first in the list only!!')
                 pass

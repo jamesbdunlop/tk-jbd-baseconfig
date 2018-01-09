@@ -195,8 +195,8 @@ paths:
         root_name: 'primary'
 
     ## SHADING Paths
-    maya_asset_SHD_XML:
-        definition: '@asset_root/publish/shd_xml/{name}_shd.v{version}.xml'
+    maya_asset_SHD_YAML:
+        definition: '@asset_root/publish/shd_yaml/{name}_shd.v{version}.yaml'
         root_name: 'primary'
     maya_asset_textures:
         definition: '@asset_root/publish/sourceimages/'
@@ -255,8 +255,8 @@ paths:
     maya_shot_renderglobals:
         definition: '@shot_root/publish/rglobxml/v{version}/{name}.v{version}.xml'
         root_name: 'primary'
-    maya_shot_SHD_XML:
-        definition: '@shot_root/publish/shd_xml/v{version}/{name}.v{version}.xml'
+    maya_shot_SHD_YAML:
+        definition: '@shot_root/publish/shd_yaml/v{version}/{name}.v{version}.yaml'
         root_name: 'primary'
     maya_shot_lightingRenderPreview:
         definition: '@nukeRendersRoot/RenderLayers/R{version}_preview/'

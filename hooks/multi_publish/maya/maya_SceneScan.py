@@ -2,7 +2,7 @@ import os, tank, time
 from tank import TankError
 import logging
 import config_constants as configCONST
-import shotgun.sg_asset_lib as asset_lib
+from shotgun import sg_asset_lib as asset_lib
 import shotgun.sg_shd_lib as shd_lib
 import maya.cmds as cmds
 import maya.mel as mel
@@ -104,12 +104,7 @@ def rig_scan_scene(env='', static=False, sanityChecks= {}):
     ## Global shader cleanup
     if not cmds.objExists('dgSHD'):
         asset_lib.cleanUpShaders()
-    else:
-        try:
-            cmds.delete(cmds.ls(type='core_material'))
-            mel.eval("MLdeleteUnused();")
-        except:
-            pass
+
     return items
 
 def anim_scan_Scene(env='', sanityChecks=None):

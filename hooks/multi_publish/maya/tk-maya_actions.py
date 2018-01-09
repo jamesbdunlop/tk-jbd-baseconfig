@@ -16,10 +16,10 @@ import maya.cmds as cmds
 import maya.mel as mel
 from apps.app_logger import log
 import config_constants as configCONST
-import shotgun.sg_shd_lib as shd_lib
-import shotgun.sg_asset_lib as asset_lib
+from shotgun import sg_shd_lib as shd_lib
+from shotgun import sg_asset_lib as asset_lib
 import shotgun.sg_adef_lib as adef_lib
-import xml_import.shd_readXML as shd_readxml
+from yaml_import import shd_readYAML
 from tank import TankError
 HookBaseClass = sgtk.get_hook_baseclass()
 
@@ -405,42 +405,35 @@ class MayaActions(HookBaseClass):
 
     def _importDGSHD(self, path, sg_publish_data):
         """
-        Load dg shader xml file
+        Load dg shader yaml file
         """
         # get the slashes right
         file_path = path.replace(os.path.sep, "/")
         (path, ext) = os.path.splitext(file_path)
-        log(None, method='add_file_to_maya', message='file_path: {}'.format(file_path), outputToLogFile=False,
-            verbose=configCONST.DEBUGGING)
+        log(None, method='_importDGSHD', message='file_path: {}'.format(file_path), outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
-        if ext in [".xml"]:
+        if ext in [".yaml"]:
             if not cmds.objExists('dgSHD'):
-                cmds.scriptNode(n ='dgSHD')
-            log(None, method='add_file_to_maya', message='Cleaning shaders...', outputToLogFile=False,
-                verbose=configCONST.DEBUGGING)
+                cmds.scriptNode(n='dgSHD')
+            log(None, method='_importDGSHD', message='Cleaning shaders...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
             asset_lib.cleanUpShaders()
 
-            log(None, method='add_file_to_maya', message='Creating shaders...', outputToLogFile=False,
-                verbose=configCONST.DEBUGGING)
-            shd_readxml.createAll(XMLPath=file_path, Namespace='', Root='MaterialNodes')
+            log(None, method='_importDGSHD', message='Creating shaders...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+            shd_readYAML.createAll(YAMLPath=file_path)
 
-            log(None, method='add_file_to_maya', message='Connect all shaders...', outputToLogFile=False,
-                verbose=configCONST.DEBUGGING)
-            shd_readxml.connectAll(XMLPath=file_path, Namespace='', Root='MaterialNodes')
+            log(None, method='_importDGSHD', message='Connect all shaders...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
+            shd_readYAML.connectAll(YAMLPath=file_path)
 
-            log(None, method='add_file_to_maya', message='Downgrading shaders now...', outputToLogFile=False,
-                verbose=configCONST.DEBUGGING)
+            log(None, method='_importDGSHD', message='Downgrading shaders now...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
             shd_lib.downgradeShaders()
 
-            log(None, method='add_file_to_maya', message='Downgrade complete!', outputToLogFile=False,
-                verbose=configCONST.DEBUGGING)
-
-            ####TAG geo_hrc with DGSHD XML VERSION NUMBER
-            ##################
+            ####TAG geo_hrc with DGSHD YAML VERSION NUMBER
             versionNumber = file_path.split('.')[-2]
             if not cmds.objExists('{}_{}.version'.format(configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX)):
                 cmds.addAttr('{}_{}'.format(configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX), ln='version', dt='string')
                 cmds.setAttr('{}_{}.version'.format(configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX), versionNumber, type='string')
+
+            log(None, method='_importDGSHD', message='Downgrade complete!', outputToLogFile=False, verbose=configCONST.DEBUGGING)
 
     def _loadSurfVar(self, path, sg_publish_data):
         """
@@ -523,7 +516,6 @@ class MayaActions(HookBaseClass):
         # get the slashes right
         file_path = path.replace(os.path.sep, "/")
         log(app=None, method='add_file_to_maya', message='file_path: {}'.format(file_path), outputToLogFile=False, verbose=configCONST.DEBUGGING)
-        #file_path: I:/bubblebathbay/episodes/eptst/eptst_sh2000/Anm/publish/maya/eptstsh2000.v002.mb
 
 
         file_version = int(file_path.split('.')[1].split('v')[-1])

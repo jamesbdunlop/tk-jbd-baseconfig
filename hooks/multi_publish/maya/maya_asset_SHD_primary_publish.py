@@ -56,29 +56,28 @@ class PrimaryPublishHook(Hook):
         log(None, method='init_app', message='publish_path: {}'.format(publish_path, verbose=True))
         
         if os.path.exists(publish_path):
-           ## If it already exists version up one. 
-           ## We should never fail a publish just because a published asset already exists
-           cmds.warning('Found existing publish_path: {}'.format(publish_path))
-           cmds.warning('Adjusting publish_path now...')
-           path = '\\'.join(publish_path.split('\\')[0:-1])
-           getfiles = os.listdir(path)
-           if 'Keyboard' in getfiles:
-               getfiles.remove('Keyboard')
-           
-           ## legacy check remove any ma files from the list as we're now publishing only to mb!
-           for each in getfiles:
-               if not each.endswith('mb'):
-                   getfiles.remove(each)
-           
-           ## Now process the rest of the list..
-           ## Get the max of the list
-           highestVersFile = max(getfiles).split('.')[1].split('v')[-1]
-           ## Update the fields with a new version number
-           fields["version"] = int(highestVersFile) + 1
-           ## Apply the fields to the templates paths..
-           publish_path = publish_template.apply_fields(fields)
-           ## Output the new publish path to the scripteditor
-           cmds.warning('NewPublishPath: {}'.format(publish_path))
+            ## If it already exists version up one.
+            ## We should never fail a publish just because a published asset already exists
+            cmds.warning('Found existing publish_path: {}'.format(publish_path))
+            cmds.warning('Adjusting publish_path now...')
+            getfiles = os.listdir(os.path.dirname(publish_path))
+            if 'Keyboard' in getfiles:
+                getfiles.remove('Keyboard')
+
+            ## Now process the rest of the list..
+            ## Get the max of the list
+            highestVersFile = 0
+            if getfiles:
+                highestVersFile = max(getfiles).split('.')[1].split('v')[-1]
+
+            ## Update the fields with a new version number
+            fields["version"] = int(highestVersFile) + 1
+
+            ## Apply the fields to the templates paths..
+            publish_path = publish_template.apply_fields(fields)
+
+            ## Output the new publish path to the scripteditor
+            cmds.warning('NewPublishPath: {}'.format(publish_path))
         
         ## Save the scene so we have a valid os.rename path
         progress_cb(10.0, "Saving the current working scene")
@@ -107,25 +106,14 @@ class PrimaryPublishHook(Hook):
         
         # finally, register the publish:
         progress_cb(75.0, "Registering the publish")
-        if not 'SRFVar_' in scene_path:
-            self._register_publish(publish_path, 
-                                   '{}_SHD_primaryPublish'.format(publish_name),
-                                   sg_task, 
-                                   fields["version"], 
-                                   output["tank_type"],
-                                   comment,
-                                   thumbnail_path, 
-                                   dependencies)
-        else:
-            log(None, method='init_app', message='REGISTERING SURFACE VARIATION...', verbose=True)
-            self._register_publish(publish_path, 
-                                   '{}_primaryPublish_surfVar{}'.format(publish_name,  scene_path.split('SRFVar_')[-1].split('\\')[0]),
-                                   sg_task, 
-                                   fields["version"], 
-                                   output["tank_type"],
-                                   comment,
-                                   thumbnail_path, 
-                                   dependencies)
+        self._register_publish(publish_path,
+                               '{}_SHD_primaryPublish'.format(publish_name),
+                               sg_task,
+                               fields["version"],
+                               output["tank_type"],
+                               comment,
+                               thumbnail_path,
+                               dependencies)
         progress_cb(100)
         
         return publish_path

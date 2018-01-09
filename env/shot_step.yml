@@ -586,8 +586,8 @@ engines:
         primary_scene_item_type: work_file
         primary_tank_type: Maya Scene
         secondary_outputs:
-        - {description: Publish Shading XML, display_group: XML, display_name: Export
-            Shading XML, icon: icons/Xml_tool_icon.png, name: shd_xml, publish_template: maya_shot_SHD_XML,
+        - {description: Publish Shading YAML, display_group: YAML, display_name: Export
+            Shading YAML, icon: icons/Xml_tool_icon.png, name: shd_yaml, publish_template: maya_shot_SHD_YAML,
           required: false, scene_item_type: mesh_grp, selected: true, tank_type: Maya
             Scene}
         - {description: Publish RenderGlobals RenderPasses XML, display_group: XML,

@@ -42,7 +42,7 @@ if CONFIG_ROOT not in sys.path:
 ## Now import the base configs configCONST file
 import config_constants as configCONST
 sys.path.append(configCONST.TANKCORE_PYTHON_PATH)
-print("CONFIG LOADED!")
+print("configCONST LOADED!")
 
 
 class BeforeAppLaunch(tank.Hook):

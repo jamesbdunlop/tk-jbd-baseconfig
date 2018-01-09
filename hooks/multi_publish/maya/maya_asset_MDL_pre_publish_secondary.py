@@ -89,7 +89,7 @@ class PrePublishHook(Hook):
                 errors.extend(self._validate_item_for_publish(item))
             elif output["name"] == "shader_export":
                 errors.extend(self._validate_item_for_publish(item))               
-            elif output["name"] == "shd_xml":
+            elif output["name"] == "shd_yaml":
                 errors.extend(self._validate_item_for_publish(item))    
             elif output["name"] == "dg_texture":
                 errors.extend(self._validate_item_for_publish(item))
