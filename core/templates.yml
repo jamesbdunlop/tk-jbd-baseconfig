@@ -119,7 +119,7 @@ keys:
         choices:
             ma: Maya Ascii (.ma)
             mb: Maya Binary (.mb)
-        default: ma
+        default: mb
         alias: extension
 
     ## SPECIALS
@@ -184,7 +184,7 @@ paths:
     maya_asset_ADEF_assembly:
         definition: '@asset_root/publish/assemblyDef/{name}_ADef.v{version}.ma'
         root_name: 'primary'
-    maya_asset_GOZ_ma:
+    maya_asset_GOZ:
         definition: '@asset_root/publish/mayaGoZ/v{version}/'
         root_name: 'primary'
     maya_asset_GOZ_ztn:
@@ -192,6 +192,9 @@ paths:
         root_name: 'primary'
     maya_asset_zbrush:
         definition: '@asset_root/publish/ZBrushZTL/v{version}/'
+        root_name: 'primary'
+    maya_asset_substance:
+        definition: '@asset_root/publish/substance/v{version}/'
         root_name: 'primary'
 
     ## SHADING Paths

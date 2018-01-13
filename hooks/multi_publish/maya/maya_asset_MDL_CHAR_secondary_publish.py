@@ -5,9 +5,10 @@ import maya.cmds as cmds
 import server.tk_findhumanuserid as fhu
 import shotgun.sg_secondarypublishmessage as secpubmsg
 import config_constants as configCONST
-# TODO register these as deps
-# TODO add ztl publishing
-# TODO ADD 2nd for ZBRUSH main ztl file, built from the os.listdir for the Zbrush folder in the modelling context
+import logging
+logger = logging.getLogger(__name__)
+
+
 
 class PublishHook(Hook):
     """
@@ -87,11 +88,11 @@ class PublishHook(Hook):
             # report progress:
             progress_cb(0, "Publishing", task)
 
-            if output["name"] == "GoZ_ma":
+            if output["name"] == "GoZ":
                 try:
-                    secpubmsg.publishmessage('GOZ EXPORT -ma {}'.format(item["name"], True))
+                    secpubmsg.publishmessage('GOZ EXPORT -GoZ {}'.format(item["name"], True))
                     self._publish_goZMaya_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
-                    secpubmsg.publishmessage('GOZ EXPORT -ma {}'.format(item["name"], False))
+                    secpubmsg.publishmessage('GOZ EXPORT -GoZ {}'.format(item["name"], False))
                 except Exception as e:
                     errors.append("Publish failed - {}".format(e))
             elif output["name"] == "GoZ_ztn":
@@ -103,9 +104,16 @@ class PublishHook(Hook):
                     errors.append("Publish failed - {}".format(e))
             elif output["name"] == "zbrush_ztl":
                 try:
-                    secpubmsg.publishmessage('GOZ EXPORT zbrush ztl {}'.format(item["name"], True))
+                    secpubmsg.publishmessage('GOZ EXPORT zbrush ZTL {}'.format(item["name"], True))
                     self._publish_zbrushZTL_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
-                    secpubmsg.publishmessage('GOZ EXPORT zbrush ztl {}'.format(item["name"], False))
+                    secpubmsg.publishmessage('GOZ EXPORT zbrush ZTL {}'.format(item["name"], False))
+                except Exception as e:
+                    errors.append("Publish failed - {}".format(e))
+            elif output["name"] == "substance":
+                try:
+                    secpubmsg.publishmessage('SUBSTANCE {}'.format(item["name"], True))
+                    self._publish_substance_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
+                    secpubmsg.publishmessage('SUBSTANCE {}'.format(item["name"], False))
                 except Exception as e:
                     errors.append("Publish failed - {}".format(e))
             else:
@@ -115,7 +123,7 @@ class PublishHook(Hook):
             ## if there is anything to report then add to result
             if len(errors) > 0:
                 ## add result:
-                results.append({"task":task, "errors":errors})
+                results.append({"task": task, "errors": errors})
             progress_cb(100)
 
         return results
@@ -148,12 +156,12 @@ class PublishHook(Hook):
             os.mkdir(publish_path)
 
         try:
-            fileSrcPath = os.path.join(goZPath, '{}.ma'.format(goZName))
-            fileDestPath = os.path.join(publish_path, '{}.ma'.format(goZName))
+            fileSrcPath = os.path.join(goZPath, '{}.GoZ'.format(goZName))
+            fileDestPath = os.path.join(publish_path, '{}.GoZ'.format(goZName))
             ## Now copy the file from the cache to the publish
             shutil.copyfile(fileSrcPath, fileDestPath)
-        except Exception as e:
-            raise TankError("Failed to export GoZ ma file {}".format(goZName))
+        except Exception:
+            raise TankError("Failed to export GoZ file {}".format(goZName))
 
     def _publish_goZ_archive_for_item(self, item, output, work_template, sg_task, comment, thumbnail_path, progress_cb):
         """
@@ -212,24 +220,38 @@ class PublishHook(Hook):
         """
         tank_type = output["tank_type"]
         publish_template = output["publish_template"]
+        logger.info("publish_template: {}".format(publish_template))
         # get the current scene path and extract fields from it
         # using the work template:
         scene_path = os.path.abspath(cmds.file(query=True, sn=True))
+        logger.info("scene_path: {}".format(scene_path))
+
         fields = work_template.get_fields(scene_path)
+        logger.info("fields: {}".format(fields))
+
         publish_version = fields["version"]
+        logger.info("publish_version: {}".format(publish_version))
+
         # update fields with the group name:
         zbrushName = item["name"].strip("|")
         fields["grp_name"] = zbrushName
+        logger.info("zbrushName: {}".format(zbrushName))
+
         ## create the publish path by applying the fields
         ## with the publish template:
         publish_path = publish_template.apply_fields(fields)
+
         ## If the publish dir doesn't exist make one now.
         if not os.path.isdir(publish_path):
             os.mkdir(publish_path)
+
         ## Scan the zbrush folder if it exists
-        zbrushdir = os.path.join((scene_path.split("maya{}".format(os.path.sep)[0]), 'zbrush'))
+        zbrushdir = os.path.dirname(scene_path).replace("maya", 'zbrush')
+        logger.info("zbrushdir: {}".format(zbrushdir))
         fileSrcPath = os.path.join(zbrushdir, zbrushName)
+        logger.info("fileSrcPath: {}".format(fileSrcPath))
         fileDestPath = os.path.join(publish_path, zbrushName)
+        logger.info("fileDestPath: {}".format(fileDestPath))
         try:
             ## Now copy the file from the cache to the publish
             shutil.copyfile(fileSrcPath, fileDestPath)
@@ -237,6 +259,52 @@ class PublishHook(Hook):
             cmds.warning('ZTL source path {}'.format(fileSrcPath))
             cmds.warning('ZTL dest path {}'.format(fileDestPath))
             cmds.warning('No ZTL for {} check script editor for details'.format(zbrushName))
+
+    def _publish_substance_for_item(self, item, output, work_template, sg_task, comment, thumbnail_path, progress_cb):
+        """
+        This takes items from the substance subfolder for publishing
+        """
+        tank_type = output["tank_type"]
+        publish_template = output["publish_template"]
+        logger.info("publish_template: {}".format(publish_template))
+        # get the current scene path and extract fields from it
+        # using the work template:
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
+        logger.info("scene_path: {}".format(scene_path))
+
+        fields = work_template.get_fields(scene_path)
+        logger.info("fields: {}".format(fields))
+
+        publish_version = fields["version"]
+        logger.info("publish_version: {}".format(publish_version))
+
+        # update fields with the group name:
+        substanceName = item["name"].strip("|")
+        fields["grp_name"] = substanceName
+        logger.info("zbrushName: {}".format(substanceName))
+
+        ## create the publish path by applying the fields
+        ## with the publish template:
+        publish_path = publish_template.apply_fields(fields)
+
+        ## If the publish dir doesn't exist make one now.
+        if not os.path.isdir(publish_path):
+            os.mkdir(publish_path)
+
+        ## Scan the zbrush folder if it exists
+        substancedir = os.path.dirname(scene_path).replace("maya", 'substance')
+        logger.info("substancedir: {}".format(substancedir))
+        fileSrcPath = os.path.join(substancedir, substanceName)
+        logger.info("fileSrcPath: {}".format(fileSrcPath))
+        fileDestPath = os.path.join(publish_path, substanceName)
+        logger.info("fileDestPath: {}".format(fileDestPath))
+        try:
+            ## Now copy the file from the cache to the publish
+            shutil.copyfile(fileSrcPath, fileDestPath)
+        except Exception:
+            cmds.warning('Substance source path {}'.format(fileSrcPath))
+            cmds.warning('Substance dest path {}'.format(fileDestPath))
+            cmds.warning('No Substance for {} check script editor for details'.format(substanceName))
 
     def _register_publish(self, path, name, sg_task, publish_version, tank_type, comment, thumbnail_path, dependency_paths=None):
         """

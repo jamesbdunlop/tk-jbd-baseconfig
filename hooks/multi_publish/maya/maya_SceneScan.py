@@ -19,6 +19,7 @@ def mdl_scan_scene(env='', sanityChecks=None):
     items = setWorkFile(configCONST.MODEL_SHORTNAME)
     items = mdl_getMeshGroup(items)
 
+    ## SANITY CHECKS
     if env != configCONST.ENVIRONMENT_SUFFIX:
         mdl_genericHardFails(items)
         doSanityChecks(sanityChecks, items)
@@ -263,7 +264,7 @@ def doSanityChecks(sanityChecks, items):
                             freezeXFRM=sanityChecks['freezeXFRM'],
                             smoothLvl=sanityChecks['smoothLvl'],
                             tagSmoothed=sanityChecks['tagSmoothed'],
-                            checkVerts=sanityChecks['checkVerts'],
+                            checkVerts=False, #sanityChecks['checkVerts'],
                             renderflags=sanityChecks['renderflags'],
                             deleteIntermediate=sanityChecks['deleteIntermediate'],
                             turnOffOpposite=sanityChecks['turnOffOpposite'],

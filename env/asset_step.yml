@@ -691,17 +691,15 @@ engines:
         primary_tank_type: Maya Scene
         secondary_outputs:
         - {description: maya goZ cache files, display_group: goZ, display_name: mayaGoZ
-            ma Files, icon: icons/goZ.png, name: GoZ_ma, publish_template: maya_asset_GOZ_ma,
+            ma Files, icon: icons/goZ.png, name: GoZ, publish_template: maya_asset_GOZ,
           required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
             Scene}
         - {description: zbrush goZ ztn|ztl cache files, display_group: goZ, display_name: zbrushGoZ
             ztn|ztl Files, icon: icons/goZ.png, name: GoZ_ztn, publish_template: maya_asset_GOZ_ztn,
           required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
             Scene}
-        - {description: zbrush main file, display_group: Zbrush Files, display_name: Zbrush
-            Files from /work/zbrush, icon: icons/goZ.png, name: zbrush_ztl, publish_template: maya_asset_zbrush,
-          required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
-            Scene}
+        - {description: zbrush main file, display_group: Zbrush Files, display_name: Zbrush Files from /work/zbrush, icon: icons/goZ.png, name: zbrush_ztl, publish_template: maya_asset_zbrush,
+          required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya Scene}
         template_work: maya_asset_work
       tk-multi-publish-MDL-STATIC-BLD:
         allow_taskless_publishes: false
@@ -744,7 +742,7 @@ engines:
           name: assembly_definition, publish_template: maya_asset_ADEF_assembly, required: false,
           scene_item_type: mesh_group, selected: true, tank_type: Maya Scene}
         - {description: maya goZ cache files, display_group: goZ, display_name: mayaGoZ
-            ma Files, icon: icons/goZ.png, name: GoZ_ma, publish_template: maya_asset_GOZ_ma,
+            ma Files, icon: icons/goZ.png, name: GoZ, publish_template: maya_asset_GOZ,
           required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
             Scene}
         - {description: zbrush goZ ztn|ztl cache files, display_group: goZ, display_name: zbrushGoZ
@@ -765,8 +763,8 @@ engines:
         hook_primary_pre_publish: multi_publish\maya\maya_asset_MDL_pre_publish_primary
         hook_primary_publish: multi_publish\maya\maya_asset_MDL_primary_publish
         hook_scan_scene: multi_publish\maya\maya_asset_MDL_PROP_scan_scene
-        hook_secondary_pre_publish: default
-        hook_secondary_publish: default
+        hook_secondary_pre_publish: multi_publish\maya\maya_asset_MDL_pre_publish_secondary
+        hook_secondary_publish: multi_publish\maya\maya_asset_MDL_CHAR_secondary_publish
         hook_thumbnail: default
         location:
           version: v0.10.9
@@ -780,17 +778,15 @@ engines:
         primary_tank_type: Maya Scene
         secondary_outputs:
         - {description: maya goZ cache files, display_group: goZ, display_name: mayaGoZ
-            ma Files, icon: icons/goZ.png, name: GoZ_ma, publish_template: maya_asset_GOZ_ma,
+            ma Files, icon: icons/goZ.png, name: GoZ, publish_template: maya_asset_GOZ,
           required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
             Scene}
         - {description: zbrush goZ ztn|ztl cache files, display_group: goZ, display_name: zbrushGoZ
             ztn|ztl Files, icon: icons/goZ.png, name: GoZ_ztn, publish_template: maya_asset_GOZ_ztn,
           required: false, scene_item_type: goZ_group, selected: true, tank_type: Maya
             Scene}
-        - {description: zbrush main file, display_group: Zbrush Files, display_name: Zbrush
-            Files from /work/zbrush, icon: icons/goZ.png, name: zbrush_ztl, publish_template: maya_asset_zbrush,
-          required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya
-            Scene}
+        - {description: zbrush main file, display_group: Zbrush Files, display_name: Zbrush Files from /work/zbrush, icon: icons/goZ.png, name: zbrush_ztl, publish_template: maya_asset_zbrush,
+          required: false, scene_item_type: zbrush_group, selected: false, tank_type: Maya Scene}
         template_work: maya_asset_work
       tk-multi-publish-RIG-CHAR:
         allow_taskless_publishes: false
@@ -944,7 +940,8 @@ engines:
         primary_tank_type: Maya Scene
         secondary_outputs:
         - {description: Publish Shading YAML, display_group: YAML, display_name: Shading
-            YAML, icon: icons/Xml_tool_icon.png, name: shd_yaml, publish_template: maya_asset_SHD_YAML,
+            YAML,
+          icon: icons/Xml_tool_icon.png, name: shd_yaml, publish_template: maya_asset_SHD_YAML,
           required: false, scene_item_type: mesh_group, selected: true, tank_type: Maya
             Scene}
         - {description: Copy HiRes Textures To Publish Folders, display_group: Textures,
@@ -959,6 +956,9 @@ engines:
           icon: icons/Xml_tool_icon.png, name: uvxml, publish_template: maya_asset_uvxml,
           required: false, scene_item_type: mesh_group, selected: true, tank_type: Maya
             Scene}
+        - {description: substance files, display_group: Substance Files, display_name: Substance /work/substance,
+          icon: icons/goZ.png, name: substance, publish_template: maya_asset_substance,
+          required: false, scene_item_type: substance_group, selected: false, tank_type: Maya Scene}
         template_work: maya_asset_work
       tk-multi-screeningroom: '@launch_screeningroom'
       tk-multi-shotgunpanel:

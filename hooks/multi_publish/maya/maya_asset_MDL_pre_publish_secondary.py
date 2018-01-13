@@ -99,22 +99,28 @@ class PrePublishHook(Hook):
                 errors.extend(self._validate_item_for_publish(item))
             elif output["name"] == "uvxml":
                 errors.extend(self._validate_item_for_publish(item))
-            elif output["name"] == "GoZ_ma":
-                errors.extend(self._validate_goZ_ma_item_for_publish(item))
+            elif output["name"] == "GoZ":
+                #errors.extend(self._validate_goZ_ma_item_for_publish(item))
+                pass
             elif output["name"] == "GoZ_ztn":
-                errors.extend(self._validate_goZ_ztl_item_for_publish(item))
+                #errors.extend(self._validate_goZ_ztl_item_for_publish(item))
+                pass
             elif output["name"] == "zbrush_ztl":
                 ## passing here cause we just want to scan the zbrush folder in the model context
                 ## for outputs for the operator to select so  nothing to fail on here.
                 pass
+            elif output["name"] == "substance":
+                ## passing here cause we just want to scan the substance folder in the model context
+                ## for outputs for the operator to select so  nothing to fail on here.
+                pass
             else:
                 # don't know how to publish this output types!
-                errors.append("We're good but we just don't know how to publish this item! \nWhat the heck is {} anyway?".format(output["name"])   )
+                errors.append("We're good but we just don't know how to publish this item! \nWhat the heck is {} anyway?".format(output["name"]) )
 
             # if there is anything to report then add to result
             if len(errors) > 0:
                 # add result:
-                results.append({"task":task, "errors":errors})
+                results.append({"task": task, "errors": errors})
 
             progress_cb(100)
             
@@ -138,20 +144,20 @@ class PrePublishHook(Hook):
         # finally return any errors
         return errors
 
-    def _validate_goZ_ma_item_for_publish(self, item):
-        goZFolder = configCONST.GOZ_PUBLIC_CACHEPATH
-        getFolderContents = os.listdir(goZFolder)
-        errors = []
-        ## make sure the cache file exists in the default goZ folder !
-        if '{}.ma'.format(item["name"]) not in getFolderContents:
-            errors.append('Can not find a goZ ma cache file in {}'.format(goZFolder))
-        return errors
-
-    def _validate_goZ_ztl_item_for_publish(self, item):
-        goZFolder = configCONST.GOZ_PUBLIC_CACHEPATH
-        getFolderContents = os.listdir(goZFolder)
-        errors = []
-        ## make sure the cache file exists in the default goZ folder !
-        if '{}.ztn'.format(item["name"]) not in getFolderContents:
-            errors.append('Can not find a goZ ztn cache file in {}'.format(goZFolder))
-        return errors
+    # def _validate_goZ_ma_item_for_publish(self, item):
+    #     goZFolder = configCONST.GOZ_PUBLIC_CACHEPATH
+    #     getFolderContents = os.listdir(goZFolder)
+    #     errors = []
+    #     ## make sure the cache file exists in the default goZ folder !
+    #     if '{}.GoZ'.format(item["name"]) not in getFolderContents:
+    #         errors.append('Can not find a GoZ cache file in {}'.format(goZFolder))
+    #     return errors
+    #
+    # def _validate_goZ_ztl_item_for_publish(self, item):
+    #     goZFolder = configCONST.GOZ_PUBLIC_CACHEPATH
+    #     getFolderContents = os.listdir(goZFolder)
+    #     errors = []
+    #     ## make sure the cache file exists in the default goZ folder !
+    #     if '{}.ztn'.format(item["name"]) not in getFolderContents:
+    #         errors.append('Can not find a goZ ztn cache file in {}'.format(goZFolder))
+    #     return errors

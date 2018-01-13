@@ -388,13 +388,13 @@ engines:
         allowAssetTurnTableBuild:   false
         movie_width:                1280
         movie_height:               720
-        movie_path_template:        maya_asset_playblast
-        movie_workpath_template:    maya_assetwork_playblast
+        movie_path_template:        maya_shot_playblast
+        movie_workpath_template:    maya_shotwork_playblast
         new_version_status:         rev
         sg_in_frame_field:          sg_cut_in
         sg_out_frame_field:         sg_cut_out
         store_on_disk:              true
-        template_work:              maya_asset_work
+        template_work:              maya_shot_work
         upload_to_shotgun:          true
         version_number_padding:     3
       tk-Fetch-ShotBased-Related-Assets:
@@ -413,7 +413,7 @@ engines:
       tk-Lighting-rebuild-surfacing-from-XML-publishes:
         display_name: Lighting Tools.../Get All Pub Shaders
         location: {name: tk-jbd-lighting-rebuildSurfacing, type: manual, version: v0.0.1}
-        maya_SHD_XML_template: maya_asset_SHD_XML
+        maya_SHD_XML_template: maya_asset_SHD_YAML
         maya_asset_presetRoot: asset_root
         maya_textures_template: maya_asset_textures
       tk-changeworkspace:
