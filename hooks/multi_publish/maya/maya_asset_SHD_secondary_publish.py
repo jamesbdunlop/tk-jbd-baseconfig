@@ -1,3 +1,4 @@
+import shutil
 import os, tank, time, logging
 import maya.cmds as cmds
 import config_constants as configCONST
@@ -59,6 +60,16 @@ class PublishHook(Hook):
             elif output["name"] == 'uvxml':
                 self._publish_uvXML_for_item(item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb)
 
+            ## Substance Files
+            elif output["name"] == "substance":
+                try:
+                    secpubmsg.publishmessage('SUBSTANCE {}'.format(item["name"], True))
+                    self._publish_substance_for_item(item, output, work_template, sg_task, comment, thumbnail_path, progress_cb)
+                    secpubmsg.publishmessage('SUBSTANCE {}'.format(item["name"], False))
+
+                except Exception as e:
+                    errors.append("Publish failed - {}".format(e))
+
             else:
                 # don't know how to publish this output types!
                 errors.append("Don't know how to publish this item! {}".format(output["name"]))
@@ -107,9 +118,10 @@ class PublishHook(Hook):
         to Shotgun.
         """
         tank_type = output["tank_type"]
-        publish_template  = output["publish_template"]
+        publish_template = output["publish_template"]
         assetName = item["name"].split('|')[-1]
-        log(None, method = '_publish_xml_for_item', message = 'assetName: {}'.format(assetName, outputToLogFile = False, verbose = configCONST.DEBUGGING))
+
+        log(None, method='_publish_xml_for_item', message='assetName: {}'.format(assetName, outputToLogFile=False, verbose=configCONST.DEBUGGING))
         # get the current scene path and extract fields from it
         # using the work template:
         scene_path = os.path.abspath(cmds.file(query=True, sn=True))
@@ -129,25 +141,25 @@ class PublishHook(Hook):
 
         try:
             self.parent.log_debug("Executing command: XML EXPORT PREP!")
-            log(None, method = '_publish_xml_for_item', message = 'Export prep...', outputToLogFile = False, verbose = configCONST.DEBUGGING)
+            log(None, method='_publish_xml_for_item', message='Export prep...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
             
             start = time.time()
             secpubmsg.publishmessage('UV XML', True)
-            getGeohrc = [eachChild for eachChild in cmds.listRelatives(assetName, children = True) if eachChild == '{}_{}'.format(configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX)]
+            getGeohrc = [eachChild for eachChild in cmds.listRelatives(assetName, children=True) if eachChild == '{}_{}'.format(configCONST.GEO_SUFFIX, configCONST.GROUP_SUFFIX)]
             try:
-                geoList = [eachChild for eachChild in cmds.listRelatives(getGeohrc, children = True, ad = True) if 'Shape' not in eachChild and cmds.listRelatives(eachChild, shapes = True)]
+                geoList = [eachChild for eachChild in cmds.listRelatives(getGeohrc, children=True, ad=True) if 'Shape' not in eachChild and cmds.listRelatives(eachChild, shapes=True)]
             except:
                 geoList = []
 
             allGeoUVData = []
-            log(None, method = '_publish_xml_for_item', message = 'Fetching UV information for xml now...', outputToLogFile = False, verbose = configCONST.DEBUGGING)
+            log(None, method='_publish_xml_for_item', message='Fetching UV information for xml now...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
             if geoList:
                 for eachGeo in geoList:
                     uvData = getUvs.getUVs(eachGeo)
                     if uvData:
                         allGeoUVData.extend([uvData])
 
-                log(None, method = '_publish_xml_for_item', message = 'Writing UV xml information to disk now...', outputToLogFile = False, verbose = configCONST.DEBUGGING)
+                log(None, method='_publish_xml_for_item', message='Writing UV xml information to disk now...', outputToLogFile=False, verbose=configCONST.DEBUGGING)
                 uvwrite.writeUVData(assetName, allGeoUVData, publish_path)
                 print('TIME: {}'.format(time.time()-start))
                 secpubmsg.publishmessage('UV XML', False)
@@ -164,7 +176,6 @@ class PublishHook(Hook):
                 secpubmsg.publishmessage('UV XML FAILED no geoList found! Is your heirachy setup correctly? And your grps are named correctly???', False)
         except Exception as e:
             raise TankError("Failed to export uv_xml")
-
 
     def _publish_shd_yaml_for_item(self, item, output, work_template, primary_publish_path, sg_task, comment, thumbnail_path, progress_cb):
         logger.info('Doing _publish_shd_yaml_for_item: {}'.format(item))
@@ -217,7 +228,7 @@ class PublishHook(Hook):
         """
         group_name = item["name"].strip("|")
         tank_type = output["tank_type"]
-        publish_template  = output["publish_template"]
+        publish_template = output["publish_template"]
 
         # get the current scene path and extract fields from it
         # using the work template:
@@ -230,12 +241,12 @@ class PublishHook(Hook):
 
         ## create the publish path by applying the fields 
         ## with the publish template:
-        publish_path  = publish_template.apply_fields(fields)
+        publish_path=publish_template.apply_fields(fields)
 
         try:
             self.parent.log_debug("Executing command: XML EXPORT PREP!")
             secpubmsg.publishmessage('Copying hi res textures to publish path...', True)
-            sg_shd_lib.copyHiRes(destFolder = publish_path)
+            sg_shd_lib.copyHiRes(destFolder=publish_path)
             secpubmsg.publishmessage('Copying hi res textures to publish path...', False)
         except Exception as e:
             raise TankError("Failed to copy textures")
@@ -247,7 +258,7 @@ class PublishHook(Hook):
 
         group_name = item["name"].strip("|")
         tank_type = output["tank_type"]
-        publish_template  = output["publish_template"]
+        publish_template = output["publish_template"]
 
 
         # get the current scene path and extract fields from it
@@ -261,7 +272,7 @@ class PublishHook(Hook):
 
         ## create the publish path by applying the fields 
         ## with the publish template:
-        publish_path  = publish_template.apply_fields(fields)
+        publish_path = publish_template.apply_fields(fields)
         try:
             self.parent.log_debug("Executing command: XML EXPORT PREP!")
             secpubmsg.publishmessage('Making Downgraded Textures now...', True)
@@ -270,6 +281,56 @@ class PublishHook(Hook):
             secpubmsg.publishmessage('Making Downgraded Textures now...', False)
         except Exception as e:
             raise TankError("Failed to downgrade shaders")
+
+    def _publish_substance_for_item(self, item, output, work_template, sg_task, comment, thumbnail_path, progress_cb):
+        """
+        This takes items from the substance subfolder for publishing
+        """
+        tank_type = output["tank_type"]
+        logger.info("tank_type: {}".format(tank_type))
+
+        publish_template = output["publish_template"]
+        logger.info("publish_template: {}".format(publish_template))
+
+        # get the current scene path and extract fields from it
+        # using the work template:
+        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
+        logger.info("scene_path: {}".format(scene_path))
+
+        fields = work_template.get_fields(scene_path)
+        logger.info("fields: {}".format(fields))
+
+        publish_version = fields["version"]
+        logger.info("publish_version: {}".format(publish_version))
+
+        # update fields with the group name:
+        substanceName = item["name"].strip("|")
+        fields["grp_name"] = substanceName
+        logger.info("substanceName: {}".format(substanceName))
+
+        ## create the publish path by applying the fields
+        ## with the publish template:
+        publish_path = publish_template.apply_fields(fields)
+
+        ## If the publish dir doesn't exist make one now.
+        if not os.path.isdir(publish_path):
+            os.mkdir(publish_path)
+
+        ## Scan the zbrush folder if it exists
+        substancedir = os.path.dirname(scene_path).replace("maya", 'substance')
+        logger.info("substancedir: {}".format(substancedir))
+        fileSrcPath = os.path.join(substancedir, substanceName)
+        logger.info("fileSrcPath: {}".format(fileSrcPath))
+        fileDestPath = os.path.join(publish_path, substanceName)
+        logger.info("fileDestPath: {}".format(fileDestPath))
+        try:
+            ## Now copy the file from the cache to the publish
+            shutil.copyfile(fileSrcPath, fileDestPath)
+        except Exception:
+            cmds.warning('Substance source path {}'.format(fileSrcPath))
+            cmds.warning('Substance dest path {}'.format(fileDestPath))
+            cmds.warning('No Substance for {} check script editor for details'.format(substanceName))
+
 
     def _register_publish(self, path, name, sg_task, publish_version, tank_type, comment, thumbnail_path, dependency_paths=None):
         """

@@ -79,15 +79,7 @@ class PrePublishHook(Hook):
             # report progress:
             progress_cb(0, "Validating", task)
         
-            if output["name"] == "alembic_cache":
-                errors.extend(self._validate_item_for_publish(item))
-            elif output["name"] == "bounding_box":
-                errors.extend(self._validate_item_for_publish(item))
-            elif output["name"] == "gpu_cache":
-                errors.extend(self._validate_item_for_publish(item))
-            elif output["name"] == "assembly_definition":
-                errors.extend(self._validate_item_for_publish(item))
-            elif output["name"] == "shader_export":
+            if output["name"] == "shader_export":
                 errors.extend(self._validate_item_for_publish(item))               
             elif output["name"] == "shd_yaml":
                 errors.extend(self._validate_item_for_publish(item))    
@@ -99,16 +91,6 @@ class PrePublishHook(Hook):
                 errors.extend(self._validate_item_for_publish(item))
             elif output["name"] == "uvxml":
                 errors.extend(self._validate_item_for_publish(item))
-            elif output["name"] == "GoZ":
-                #errors.extend(self._validate_goZ_ma_item_for_publish(item))
-                pass
-            elif output["name"] == "GoZ_ztn":
-                #errors.extend(self._validate_goZ_ztl_item_for_publish(item))
-                pass
-            elif output["name"] == "zbrush_ztl":
-                ## passing here cause we just want to scan the zbrush folder in the model context
-                ## for outputs for the operator to select so  nothing to fail on here.
-                pass
             elif output["name"] == "substance":
                 ## passing here cause we just want to scan the substance folder in the model context
                 ## for outputs for the operator to select so  nothing to fail on here.
@@ -129,7 +111,6 @@ class PrePublishHook(Hook):
     def _validate_item_for_publish(self, item):
         """
         Validate that the item is valid to be exported 
-        to an alembic cache
         """
         errors = []
         ## FINAL CHECKS PRE PUBLISH JUST TO MAKE SURE NOTHING ODD HAS HAPPENED IN THE SCENE BEFORE CLICKING THE PUBLISH BUTTON
@@ -144,20 +125,3 @@ class PrePublishHook(Hook):
         # finally return any errors
         return errors
 
-    def _validate_goZ_ma_item_for_publish(self, item):
-        goZFolder = configCONST.GOZ_PUBLIC_CACHEPATH
-        getFolderContents = os.listdir(goZFolder)
-        errors = []
-        ## make sure the cache file exists in the default goZ folder !
-        if '{}.GoZ'.format(item["name"]) not in getFolderContents:
-            errors.append('Can not find a GoZ cache file in {}'.format(goZFolder))
-        return errors
-
-    def _validate_goZ_ztl_item_for_publish(self, item):
-        goZFolder = configCONST.GOZ_PUBLIC_CACHEPATH
-        getFolderContents = os.listdir(goZFolder)
-        errors = []
-        ## make sure the cache file exists in the default goZ folder !
-        if '{}.ztn'.format(item["name"]) not in getFolderContents:
-            errors.append('Can not find a goZ ztn cache file in {}'.format(goZFolder))
-        return errors

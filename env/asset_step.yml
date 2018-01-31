@@ -917,7 +917,7 @@ engines:
         secondary_outputs: []
         template_work: maya_asset_work
       tk-multi-publish-SRF:
-        allow_taskless_publishes: false
+        allow_taskless_publishes: true
         display_name: SRF/SRF Publish
         expand_single_items: false
         hook_copy_file: default
@@ -925,7 +925,7 @@ engines:
         hook_primary_pre_publish: multi_publish\maya\maya_asset_MDL_pre_publish_primary
         hook_primary_publish: multi_publish\maya\maya_asset_SHD_primary_publish
         hook_scan_scene: multi_publish\maya\maya_asset_SHD_scan_scene
-        hook_secondary_pre_publish: multi_publish\maya\maya_asset_MDL_pre_publish_secondary
+        hook_secondary_pre_publish: multi_publish\maya\maya_asset_SHD_pre_publish_secondary
         hook_secondary_publish: multi_publish\maya\maya_asset_SHD_secondary_publish
         hook_thumbnail: default
         location:
@@ -933,7 +933,7 @@ engines:
           type: app_store
           name: tk-multi-publish
         primary_description: Publish and version up the current Maya scene
-        primary_display_name: Publish Building Asset
+        primary_display_name: Publish Surfaced Asset
         primary_icon: icons/publish_maya_main.png
         primary_publish_template: maya_asset_publish
         primary_scene_item_type: work_file
@@ -956,8 +956,8 @@ engines:
           icon: icons/Xml_tool_icon.png, name: uvxml, publish_template: maya_asset_uvxml,
           required: false, scene_item_type: mesh_group, selected: true, tank_type: Maya
             Scene}
-        - {description: substance files, display_group: Substance Files, display_name: Substance /work/substance,
-          icon: icons/goZ.png, name: substance, publish_template: maya_asset_substance,
+        - {description: Substance files, display_group: Substance, display_name: Substance,
+          icon: icons/substance.png, name: substance, publish_template: maya_asset_substance,
           required: false, scene_item_type: substance_group, selected: false, tank_type: Maya Scene}
         template_work: maya_asset_work
       tk-multi-screeningroom: '@launch_screeningroom'

@@ -8,7 +8,7 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights 
 # not expressly granted therein are reserved by Shotgun Software Inc.
 from tank import Hook
-from  hooks.multi_publish.maya.maya_SceneScan import mdl_scan_scene
+from hooks.multi_publish.maya.maya_SceneScan import mdl_scan_scene
 import config_constants as configCONST
 
 class ScanSceneHook(Hook):

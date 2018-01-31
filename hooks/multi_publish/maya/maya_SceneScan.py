@@ -170,6 +170,11 @@ def shd_scan_Scene(sanityChecks=None):
     start = time.time()
     asset_lib.deleteEmptyUVSets()
     logger.info('Total time to {}: {}'.format('asset_lib.deleteEmptyUVSets()', time.time() - start))
+
+    start = time.time()
+    items = findSubstanceItems(items)
+    logger.info('Total time to {}: {}'.format('findSubstanceItems()', time.time() - start))
+
     return items
 
 ########################################################################################################################
@@ -216,6 +221,24 @@ def findGoZItems(items):
             ZBrushFiles = sorted(ZBrushFiles[-3:])
             for eachZbrushFile in ZBrushFiles:
                 items.append({"type": "zbrush_group", "name": eachZbrushFile[0]})
+
+    return items
+
+def findSubstanceItems(items):
+    scene_name = cmds.file(query=True, sn=True)
+    ## Scan the substance folder if it exists
+    dir = '{}/{}'.format('/'.join(scene_name.split("/")[0:-2]), 'substance')
+    files = []
+    if os.path.isdir(dir):
+        getFiles = os.listdir(dir)
+        for eachFile in getFiles:
+            if eachFile.endswith('.spp'):
+                timeStamp = os.path.getmtime('{}/{}'.format(dir, eachFile))
+                files.append([eachFile, timeStamp])
+    if files:
+        finFiles = sorted(files)
+        for eachFile in finFiles:
+            items.append({"type": "substance_group", "name": eachFile[0]})
 
     return items
 
