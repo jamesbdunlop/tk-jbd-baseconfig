@@ -136,11 +136,9 @@ MAYA_VERSION = '2018'
 LOGFILE_NAME = 'tankLog'
 ## SHOT GUN BASE CONSTANTS
 SHOTGUN_CONFIG_NAME = 'baseConfig'
-#SHOTGUN_URL = [INSERT YOUR URL HERE eg https://mystudio.shotgunstudio.com AS A STRING]
-SHOTGUN_URL = ''
+SHOTGUN_URL = [INSERT YOUR URL HERE eg https://mystudio.shotgunstudio.com AS A STRING]
 SHOTGUN_TOOLKIT_NAME = 'Toolkit'
-#SHOTGUN_TOOLKIT_API_KEY = [INSERT YOUR SHOTGUN API KEY HERE AS A STRING]
-SHOTGUN_TOOLKIT_API_KEY = ''
+SHOTGUN_TOOLKIT_API_KEY = [INSERT YOUR SHOTGUN API KEY HERE AS A STRING]
 
 GOZ_PUBLIC_CACHEPATH = 'C:\Users\Public\Pixologic\GoZProjects\Default'
 ## DEFAULT STUFF FOR THE CONFIG
@@ -297,7 +295,7 @@ MAYA_SCRIPT_PATHS = []
 SYS_PATHS = [
               os.path.join(MAYA_DEFAULT_ENV, 'site-packages'),
               os.path.join(SHOTGUN_SOFTWARE_ROOT, 'defaultMayaLibrary'),
-              os.path.join(SHOTGUN_SOFTWARE_ROOT, 'defaultShotGunLibrary'),
+              os.path.join(SHOTGUN_SOFTWARE_ROOT, 'defaultShotgunLibrary'),
               os.path.join(SHOTGUN_SOFTWARE_ROOT, 'python-api'),
               os.path.join(SHOTGUN_SOFTWARE_ROOT, 'MSide'),
               os.path.join(SHOTGUN_SOFTWARE_ROOT, 'Nebula'),
