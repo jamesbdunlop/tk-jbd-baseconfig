@@ -135,7 +135,7 @@ USER_NAME = getpass.getuser()
 MAYA_VERSION = '2018'
 LOGFILE_NAME = 'tankLog'
 ## SHOT GUN BASE CONSTANTS
-SHOTGUN_CONFIG_NAME = 'baseconfig'
+SHOTGUN_CONFIG_NAME = 'baseConfig'
 #SHOTGUN_URL = [INSERT YOUR URL HERE eg https://mystudio.shotgunstudio.com AS A STRING]
 SHOTGUN_URL = ''
 SHOTGUN_TOOLKIT_NAME = 'Toolkit'
@@ -242,8 +242,8 @@ if sys.platform == 'win32':
     ## Animation publishing..
     ALEMBIC_BATCH_NAME = '{}_animCacheExport.bat'.format(getpass.getuser()) ## TODO get a date time in here
     FX_BATCH_NAME = '{}_FXCacheExport.bat'.format(getpass.getuser())   ## TODO get a date time in here
-    PATH_TO_ANIM_BAT = r'%s/%s' % (TEMP_FOLDER, ALEMBIC_BATCH_NAME)
-    PATH_TO_FX_BAT = r'%s/%s' % (TEMP_FOLDER, FX_BATCH_NAME)
+    PATH_TO_ANIM_BAT = r'{}/{}'.format(TEMP_FOLDER, ALEMBIC_BATCH_NAME)
+    PATH_TO_FX_BAT = r'{}/{}'.format(TEMP_FOLDER, FX_BATCH_NAME)
 
 ## OSX
 elif sys.platform == 'darwin':
@@ -295,17 +295,20 @@ MAYA_SCRIPT_PATHS = []
 #######################
 ## BASE SYS PATHS CONSTANTS
 SYS_PATHS = [
-          os.path.join(MAYA_DEFAULT_ENV, 'site-packages'),
-          os.path.join(SHOTGUN_SOFTWARE_ROOT, 'MSide'),
-          os.path.join(SHOTGUN_SOFTWARE_ROOT, 'Nebula'),
-          os.path.join(SHOTGUN_SOFTWARE_ROOT, 'mscreen'),
-          SHOTGUN_LIBRARY_PATH,
-          TANKCORE_PYTHON_PATH,
-          SGTK_PYTHON_PATH,
-          MAYA_PYTHON_LIB,
-          SHOTGUN_CONFIG_ROOT,
-          "C:/Program Files (x86)/Epic Games/4.14/Engine/Extras/Maya_AnimationRiggingTools/MayaTools/General/Scripts",
-          ]
+              os.path.join(MAYA_DEFAULT_ENV, 'site-packages'),
+              os.path.join(SHOTGUN_SOFTWARE_ROOT, 'defaultMayaLibrary'),
+              os.path.join(SHOTGUN_SOFTWARE_ROOT, 'defaultShotGunLibrary'),
+              os.path.join(SHOTGUN_SOFTWARE_ROOT, 'python-api'),
+              os.path.join(SHOTGUN_SOFTWARE_ROOT, 'MSide'),
+              os.path.join(SHOTGUN_SOFTWARE_ROOT, 'Nebula'),
+              os.path.join(SHOTGUN_SOFTWARE_ROOT, 'jbd_om2'),
+              SHOTGUN_LIBRARY_PATH,
+              TANKCORE_PYTHON_PATH,
+              SGTK_PYTHON_PATH,
+              MAYA_PYTHON_LIB,
+              SHOTGUN_CONFIG_ROOT,
+              "C:/Program Files (x86)/Epic Games/4.14/Engine/Extras/Maya_AnimationRiggingTools/MayaTools/General/Scripts",
+              ]
 MAYA_XBM_PATHS = []
 MAYA_PLUGIN_PATHS = [("E:/3D_Development/cPlusPlus/mayaMathNodes/x64", "mayaMathNodes.mll"),
                      ("E:/3D_Development/cPlusPlus/eyeLid/x64", "eyeLid.mll"),

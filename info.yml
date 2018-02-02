@@ -11,8 +11,8 @@
 # Metadata defining the behaviour and requirements for this configuration
 
 # More verbose description of this item
-display_name: "Default Config"
-description: "A VFX Example Config and our default configuration."
+display_name: "BaseConfig"
+description: "JBD Example config"
 
 # Required minimum versions for this item to run
 requires_shotgun_version: "v6.2.0"
