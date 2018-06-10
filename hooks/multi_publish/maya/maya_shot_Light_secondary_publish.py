@@ -3,7 +3,7 @@ import maya.cmds as cmds
 from tank import Hook
 from tank import TankError
 import config_constants as configCONST
-from shotgun import sg_asset_lib
+import sg_asset_lib
 from yaml_export import shd_writeYAML as shd_write
 import renderGlobals_writeXML as writeXML
 import light_writeXML as write_light_xml

@@ -16,8 +16,8 @@ import maya.cmds as cmds
 import maya.mel as mel
 from apps.app_logger import log
 import config_constants as configCONST
-from shotgun import sg_shd_lib as shd_lib
-from shotgun import sg_asset_lib as asset_lib
+import sg_shd_lib as shd_lib
+import sg_asset_lib as asset_lib
 import sg_adef_lib as adef_lib
 from yaml_import import shd_readYAML
 from tank import TankError

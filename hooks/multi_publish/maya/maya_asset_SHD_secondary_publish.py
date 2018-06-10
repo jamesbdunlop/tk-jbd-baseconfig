@@ -5,7 +5,7 @@ import config_constants as configCONST
 from tank import Hook
 from tank import TankError
 from apps.app_logger import log
-from shotgun import sg_shd_lib
+import sg_shd_lib
 from yaml_export import shd_writeYAML as shd_write
 import uv_writeXML as uvwrite
 import uv_getUVs as getUvs

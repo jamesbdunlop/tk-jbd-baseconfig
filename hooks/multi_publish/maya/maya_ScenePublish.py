@@ -2,7 +2,7 @@ import os, tank, logging
 import maya.cmds as cmds
 from tank import TankError
 import config_constants as configCONST
-from shotgun import sg_asset_lib
+import sg_asset_lib
 logger = logging.getLogger(__name__)
 
 def _do_maya_publish(task, work_template, comment, thumbnail_path, sg_task, progress_cb, tank, parent):

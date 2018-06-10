@@ -10,7 +10,7 @@
 
 from tank import Hook
 from tank import TankError
-from shotgun import sg_shd_lib
+import sg_shd_lib
 
 
 class PostPublishHook(Hook):
