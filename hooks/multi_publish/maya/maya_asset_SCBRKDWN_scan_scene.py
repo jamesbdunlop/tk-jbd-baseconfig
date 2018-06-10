@@ -20,7 +20,7 @@ This implementation supports the following types of references:
 """
 
 import os
-import shotgun.sg_adef_lib as adef_lib
+import sg_adef_lib as adef_lib
 from tank import Hook
 from tank import TankError
 from apps.app_logger import log

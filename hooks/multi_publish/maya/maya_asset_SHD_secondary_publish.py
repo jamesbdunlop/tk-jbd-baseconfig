@@ -7,9 +7,9 @@ from tank import TankError
 from apps.app_logger import log
 from shotgun import sg_shd_lib
 from yaml_export import shd_writeYAML as shd_write
-import xml_export.uv_writeXML as uvwrite
-import xml_export.uv_getUVs as getUvs
-import shotgun.sg_secondarypublishmessage as secpubmsg
+import uv_writeXML as uvwrite
+import uv_getUVs as getUvs
+import sg_secondarypublishmessage as secpubmsg
 logger = logging.getLogger(__name__)
 
 

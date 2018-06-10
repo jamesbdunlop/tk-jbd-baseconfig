@@ -3,7 +3,7 @@ from tank import Hook
 from tank import TankError
 import maya.cmds as cmds
 import server.tk_findhumanuserid as fhu
-import shotgun.sg_secondarypublishmessage as secpubmsg
+import sg_secondarypublishmessage as secpubmsg
 import config_constants as configCONST
 import logging
 logger = logging.getLogger(__name__)

@@ -18,7 +18,7 @@ from apps.app_logger import log
 import config_constants as configCONST
 from shotgun import sg_shd_lib as shd_lib
 from shotgun import sg_asset_lib as asset_lib
-import shotgun.sg_adef_lib as adef_lib
+import sg_adef_lib as adef_lib
 from yaml_import import shd_readYAML
 from tank import TankError
 HookBaseClass = sgtk.get_hook_baseclass()

@@ -4,9 +4,9 @@ import maya.mel as mel
 import tank
 from tank import Hook, TankError
 from apps.app_logger import log
-import shotgun.sg_adef_lib as adef_lib
+import sg_adef_lib as adef_lib
 import server.tk_findhumanuserid as fhu
-import shotgun.sg_secondarypublishmessage as secpubmsg
+import sg_secondarypublishmessage as secpubmsg
 import config_constants as configCONST
 
 

@@ -5,8 +5,8 @@ from tank import TankError
 import config_constants as configCONST
 from shotgun import sg_asset_lib
 from yaml_export import shd_writeYAML as shd_write
-import xml_export.renderGlobals_writeXML as writeXML
-import xml_export.light_writeXML as write_light_xml
+import renderGlobals_writeXML as writeXML
+import light_writeXML as write_light_xml
 
 from apps.app_logger import log
 
