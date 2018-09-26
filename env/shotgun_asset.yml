@@ -54,7 +54,7 @@ engines:
           version: v0.1.5
     debug_logging: false
     location:
-      version: v0.7.0
+      version: v0.8.2
       type: app_store
       name: tk-shotgun
 #
@@ -66,4 +66,4 @@ engines:
 # common functionality for building UIs and communicating with Shotgun.
 # Frameworks are automatically installed when apps are installed and udpated.
 #
-frameworks: null
+frameworks:

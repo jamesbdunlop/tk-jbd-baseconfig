@@ -10,7 +10,7 @@
 #
 
 description: This environment controls what items should be shown on the menu in Shotgun
-             for publishes.
+  for publishes.
 
 #################################################################################################
 # include common definitions for all the launchers that are used to start maya, nuke etc.
@@ -53,7 +53,7 @@ engines:
         viewer_path_windows: '@rv_win'
     debug_logging: false
     location:
-      version: v0.7.0
+      version: v0.8.2
       type: app_store
       name: tk-shotgun
 #
@@ -65,4 +65,4 @@ engines:
 # common functionality for building UIs and communicating with Shotgun.
 # Frameworks are automatically installed when apps are installed and udpated.
 #
-frameworks: null
+frameworks:

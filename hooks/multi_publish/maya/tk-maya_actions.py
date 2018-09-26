@@ -19,7 +19,7 @@ import config_constants as configCONST
 import sg_shd_lib as shd_lib
 import sg_asset_lib as asset_lib
 import sg_adef_lib as adef_lib
-from yaml_import import shd_readYAML
+import shd_readYAML
 from tank import TankError
 HookBaseClass = sgtk.get_hook_baseclass()
 

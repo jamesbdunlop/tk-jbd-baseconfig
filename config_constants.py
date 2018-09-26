@@ -316,10 +316,12 @@ MAYA_PYTHON_PATHS = [os.path.join(SHOTGUN_SOFTWARE_ROOT, "jbd_om2", "OM2plugins"
 
 MAYA_TEMPLATE_PATHS = ["{}/{}/{}/scripts/AETemplates".format(MAYA_APP_DIR, getpass.getuser(), MAYA_VERSION)]
 
-MAYA_PLUGIN_PATHS = [("E:/3D_Development/cPlusPlus/mayaMathNodes/x64", "mayaMathNodes.mll"),
-                     ("E:/3D_Development/cPlusPlus/eyelidNode/x64", "eyelidNode.mll"),
-                     ("E:/3D_Development/cPlusPlus/hermiteNodes/x64", "hermite.mll"),
-                     ("E:/3D_Development/cPlusPlus/jawNode/x64", "jaw.mll"),
+MAYA_PLUGIN_PATHS = [
+                     ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_mayaMathNodes.mll"),
+                     ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_hermite.mll"),
+                     ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_jaw.mll"),
+                     ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_eyelidNode.mll"),
+                     ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_pushTransform.mll"),
                      ("E:/3D_Development/python/software/jbd_om2/OM2plugins", "jbdResetSkinClusters.py"),
                      ("E:/3D_Development/python/software/jbd_om2/OM2plugins", "jbdSkinTo.py"),
                      ("E:/3D_Development/python/software/jbd_om2/OM2plugins", "jbdSaveWeights.py"),
