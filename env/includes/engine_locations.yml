@@ -48,4 +48,9 @@ engines.tk-shotgun.location:
   name: tk-shotgun
   version: v0.8.2
 
+# substancepainter
+engines.tk-substancepainter.location:
+  type: git
+  path: https://github.com/diegogarciahuerta/tk-substancepainter
+  version: v1.1.0
 
