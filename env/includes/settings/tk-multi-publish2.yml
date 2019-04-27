@@ -81,10 +81,9 @@ settings.tk-multi-publish2.houdini.shot_step:
 
 ################################################################################
 # ---- Maya
-
 # asset step
 settings.tk-multi-publish2.maya.asset_step:
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{self}/collector.py:{config}/tk-multi-publish2/maya/collector.py"
   collector_settings:
       Work Template: maya_asset_work
   publish_plugins:
@@ -110,7 +109,7 @@ settings.tk-multi-publish2.maya.asset_step:
 
 # shot step
 settings.tk-multi-publish2.maya.shot_step:
-  collector: "{self}/collector.py:{engine}/tk-multi-publish2/basic/collector.py"
+  collector: "{self}/collector.py:{config}/tk-multi-publish2/maya/collector.py"
   collector_settings:
       Work Template: maya_shot_work
   publish_plugins:
