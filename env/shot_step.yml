@@ -18,7 +18,6 @@ includes:
 - ./includes/settings/tk-desktop2.yml
 - ./includes/settings/tk-houdini.yml
 - ./includes/settings/tk-maya.yml
-- ./includes/settings/tk-nuke.yml
 - ./includes/settings/tk-shell.yml
 - ./includes/settings/tk-shotgun.yml
 
@@ -30,8 +29,6 @@ engines:
   tk-desktop2: "@settings.tk-desktop2.all"
   tk-houdini: "@settings.tk-houdini.shot_step"
   tk-maya: "@settings.tk-maya.shot_step"
-  tk-nuke: "@settings.tk-nuke.shot_step"
-  tk-nukestudio: "@settings.tk-nuke.nukestudio.shot_step"
   tk-shell: "@settings.tk-shell.shot_step"
   tk-shotgun: "@settings.tk-shotgun.shot_step"
 

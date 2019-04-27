@@ -24,7 +24,6 @@ includes:
 - ./includes/frameworks.yml
 - ./includes/settings/tk-houdini.yml
 - ./includes/settings/tk-maya.yml
-- ./includes/settings/tk-nuke.yml
 - ./includes/settings/tk-shell.yml
 - ./includes/settings/tk-shotgun.yml
 
@@ -34,7 +33,6 @@ includes:
 engines:
   tk-houdini: "@settings.tk-houdini.asset"
   tk-maya: "@settings.tk-maya.asset"
-  tk-nuke: "@settings.tk-nuke.asset"
   tk-shell: "@settings.tk-shell.asset"
   tk-shotgun: "@settings.tk-shotgun.asset"
 

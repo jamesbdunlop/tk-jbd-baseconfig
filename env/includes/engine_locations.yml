@@ -12,19 +12,6 @@
 # location descriptors for engines used in this configuration
 
 ################################################################################
-
-# 3dsMax
-engines.tk-3dsmaxplus.location:
-  type: app_store
-  name: tk-3dsmaxplus
-  version: v0.5.6
-
-# After Effects
-engines.tk-aftereffects.location:
-  type: app_store
-  name: tk-aftereffects
-  version: v0.1.2
-
 # Desktop
 engines.tk-desktop.location:
   type: app_store
@@ -37,47 +24,17 @@ engines.tk-desktop2.location:
   name: tk-desktop2
   version: v1.1.0
 
-# Flame
-engines.tk-flame.location:
-  type: app_store
-  name: tk-flame
-  version: v1.14.9
-
 # Houdini
 engines.tk-houdini.location:
   type: app_store
   name: tk-houdini
   version: v1.6.1
 
-# Mari
-engines.tk-mari.location:
-  type: app_store
-  name: tk-mari
-  version: v1.2.2
-
 # Maya
 engines.tk-maya.location:
   type: app_store
   name: tk-maya
   version: v0.9.7
-
-# Motion Builder
-engines.tk-motionbuilder.location:
-  type: app_store
-  name: tk-motionbuilder
-  version: v0.5.0
-
-# Nuke
-engines.tk-nuke.location:
-  type: app_store
-  name: tk-nuke
-  version: v0.12.0
-
-# Photoshop
-engines.tk-photoshopcc.location:
-  type: app_store
-  name: tk-photoshopcc
-  version: v1.7.2
 
 # Shell
 engines.tk-shell.location:

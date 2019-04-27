@@ -14,7 +14,3 @@ includes:
 - ../app_locations.yml
 
 ################################################################################
-
-settings.tk-multi-breakdown.nukestudio:
-  hook_scene_operations: '{self}/tk-nuke_scene_operations.py'
-  location: "@apps.tk-multi-breakdown.location"

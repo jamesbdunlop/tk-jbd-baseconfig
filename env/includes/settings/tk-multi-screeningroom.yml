@@ -15,7 +15,6 @@ includes:
 - ../software_paths.yml
 
 ################################################################################
-
 # screeningroom
 settings.tk-multi-screeningroom.rv:
   enable_rv_mode: true

@@ -8,9 +8,7 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 #
-
 ################################################################################
-
 includes:
 - ../engine_locations.yml
 - ./tk-multi-launchapp.yml
@@ -19,9 +17,7 @@ includes:
 - ./tk-shotgun-folders.yml
 - ./tk-shotgun-launchfolder.yml
 - ./tk-shotgun-launchpublish.yml
-
 ################################################################################
-
 # asset
 settings.tk-shotgun.asset:
   apps:

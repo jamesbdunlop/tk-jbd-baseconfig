@@ -8,33 +8,23 @@
 # agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
 # not expressly granted therein are reserved by Shotgun Software Inc.
 #
-
 description: Apps and Engines when launching with a project only context.
-
 ################################################################################
-
 includes:
 - ./includes/frameworks.yml
 - ./includes/settings/tk-desktop.yml
 - ./includes/settings/tk-houdini.yml
 - ./includes/settings/tk-maya.yml
-- ./includes/settings/tk-nuke.yml
 - ./includes/settings/tk-shell.yml
 - ./includes/settings/tk-shotgun.yml
-
 ################################################################################
 # configuration for all engines to load in a project context
-
 engines:
   tk-desktop: "@settings.tk-desktop.project"
   tk-houdini: "@settings.tk-houdini.project"
   tk-maya: "@settings.tk-maya.project"
-  tk-nuke: "@settings.tk-nuke.project"
-  tk-nukestudio: "@settings.tk-nuke.nukestudio.project"
   tk-shell: "@settings.tk-shell.project"
   tk-shotgun: "@settings.tk-shotgun.project"
-
 ################################################################################
 # reference all of the common frameworks
-
 frameworks: "@frameworks"
