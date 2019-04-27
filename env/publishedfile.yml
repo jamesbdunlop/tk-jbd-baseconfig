@@ -9,31 +9,22 @@
 # not expressly granted therein are reserved by Shotgun Software Inc.
 #
 
-description: Apps and Engines related to Shot based work.
+description: Apps and engines loaded when a PublishedFile is loaded.
+  By default, the only engine defined here is tk-shotgun. This configuration
+  provides the apps that are necessary to display menu actions in the Shotgun
+  web application by way of Toolkit's browser integration.
 
 ################################################################################
 
 includes:
 - ./includes/frameworks.yml
-- ./includes/settings/tk-desktop2.yml
-- ./includes/settings/tk-houdini.yml
-- ./includes/settings/tk-maya.yml
-- ./includes/settings/tk-nuke.yml
-- ./includes/settings/tk-shell.yml
 - ./includes/settings/tk-shotgun.yml
 
 ################################################################################
-# configuration for all engines to load in a shot step context
+# configuration for all engines to load in a publishedfile context
 
 engines:
-  # referencing the DCC-specific shot_step environments included above
-  tk-desktop2: "@settings.tk-desktop2.all"
-  tk-houdini: "@settings.tk-houdini.shot_step"
-  tk-maya: "@settings.tk-maya.shot_step"
-  tk-nuke: "@settings.tk-nuke.shot_step"
-  tk-nukestudio: "@settings.tk-nuke.nukestudio.shot_step"
-  tk-shell: "@settings.tk-shell.shot_step"
-  tk-shotgun: "@settings.tk-shotgun.shot_step"
+  tk-shotgun: "@settings.tk-shotgun.publishedfile"
 
 ################################################################################
 # reference all of the common frameworks

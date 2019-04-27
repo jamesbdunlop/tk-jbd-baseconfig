@@ -22,14 +22,18 @@ class PickEnvironment(Hook):
         The default implementation assumes there are three environments, called shot, asset
         and project, and switches to these based on entity type.
         """
+        if context.source_entity:
+            if context.source_entity["type"] == "Version":
+                return "version"
+            elif context.source_entity["type"] == "PublishedFile":
+                return "publishedfile"
 
         if context.project is None:
-            # our context is completely empty!
-            # don't know how to handle this case.
-            return None
+            # Our context is completely empty. We're going into the site context.
+            return "site"
 
         if context.entity is None:
-            # we have a project but not an entity
+            # We have a project but not an entity.
             return "project"
 
         if context.entity and context.step is None:
