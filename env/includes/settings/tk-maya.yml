@@ -22,7 +22,6 @@ includes:
 - ./tk-multi-workfiles2.yml
 
 ################################################################################
-
 # asset
 settings.tk-maya.asset:
   apps:
