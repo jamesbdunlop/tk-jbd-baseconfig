@@ -326,11 +326,11 @@ MAYA_PLUGIN_PATHS = [
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "mayaMathNodes.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "brSmoothWeights.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "maya2glTF.mll"),
-                     ("E:/3D_Development/python/software/jbd_om2/OM2plugins", "jbdResetSkinClusters.py"),
-                     ("E:/3D_Development/python/software/jbd_om2/OM2plugins", "jbdSkinTo.py"),
-                     ("E:/3D_Development/python/software/jbd_om2/OM2plugins", "jbdSaveWeights.py"),
-                     ("E:/3D_Development/python/software/jbd_om2/OM2plugins", "jbdLoadWeights.py"),
-                     ("E:/3D_Development/python/software/jbd_om2/OM2plugins", "numToStringNode.py")
+                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdResetSkinClusters.py"),
+                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdSkinTo.py"),
+                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdSaveWeights.py"),
+                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdLoadWeights.py"),
+                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "numToStringNode.py")
                      ]
 ###
 ## SANITY CHECKS
