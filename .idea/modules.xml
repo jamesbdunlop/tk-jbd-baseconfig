@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../python-api/.idea/python-api.iml" filepath="$PROJECT_DIR$/../python-api/.idea/python-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../studio/.idea/studio.iml" filepath="$PROJECT_DIR$/../studio/.idea/studio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/tk-jbd-baseconfig.iml" filepath="$PROJECT_DIR$/.idea/tk-jbd-baseconfig.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../tk-substancepainter/.idea/tk-substancepainter.iml" filepath="$PROJECT_DIR$/../tk-substancepainter/.idea/tk-substancepainter.iml" />
+    </modules>
+  </component>
+</project>
