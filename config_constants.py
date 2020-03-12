@@ -132,7 +132,12 @@ DEBUGGING = True
 
 ## SETUP BASE CONSTANTS FOR THE CONFIG
 USER_NAME = getpass.getuser()
-MAYA_VERSION = '2018'
+try:
+    import maya.cmds as cmds
+    MAYA_VERSION = cmds.about(v=True)
+except:
+    MAYA_VERSION = '2019'
+
 LOGFILE_NAME = 'tankLog'
 ## SHOT GUN BASE CONSTANTS
 SHOTGUN_CONFIG_NAME = 'baseConfig'
@@ -140,9 +145,9 @@ SHOTGUN_CONFIG_NAME = 'baseConfig'
 SHOTGUN_URL = 'https://framespersecond.shotgunstudio.com'
 SHOTGUN_TOOLKIT_NAME = 'Toolkit'
 #SHOTGUN_TOOLKIT_API_KEY = [INSERT YOUR SHOTGUN API KEY HERE AS A STRING]
-SHOTGUN_TOOLKIT_API_KEY = 'wtckpkscoe?4eyvXszcmigyhx'
+SHOTGUN_TOOLKIT_API_KEY = ''
 
-GOZ_PUBLIC_CACHEPATH = 'C:\Users\Public\Pixologic\GoZProjects\Default'
+GOZ_PUBLIC_CACHEPATH = 'C:\\Users\\Public\\Pixologic\\GoZProjects\\Default'
 ## DEFAULT STUFF FOR THE CONFIG
 ## Save the maya scene before you do a primary publish?
 SAVEWRK_PREPRIMARY_PUBLISH = True
@@ -328,6 +333,7 @@ MAYA_PLUGIN_PATHS = [
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "brSmoothWeights.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "iDeform.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "rampWeights.mll"),
+                     ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "weightDriver.mll"),
                      ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdResetSkinClusters.py"),
                      ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdSkinTo.py"),
                      ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdSaveWeights.py"),
