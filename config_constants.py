@@ -145,7 +145,7 @@ SHOTGUN_CONFIG_NAME = 'baseConfig'
 SHOTGUN_URL = 'https://framespersecond.shotgunstudio.com'
 SHOTGUN_TOOLKIT_NAME = 'Toolkit'
 #SHOTGUN_TOOLKIT_API_KEY = [INSERT YOUR SHOTGUN API KEY HERE AS A STRING]
-SHOTGUN_TOOLKIT_API_KEY = ''
+SHOTGUN_TOOLKIT_API_KEY = 'wtckpkscoe?4eyvXszcmigyhx'
 
 GOZ_PUBLIC_CACHEPATH = 'C:\\Users\\Public\\Pixologic\\GoZProjects\\Default'
 ## DEFAULT STUFF FOR THE CONFIG
@@ -328,6 +328,7 @@ MAYA_PLUGIN_PATHS = [
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_eyelidNode.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_pushTransform.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_ziptransformarray.mll"),
+                     ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_bezier.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "mayaMathNodes.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "maya2glTF.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "brSmoothWeights.mll"),
