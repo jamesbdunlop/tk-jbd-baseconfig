@@ -35,26 +35,6 @@ class ThumbnailHook(Hook):
         engine = self.parent.engine
         engine_name = engine.name
 
-        # depending on engine:
-        if engine_name == "tk-substancepainter":
-            return self._extract_substancepainter_thumbnail()
-
         # default implementation does nothing
         return None
 
-    def _extract_substancepainter_thumbnail(self):
-        """
-        Render a thumbnail for the current canvas in Substance Painter
-
-        :returns:   The path to the thumbnail on disk
-        """
-        thumb = QtGui.QPixmap.grabWindow(QtGui.QApplication.desktop().winId())
-
-        if thumb:
-            # save the thumbnail
-            temp_dir = tempfile.gettempdir()
-            temp_filename = "sgtk_thumb_%s.jpg" % uuid.uuid4().hex
-            jpg_thumb_path = os.path.join(temp_dir, temp_filename)
-            thumb.save(jpg_thumb_path)
-
-        return jpg_thumb_path

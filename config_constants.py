@@ -136,7 +136,8 @@ try:
     import maya.cmds as cmds
     MAYA_VERSION = cmds.about(v=True)
 except:
-    MAYA_VERSION = '2019'
+    MAYA_VERSION = '2020'
+print("MAYA_VERSION: %s" % MAYA_VERSION)
 
 LOGFILE_NAME = 'tankLog'
 ## SHOT GUN BASE CONSTANTS
@@ -341,7 +342,7 @@ MAYA_PLUGIN_PATHS = [
                      ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdLoadWeights.py"),
                      ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "numToStringNode.py")
                      ]
-###
+################
 ## SANITY CHECKS
 SANITY = {
   'RIG_GENERIC': {

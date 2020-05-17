@@ -16,41 +16,35 @@
 engines.tk-desktop.location:
   type: app_store
   name: tk-desktop
-  version: v2.4.12
+  version: v2.5.3
 
 # Desktop2
 engines.tk-desktop2.location:
   type: app_store
   name: tk-desktop2
-  version: v1.1.0
+  version: v1.3.1
 
 # Houdini
 engines.tk-houdini.location:
   type: app_store
   name: tk-houdini
-  version: v1.6.1
+  version: v1.7.1
 
 # Maya
 engines.tk-maya.location:
   type: app_store
   name: tk-maya
-  version: v0.9.7
+  version: v0.10.1
 
 # Shell
 engines.tk-shell.location:
   type: app_store
   name: tk-shell
-  version: v0.6.0
+  version: v0.8.1
 
 # Shotgun
 engines.tk-shotgun.location:
   type: app_store
   name: tk-shotgun
   version: v0.8.2
-
-# substancepainter
-engines.tk-substancepainter.location:
-  type: git
-  path: https://github.com/diegogarciahuerta/tk-substancepainter
-  version: v1.1.0
 

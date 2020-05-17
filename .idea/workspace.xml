@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="81ae8540-4b6f-4fcd-9a21-15c22ddfe6fa" name="Default Changelist" comment="" />
+    <list default="true" id="81ae8540-4b6f-4fcd-9a21-15c22ddfe6fa" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/tk-jbd-baseconfig.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/tk-jbd-baseconfig.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config_constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/config_constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/templates.yml" beforeDir="false" afterPath="$PROJECT_DIR$/core/templates.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/asset.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/asset.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/asset_step.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/asset_step.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/includes/app_locations.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/includes/app_locations.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/includes/engine_locations.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/includes/engine_locations.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/includes/frameworks.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/includes/frameworks.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/includes/settings/tk-multi-breakdown.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/includes/settings/tk-multi-breakdown.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/includes/settings/tk-multi-loader2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/includes/settings/tk-multi-loader2.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/includes/settings/tk-multi-publish2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/includes/settings/tk-multi-publish2.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/includes/settings/tk-multi-shotgunpanel.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/includes/settings/tk-multi-shotgunpanel.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/includes/settings/tk-multi-snapshot.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/includes/settings/tk-multi-snapshot.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/includes/settings/tk-multi-workfiles2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/includes/settings/tk-multi-workfiles2.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/includes/settings/tk-substancepainter.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/env/project.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/project.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hooks/thumbnail.py" beforeDir="false" afterPath="$PROJECT_DIR$/hooks/thumbnail.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hooks/tk-multi-publish2/basic/collector.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hooks/tk-multi-publish2/basic/publish_session.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hooks/tk-multi-publish2/basic/publish_texture.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hooks/tk-multi-publish2/basic/publish_textures.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hooks/tk-multi-publish2/basic/start_version_control.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/info.yml" beforeDir="false" afterPath="$PROJECT_DIR$/info.yml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,14 +40,19 @@
   <component name="ProjectViewState">
     <option name="autoscrollToSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../studio" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\3D_Development\python\software\tk-jbd-baseconfig" />
+    </key>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -41,21 +72,41 @@
       <option name="project" value="LOCAL" />
       <updated>1584001254292</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="git ignore">
+      <created>1585143002932</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1585143002932</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="version changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="version changes" />
+    <MESSAGE value="git ignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="git ignore" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="488" y="212" key="CommitChangelistDialog2" timestamp="1584001253226">
+    <state x="604" y="444" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1586496494496">
       <screen x="0" y="0" width="3440" height="1410" />
     </state>
-    <state x="488" y="212" key="CommitChangelistDialog2/0.0.3440.1410@0.0.3440.1410" timestamp="1584001253226" />
-    <state x="491" y="433" key="Vcs.Push.Dialog.v2" timestamp="1584001256232">
+    <state x="604" y="444" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.3440.1410@0.0.3440.1410" timestamp="1586496494496" />
+    <state x="488" y="212" key="CommitChangelistDialog2" timestamp="1585143002364">
       <screen x="0" y="0" width="3440" height="1410" />
     </state>
-    <state x="491" y="433" key="Vcs.Push.Dialog.v2/0.0.3440.1410@0.0.3440.1410" timestamp="1584001256232" />
+    <state x="488" y="212" key="CommitChangelistDialog2/0.0.3440.1410@0.0.3440.1410" timestamp="1585143002364" />
+    <state x="2360" y="463" key="FileChooserDialogImpl" timestamp="1586680296347">
+      <screen x="0" y="0" width="3440" height="1410" />
+    </state>
+    <state x="2360" y="463" key="FileChooserDialogImpl/0.0.3440.1410@0.0.3440.1410" timestamp="1586680296347" />
+    <state x="491" y="433" key="Vcs.Push.Dialog.v2" timestamp="1585143006456">
+      <screen x="0" y="0" width="3440" height="1410" />
+    </state>
+    <state x="491" y="433" key="Vcs.Push.Dialog.v2/0.0.3440.1410@0.0.3440.1410" timestamp="1585143006456" />
+    <state x="734" y="50" width="1125" height="1145" key="find.popup" timestamp="1586682473644">
+      <screen x="0" y="0" width="3440" height="1410" />
+    </state>
+    <state x="734" y="50" width="1125" height="1145" key="find.popup/0.0.3440.1410@0.0.3440.1410" timestamp="1586682473644" />
   </component>
 </project>

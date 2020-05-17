@@ -25,7 +25,6 @@ includes:
 - ./includes/settings/tk-maya.yml
 - ./includes/settings/tk-shell.yml
 - ./includes/settings/tk-shotgun.yml
-- ./includes/settings/tk-substancepainter.yml
 
 ################################################################################
 # configuration for all engines to load in an asset context
@@ -35,11 +34,10 @@ engines:
   tk-maya: '@settings.tk-maya.asset'
   tk-shell: '@settings.tk-shell.asset'
   tk-shotgun: '@settings.tk-shotgun.asset'
-  tk-substancepainter: '@settings.tk-substancepainter.asset'
   tk-desktop:
     apps: {}
     location:
-      version: v2.4.12
+      version: v2.5.3
       type: app_store
       name: tk-desktop
 ################################################################################
