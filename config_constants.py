@@ -330,7 +330,6 @@ MAYA_PLUGIN_PATHS = [
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_pushTransform.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_ziptransformarray.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_bezier.mll"),
-                     ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "mayaMathNodes.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "maya2glTF.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "brSmoothWeights.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "iDeform.mll"),
