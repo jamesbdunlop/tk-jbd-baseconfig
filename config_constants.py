@@ -313,7 +313,6 @@ SYS_PATHS = [
               SGTK_PYTHON_PATH,
               MAYA_PYTHON_LIB,
               SHOTGUN_CONFIG_ROOT,
-              "C:/Program Files (x86)/Epic Games/4.14/Engine/Extras/Maya_AnimationRiggingTools/MayaTools/General/Scripts",
               ]
 
 MAYA_XBM_PATHS = []
@@ -330,16 +329,16 @@ MAYA_PLUGIN_PATHS = [
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_pushTransform.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_ziptransformarray.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "jd_bezier.mll"),
-                     ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "maya2glTF.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "brSmoothWeights.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "iDeform.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "rampWeights.mll"),
                      ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "weightDriver.mll"),
-                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdResetSkinClusters.py"),
-                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdSkinTo.py"),
-                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdSaveWeights.py"),
-                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "jbdLoadWeights.py"),
-                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "numToStringNode.py")
+                     ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "TwistSpline.mll"),
+                     ("E:/3D_Development/cPlusPlus/_plugins/{}/x64/".format(MAYA_VERSION), "grimIK.mll"),
+                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "resetSkinCluster.py"),
+                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "skinTo.py"),
+                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "saveSkinWeights.py"),
+                     ("E:/3D_Development/python/software/jbd_om2/maya_pythonPlugins", "loadSkinWeights.py")
                      ]
 ################
 ## SANITY CHECKS

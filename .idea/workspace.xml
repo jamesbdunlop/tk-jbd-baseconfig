@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="81ae8540-4b6f-4fcd-9a21-15c22ddfe6fa" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/hooks/tk-multi-launchapp/before_app_launch.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config_constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/config_constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/env/includes/settings/tk-multi-launchapp.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/includes/settings/tk-multi-launchapp.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/env/includes/settings/tk-multi-workfiles2.yml" beforeDir="false" afterPath="$PROJECT_DIR$/env/includes/settings/tk-multi-workfiles2.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hooks/tk-multi-breakdown/tk-substancepainter_scene_operations.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hooks/tk-multi-loader2/tk-substancepainter_actions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hooks/tk-multi-snapshot/scene_operation_tk-substancepainter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/hooks/tk-multi-workfiles2/scene_operation_tk-substancepainter.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +43,7 @@
       <recent name="E:\3D_Development\python\software\tk-jbd-baseconfig\hooks\tk-multi-launchapp\hooks" />
     </key>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -82,32 +76,40 @@
       <option name="project" value="LOCAL" />
       <updated>1589690577652</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="config working with new expected paths etc">
+      <created>1589725706860</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1589725706860</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="version changes" />
     <MESSAGE value="git ignore" />
     <MESSAGE value="updates to tank core and project stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="updates to tank core and project stuff" />
+    <MESSAGE value="config working with new expected paths etc" />
+    <option name="LAST_COMMIT_MESSAGE" value="config working with new expected paths etc" />
   </component>
   <component name="WindowStateProjectService">
     <state x="604" y="444" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1586496494496">
       <screen x="0" y="0" width="3440" height="1410" />
     </state>
     <state x="604" y="444" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.3440.1410@0.0.3440.1410" timestamp="1586496494496" />
-    <state x="488" y="212" key="CommitChangelistDialog2" timestamp="1589690576708">
+    <state x="488" y="212" key="CommitChangelistDialog2" timestamp="1589725706193">
       <screen x="0" y="0" width="3440" height="1410" />
     </state>
-    <state x="488" y="212" key="CommitChangelistDialog2/0.0.3440.1410@0.0.3440.1410" timestamp="1589690576708" />
+    <state x="488" y="212" key="CommitChangelistDialog2/0.0.3440.1410@0.0.3440.1410" timestamp="1589725706193" />
     <state x="2360" y="463" key="FileChooserDialogImpl" timestamp="1586680296347">
       <screen x="0" y="0" width="3440" height="1410" />
     </state>
     <state x="2360" y="463" key="FileChooserDialogImpl/0.0.3440.1410@0.0.3440.1410" timestamp="1586680296347" />
-    <state x="491" y="433" key="Vcs.Push.Dialog.v2" timestamp="1589690580784">
+    <state x="491" y="433" key="Vcs.Push.Dialog.v2" timestamp="1589725708652">
       <screen x="0" y="0" width="3440" height="1410" />
     </state>
-    <state x="491" y="433" key="Vcs.Push.Dialog.v2/0.0.3440.1410@0.0.3440.1410" timestamp="1589690580784" />
+    <state x="491" y="433" key="Vcs.Push.Dialog.v2/0.0.3440.1410@0.0.3440.1410" timestamp="1589725708652" />
     <state x="734" y="50" width="1125" height="1145" key="find.popup" timestamp="1589690898115">
       <screen x="0" y="0" width="3440" height="1410" />
     </state>
